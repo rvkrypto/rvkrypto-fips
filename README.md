@@ -53,7 +53,7 @@ When compiled with `RVINTRIN_EMULATE`, the intrinsics will work on
 RV32I/RV64I (or arm/aarch64, i386/amd64) as if it had Bitmanip and Krypto
 support -- but much more slowly, and without the constant-time security 
 feature of Krypto. For AES and SM4 support, you'll need to link with 
-(rvk_emu.c)[rvk_emu.c] that provides 8-bit S-Boxes. For emulation of 
+[rvk_emu.c](rvk_emu.c) that provides 8-bit S-Boxes. For emulation of 
 Zkr entropy sources, you'll need to provide
 `_rv_pollentropy()` and `_rv_getnoise()` yourself; the emulation mode 
 provides just function prototypes for these.
