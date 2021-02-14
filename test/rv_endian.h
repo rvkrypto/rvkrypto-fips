@@ -2,7 +2,7 @@
 //	2020-11-10	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 //	Copyright (c) 2020, PQShield Ltd. All rights reserved.
 
-//	=== unaligned loads and stores
+//	=== endianess conversions and unaligned load/store
 
 #ifndef _RV_ENDIAN_H_
 #define _RV_ENDIAN_H_
@@ -11,7 +11,20 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+
 //	little-endian loads and stores (unaligned)
+
+static inline uint16_t get16u_le(const uint8_t* v)
+{
+	return (((uint16_t)v[0]) << 8) | ((uint16_t)v[1]);
+}
+
+static inline void put16u_le(uint8_t* v, uint16_t x)
+{
+	v[0] = x;
+	v[1] = x >> 8;
+}
 
 static inline uint32_t get32u_le(const uint8_t* v)
 {
@@ -48,6 +61,17 @@ static inline void put64u_le(uint8_t* v, uint64_t x)
 }
 
 //	big-endian loads and stores (unaligned)
+
+static inline uint16_t get16u_be(const uint8_t* v)
+{
+	return (((uint16_t)v[1]) << 8) | ((uint16_t)v[0]);
+}
+
+static inline void put16u_be(uint8_t* v, uint16_t x)
+{
+	v[0] = x >> 8;
+	v[1] = x;
+}
 
 static inline uint32_t get32u_be(const uint8_t* v)
 {

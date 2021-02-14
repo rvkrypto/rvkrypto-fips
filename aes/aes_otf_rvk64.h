@@ -5,8 +5,12 @@
 //	AES Encryption with on-the-fly key expansion.
 //	*rk can point to expanded key or just the key.
 
-#ifndef _AES_OTF_SAES64_H_
-#define _AES_OTF_SAES64_H_
+#ifndef _AES_OTF_RVK64_H_
+#define _AES_OTF_RVK64_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <stdint.h>
 
@@ -19,4 +23,8 @@ void aes192_enc_otf_rvk64(uint8_t ct[16], const uint8_t pt[16],
 void aes256_enc_otf_rvk64(uint8_t ct[16], const uint8_t pt[16],
 						   const uint32_t * rk);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif	//	_AES_OTF_RVK64_H_

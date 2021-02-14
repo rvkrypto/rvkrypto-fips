@@ -4,10 +4,8 @@
 
 #	===	Cross-compile for RV64 target, run with spike emulator.
 
-#	(lacking K flag)
-ARCH_64	=	rv64imafdc
-ABI_64	=	lp64d
-CFLAGS	+=	-march=$(ARCH_64) -mabi=$(ABI_64)
+#	(lacking K flag here)
+CFLAGS	+=	-march=rv64imafdc -mabi=lp64d
 
 #	toolchain
 XCHAIN	=	$(RISCV)/bin/riscv64-unknown-elf-
@@ -24,5 +22,5 @@ include	Makefile
 
 #	execution target
 spike64:	$(XBIN)
-	$(SPIKE) --isa=$(ARCH_64) $(PK64) ./$(XBIN)
+	$(SPIKE) --isa=rv64imac_zkn_zks $(PK64) ./$(XBIN)
 

@@ -4,7 +4,8 @@
 
 //	64-bit GHASH bit-reverse and multiplication for GCM
 
-#include "rvintrin.h"
+#include "rvkintrin.h"
+
 #ifdef RVINTRIN_RV64
 
 #include "gcm_gfmul.h"
@@ -18,8 +19,8 @@
 
 void ghash_rev_rv64(gf128_t * z)
 {
-	z->d[0] = _rv64_grev(z->d[0], 7);
-	z->d[1] = _rv64_grev(z->d[1], 7);
+	z->d[0] = _rv64_brev8(z->d[0]);
+	z->d[1] = _rv64_brev8(z->d[1]);
 }
 
 //	multiply z = ( z ^ rev(x) ) * h
@@ -39,8 +40,8 @@ void ghash_mul_rv64(gf128_t * z, const gf128_t * x, const gf128_t * h)
 	y1 = h->d[1];
 
 	//	2 x GREVW, 2 x XOR
-	x0 = _rv64_grev(x0, 7);					//	reverse input x only
-	x1 = _rv64_grev(x1, 7);
+	x0 = _rv64_brev8(x0);					//	reverse input x only
+	x1 = _rv64_brev8(x1);
 	x0 = x0 ^ z0;							//	z is updated
 	x1 = x1 ^ z1;
 

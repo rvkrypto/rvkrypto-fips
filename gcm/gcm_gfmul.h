@@ -7,6 +7,10 @@
 #ifndef _GCM_GFMUL_H_
 #define _GCM_GFMUL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 //	A GF(2^128) element type -- just for alignment and to avoid casts
@@ -39,5 +43,9 @@ extern void (*ghash_rev)(gf128_t * z);
 
 //	finite field multiply z = ( z ^ rev(x) ) * h
 extern void (*ghash_mul)(gf128_t * z, const gf128_t * x, const gf128_t * h);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif										//	_GCM_GFMUL_H_

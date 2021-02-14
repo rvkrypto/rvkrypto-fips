@@ -4,15 +4,14 @@
 
 //	A basic (very limited!) AES-GCM interface for testing purposes.
 
-#include "rvintrin.h"
+#include <string.h>
+
+#include "rvkintrin.h"
 #include "test_rvkat.h"
 #include "rv_endian.h"
-
-#include "../aes/aes_api.h"
+#include "aes/aes_api.h"
 #include "gcm_api.h"
 #include "gcm_gfmul.h"
-
-#include <string.h>
 
 static void ghash_rev_undef(gf128_t *x)
 {
@@ -115,7 +114,7 @@ static void aes_gcm_body(uint8_t * dst, uint8_t tag[16],
 	}
 
 	c.d[0] = 0;								//	pad with bit length
-	c.w[2] = __builtin_bswap32(len >> 29);
+	c.w[2] = __builtin_bswap32(len >> 29);			//	"bswap"
 	c.w[3] = __builtin_bswap32(len << 3);
 	ghash_mul(&z, &c, &h);					//	last GHASH block
 	ghash_rev(&z);							//	flip result bits

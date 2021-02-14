@@ -9,6 +9,10 @@
 #ifndef _GCM_API_H_
 #define _GCM_API_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <stddef.h>
 
@@ -33,5 +37,9 @@ void aes256_enc_gcm(uint8_t * c, const uint8_t * m, size_t mlen,
 int aes256_dec_vfy_gcm(uint8_t * m, const uint8_t * c, size_t clen,
 					   const uint8_t * key, const uint8_t iv[12]);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif	//	_GCM_API_H_

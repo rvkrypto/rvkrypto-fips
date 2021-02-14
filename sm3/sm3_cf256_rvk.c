@@ -67,7 +67,7 @@ void sm3_cf256_rvk(void *s)
 	g = sp[6];
 	h = sp[7];
 
-	//	load with rev8.w -- however this suits both RV32 and RV64, generic
+	//	load and reverse bytes
 
 	m0 = __builtin_bswap32(mp[0]);
 	m1 = __builtin_bswap32(mp[1]);
@@ -85,7 +85,7 @@ void sm3_cf256_rvk(void *s)
 	md = __builtin_bswap32(mp[13]);
 	me = __builtin_bswap32(mp[14]);
 	mf = __builtin_bswap32(mp[15]);
-
+	
 	tj = 0x79CC4519;
 
 	STEP_SM3_RF0(a, b, c, d, e, f, g, h, m0, m4);

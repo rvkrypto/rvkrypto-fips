@@ -4,8 +4,12 @@
 
 //	Implementation prototypes for aes_rvk32.c
 
-#ifndef _AES_SAES32_H_
-#define _AES_SAES32_H_
+#ifndef _AES_RVK32_H_
+#define _AES_RVK32_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <stdint.h>
 
@@ -54,4 +58,8 @@ void aes192_dec_ecb_rvk32(uint8_t pt[16], const uint8_t ct[16],
 void aes256_dec_ecb_rvk32(uint8_t pt[16], const uint8_t ct[16],
 						   const uint32_t rk[AES256_RK_WORDS]);
 
-#endif										//	_AES_SAES32_H_
+#ifdef __cplusplus
+}
+#endif
+
+#endif										//	_AES_RVK32_H_

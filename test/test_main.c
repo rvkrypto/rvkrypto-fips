@@ -15,6 +15,7 @@ int test_sha2();	//	test_sha2.c
 int test_sha3();	//	test_sha3.c
 int test_sm3();		//	test_sm3.c
 int test_sm4();		//	test_sm4.c
+int test_present(); //	test_present.c
 
 //	stub main: run unit tests
 
@@ -28,6 +29,7 @@ int main()
 	fail += test_sha3();
 	fail += test_sm3();
 	fail += test_sm4();
+	fail += test_present();
 
 	if (fail) {
 		rvkat_info("RVKAT self-test finished: FAIL (there were errors)");

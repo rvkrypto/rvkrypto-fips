@@ -1,7 +1,8 @@
 # Prerequisites
 *.d
 
-xtest
+xtest*
+*.dis
 
 # Object files
 *.o

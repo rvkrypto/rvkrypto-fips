@@ -1,8 +1,12 @@
 #	rvkrypto-fips
 
-FIPS 140-3 and higher-level algorithm Tests for RISC-V Crypto Extension
+Algorithm tests for RISC-V Crypto Extension.
 
 2021-02-14	Markku-Juhani O. Saarinen <mjos@pqshield.com>
+
+2021-09-08	Updated to post-arch review 1.0rc2 (apart from xperm names).
+
+2021-10-29	Post-public review version. removed `rvintrin.h` dependency.
 
 *Information and recommendations here are unofficial and under discussion in
 the [CETG](https://wiki.riscv.org/display/TECH/Cryptographic+Extensions+TG).*
@@ -11,16 +15,20 @@ This repo currently provides
 [RISC-V Cryptographic Extensions](https://github.com/riscv/riscv-crypto)
 implementations of AES-128/192/256, GCM, SHA2-256/384, SHA3, SM3, SM4 
 algorithms for RV32-K and RV64-K scalar targets. Together with primary 
-test vectors in `test_*.c`, the implementations allow bare metal 
+test vectors in `test/test_*.c`, the implementations allow bare metal 
 architectural self-testing of the scalar crypto extension, which is the
 first part of the Krypto extension reaching "stable" status.
+
+After intrinsics are agreed and initial testing succeeds, we can start
+pushing RV Krypto optimizations into 
+[FIPS 140-3 OpenSSL](https://www.openssl.org/docs/OpenSSL300Design.html)
+and other open source middleware.
 
 Please consider the 
 [RISC-V Crypto repo](https://github.com/riscv/riscv-crypto) as the official
 reference. There are very similar implementations in that repo, as these
 particular instruction extensions were designed to be used in algorithms
 in very specific ways.
-
 
 **NOTE.** 
 
@@ -35,42 +43,35 @@ without any warranty whatsoever. However, this repo is a freely
 *Cheers, - markku*
 
 
+##	(Cross) Compiling 
+
+If you have a RISC-V compiler and spike emulator with 0.9.4 Scalar Crypto
+Extension, try:
+```
+make -f rv32.mk
+``` 
+or
+```
+make -f rv64.mk
+``` 
+for 32-bit and 64-bit RISC-V ISAs, respectively. This will create the
+`xtest` test binary and execute it on spike. Add `xtest` as the target
+to build the test binary only.
+
+
 ##	Proposed Krypto Intrinsics
 
-The proposed Krypto intrinsics are in [rvkintrin.h](rvkintrin.h).
-This proposal complements and is compatible with the Bitmanip intrinsics of
-[rvintrin.h](https://github.com/riscv/riscv-bitmanip/blob/master/cproofs/rvintrin.h).
-As with that Bitmanip file, the header provides both inline assembler hooks 
-and "intrinsics emulation" in a consistent way.
-
-The prefixes and data types are:
-
-* `_rv_*(...)`: RV32/64 intrinsics that operate on the `long` data type.
-* `_rv32_*(...)`:  RV32/64 intrinsics that operate on the `int32_t` data type.
-* `_rv64_*(...)`:V64-only intrinsics that operate on the `int64_t` data type.
-
-When compiled with `RVINTRIN_EMULATE`, the intrinsics will work on 
-RV32I/RV64I (or arm/aarch64, i386/amd64) as if it had Bitmanip and Krypto
-support -- but much more slowly, and without the constant-time security 
-feature of Krypto. For AES and SM4 support, you'll need to link with 
-(rvk_emu.c)[rvk_emu.c] that provides 8-bit S-Boxes. For emulation of 
-Zkr entropy sources, you'll need to provide
-`_rv_pollentropy()` and `_rv_getnoise()` yourself; the emulation mode 
-provides just function prototypes for these.
+Please see [rvkintrin.md](rvkintrin.md) for information about the proposed
+short-form intrinsics in [rvkintrin.h](rvkintrin.h).
 
 
-##	Compiling
-
-You can use `make -f rv32.mk` or `make -f rv64.mk` to compile and
-execute the tests on spike (add `xtest` to build the binary only).
-The goal is that these will run nicely without `RVINTRIN_EMULATE` 
-being defined in `Makefile`.
+##	Intrinsics emulation on other ISA
 
 You can also compile the tests natively on a non-RV host with simple `make`:
 ```
 $ make
-gcc -Wall -O2 -I.  -DRVINTRIN_EMULATE=1 -DRVK_ALGTEST_VERBOSE_STDIO=1 -c rvk_emu.c -o rvk_emu.o
-gcc -Wall -O2 -I.  -DRVINTRIN_EMULATE=1 -DRVK_ALGTEST_VERBOSE_STDIO=1 -c test_aes.c -o test_aes.o
+gcc -Wall -O2 -I.  -DRVINTRIN_EMULATE=1 -DRVK_ALGTEST_VERBOSE_SIO=1 -c rvk_emu.c -o rvk_emu.o
+gcc -Wall -O2 -I.  -DRVINTRIN_EMULATE=1 -DRVK_ALGTEST_VERBOSE_SIO=1 -c test_aes.c -o test_aes.o
 (..)
 ```
 Note that even in this case the implementations depend on the `xlen` of the
@@ -137,8 +138,9 @@ NIAP for National Security Systems, BSI in Germany, ANSSI in France, etc.
 
 While basic algorithm testing can be largely automated, vendors
 are very likely to need cryptographic security specialists when:
-* Designing entropy sources or 
+* Designing entropy sources for the Zkr, which is CSR part of Scalar Crypto or 
 * Designing implementations for side-channel (non-invasive) security.
+
 
 Entropy sources are easy to get wrong as the product will 
 "work" regardless of the quality of cryptographic keys. 
@@ -146,18 +148,11 @@ Automated testing alone is not sufficient to satisfy
 [SP 800-90B](https://doi.org/10.6028/NIST.SP.800-90B) or
 [AIS-31 PTG.2](https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Zertifizierung/Interpretationen/AIS_31_Functionality_classes_for_random_number_generators_e.pdf)
 requirements. These certification processes require additional
-evidence about matters such as noise source entropy estimation, 
+evidence about matters such as noise source entropy justification, 
 appropriateness of conditioning components, and health testing.
 
 Side-channel claims must also be independently verified.
 In a Common Criteria setting, this is often done by evaluating
 [attack potential in a laboratory setting](https://www.sogis.eu/documents/cc/domains/sc/JIL-Application-of-Attack-Potential-to-Smartcards-v3-1.pdf)
 against a specific protection profile (PP).
-
-We urge vendors to make the **ZKr** (`pollentropy` and `getnoise`)
-extension available only if they are confident that the entropy source
-and its interfaces are actually compliant with either SP 800-90B or 
-AIS-31 PTG.2. We also urge care when making side-channel security claims,
-as such claims will put "non-invasive in the testing scope" (in crypto
-module jargon) and greatly increase the risk of failing validation.
 

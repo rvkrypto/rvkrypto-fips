@@ -61,8 +61,8 @@ void sha2_cf256_rvk(void *s)
 	g = sp[6];
 	h = sp[7];
 
-	//	load with rev8.w -- however this suits both RV32 and RV64, generic
-				
+	//	load and reverse bytes
+	
 	m0 = __builtin_bswap32(mp[0]);
 	m1 = __builtin_bswap32(mp[1]);
 	m2 = __builtin_bswap32(mp[2]);
