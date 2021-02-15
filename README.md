@@ -15,6 +15,12 @@ test vectors in `test_*.c`, the implementations allow bare metal
 architectural self-testing of the scalar crypto extension, which is the
 first part of the Krypto extension reaching "stable" status.
 
+After intrinsics are agreed and initial testing succeeds, we can start
+pushing RV Krypto optimizations into 
+[FIPS OpenSSL](https://www.openssl.org/docs/OpenSSL300Design.html)
+and other open source middleware. For previous efforts, see e.g. the 
+[Ubuntu OpenSSL Cryptographic Module][https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp2888.pdf].
+
 Please consider the 
 [RISC-V Crypto repo](https://github.com/riscv/riscv-crypto) as the official
 reference. There are very similar implementations in that repo, as these
@@ -58,6 +64,13 @@ Zkr entropy sources, you'll need to provide
 `_rv_pollentropy()` and `_rv_getnoise()` yourself; the emulation mode 
 provides just function prototypes for these.
 
+Testing notes for compilers:
+
+*	Compilers must never emit emulation code for machine intrinsics;
+	compilation must fail unless appropriate architecture is specified.
+*	Actual CMVP testing is of course with native instructions only.
+	CAVP tests must fail if emulation is used as they contain table
+	lookups and conditionals (forbidden in constant-time code).
 
 ##	Compiling
 
