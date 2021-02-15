@@ -18,8 +18,7 @@ first part of the Krypto extension reaching "stable" status.
 After intrinsics are agreed and initial testing succeeds, we can start
 pushing RV Krypto optimizations into 
 [FIPS OpenSSL](https://www.openssl.org/docs/OpenSSL300Design.html)
-and other open source middleware. For previous efforts, see e.g. the 
-[Ubuntu OpenSSL Cryptographic Module](https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp2888.pdf).
+and other open source middleware.
 
 Please consider the 
 [RISC-V Crypto repo](https://github.com/riscv/riscv-crypto) as the official
