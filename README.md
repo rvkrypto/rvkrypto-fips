@@ -55,6 +55,10 @@ The prefixes and data types are:
 * `_rv32_*(...)`:  RV32/64 intrinsics that operate on the `int32_t` data type.
 * `_rv64_*(...)`:V64-only intrinsics that operate on the `int64_t` data type.
 
+Note that this currently only supports scalar krypto. Vector krypto
+(which has more dependencies with the vector extension rather than bitmanip)
+will use [vector intrisics](https://github.com/riscv/rvv-intrinsic-doc).
+
 When compiled with `RVINTRIN_EMULATE`, the intrinsics will work on 
 RV32I/RV64I (or arm/aarch64, i386/amd64) as if it had Bitmanip and Krypto
 support -- but much more slowly, and without the constant-time security 
