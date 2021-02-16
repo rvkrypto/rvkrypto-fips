@@ -7,8 +7,10 @@ export
 
 XBIN	=	xtest
 CSRC	=	$(wildcard *.c */*.c)
-OBJS	=	$(CSRC:.c=.o)
+SSRC	=	$(wildcard *.S)
+OBJS	=	$(CSRC:.c=.o) $(SSRC:.S=.o)
 XCC		?=	$(XCHAIN)gcc
+XOBJD	?=	$(XCHAIN)objdump
 
 CFLAGS	+=	-Wall -Wextra -O2 -g -I. 
 
@@ -22,6 +24,9 @@ CFLAGS	+=	-DRVK_ALGTEST_VERBOSE_STDIO=1
 $(XBIN): $(OBJS)
 	$(XCC) $(LDFLAGS) $(CFLAGS) -o $(XBIN) $(OBJS) $(LDLIBS)
 
+$(XBIN).dis: $(XBIN)
+	$(XOBJD) -d -S $^ > $@
+
 %.o:	%.[cS]
 	$(XCC) $(CFLAGS) -c $^ -o $@
 
@@ -31,5 +36,5 @@ run:	$(XBIN)
 #	"finished" will not print on failure ( no RVK_ALGTEST_VERBOSE_STDIO )
 
 clean:
-	rm -rf $(OBJS) $(XBIN) *~
+	rm -rf $(OBJS) $(XBIN) $(XBIN).dis *~
 
