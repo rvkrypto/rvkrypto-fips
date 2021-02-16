@@ -16,8 +16,8 @@ static void sha3_f1600_rvb32_split(uint32_t v[50])
 
 	for (p = v; p != &v[50]; p += 2) {
 		//	uses bitmanip UNSHFL with immediate 15, which is pseudo-op "unzip"
-		t0 = _rv32_unzip(p[0]);
-		t1 = _rv32_unzip(p[1]);
+		t0 = _rv32_unshfl(p[0], 15);
+		t1 = _rv32_unshfl(p[1], 15);
 		p[0] = (t0 & 0x0000FFFF) | (t1 << 16);
 		p[1] = (t1 & 0xFFFF0000) | (t0 >> 16);
 	}
@@ -31,8 +31,8 @@ static void sha3_f1600_rvb32_join(uint32_t v[50])
 
 	for (p = v; p != &v[50]; p += 2) {
 		//	uses bitmanip SHFL with immediate 15, which is pseudo-op "zip"
-		t0 = _rv32_zip(p[0]);
-		t1 = _rv32_zip(p[1]);
+		t0 = _rv32_shfl(p[0], 15);
+		t1 = _rv32_shfl(p[1], 15);
 		p[0] = ((t1 & 0x55555555) << 1) | (t0 & 0x55555555);
 		p[1] = ((t0 & 0xAAAAAAAA) >> 1) | (t1 & 0xAAAAAAAA);
 	}

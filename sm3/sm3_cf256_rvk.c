@@ -67,24 +67,24 @@ void sm3_cf256_rvk(void *s)
 	g = sp[6];
 	h = sp[7];
 
-	//	load and reverse bytes
+	//	load with rev8.w -- however this suits both RV32 and RV64, generic
 
-	m0 = _rv32_rev8(mp[0]);
-	m1 = _rv32_rev8(mp[1]);
-	m2 = _rv32_rev8(mp[2]);
-	m3 = _rv32_rev8(mp[3]);
-	m4 = _rv32_rev8(mp[4]);
-	m5 = _rv32_rev8(mp[5]);
-	m6 = _rv32_rev8(mp[6]);
-	m7 = _rv32_rev8(mp[7]);
-	m8 = _rv32_rev8(mp[8]);
-	m9 = _rv32_rev8(mp[9]);
-	ma = _rv32_rev8(mp[10]);
-	mb = _rv32_rev8(mp[11]);
-	mc = _rv32_rev8(mp[12]);
-	md = _rv32_rev8(mp[13]);
-	me = _rv32_rev8(mp[14]);
-	mf = _rv32_rev8(mp[15]);
+	m0 = __builtin_bswap32(mp[0]);
+	m1 = __builtin_bswap32(mp[1]);
+	m2 = __builtin_bswap32(mp[2]);
+	m3 = __builtin_bswap32(mp[3]);
+	m4 = __builtin_bswap32(mp[4]);
+	m5 = __builtin_bswap32(mp[5]);
+	m6 = __builtin_bswap32(mp[6]);
+	m7 = __builtin_bswap32(mp[7]);
+	m8 = __builtin_bswap32(mp[8]);
+	m9 = __builtin_bswap32(mp[9]);
+	ma = __builtin_bswap32(mp[10]);
+	mb = __builtin_bswap32(mp[11]);
+	mc = __builtin_bswap32(mp[12]);
+	md = __builtin_bswap32(mp[13]);
+	me = __builtin_bswap32(mp[14]);
+	mf = __builtin_bswap32(mp[15]);
 
 	tj = 0x79CC4519;
 

@@ -77,24 +77,24 @@ void sha2_cf512_rvk64(void *s)
 	g = sp[6];
 	h = sp[7];
 
-	//	reverse byte order with rev8
+	//	load with rev8
 
-	m0 = _rv64_rev8(mp[0]);
-	m1 = _rv64_rev8(mp[1]);
-	m2 = _rv64_rev8(mp[2]);
-	m3 = _rv64_rev8(mp[3]);
-	m4 = _rv64_rev8(mp[4]);
-	m5 = _rv64_rev8(mp[5]);
-	m6 = _rv64_rev8(mp[6]);
-	m7 = _rv64_rev8(mp[7]);
-	m8 = _rv64_rev8(mp[8]);
-	m9 = _rv64_rev8(mp[9]);
-	ma = _rv64_rev8(mp[10]);
-	mb = _rv64_rev8(mp[11]);
-	mc = _rv64_rev8(mp[12]);
-	md = _rv64_rev8(mp[13]);
-	me = _rv64_rev8(mp[14]);
-	mf = _rv64_rev8(mp[15]);
+	m0 = _rv64_grev(mp[0], 0x38);
+	m1 = _rv64_grev(mp[1], 0x38);
+	m2 = _rv64_grev(mp[2], 0x38);
+	m3 = _rv64_grev(mp[3], 0x38);
+	m4 = _rv64_grev(mp[4], 0x38);
+	m5 = _rv64_grev(mp[5], 0x38);
+	m6 = _rv64_grev(mp[6], 0x38);
+	m7 = _rv64_grev(mp[7], 0x38);
+	m8 = _rv64_grev(mp[8], 0x38);
+	m9 = _rv64_grev(mp[9], 0x38);
+	ma = _rv64_grev(mp[10], 0x38);
+	mb = _rv64_grev(mp[11], 0x38);
+	mc = _rv64_grev(mp[12], 0x38);
+	md = _rv64_grev(mp[13], 0x38);
+	me = _rv64_grev(mp[14], 0x38);
+	mf = _rv64_grev(mp[15], 0x38);
 
 	while (1) {
 

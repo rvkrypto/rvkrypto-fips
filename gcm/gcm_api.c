@@ -53,7 +53,7 @@ static void aes_gcm_body(uint8_t * dst, uint8_t tag[16],
 
 	ctr = 0;								//	counter value
 	memcpy(p.b, iv, 12);					//	J0
-	p.w[3] = _rv32_rev8(++ctr);				//	big-endian counter
+	p.w[3] = __builtin_bswap32(++ctr);		//	big-endian counter
 	enc_ecb(t.b, p.b, rk);					//	first AES_k(IV | 1) for tag
 
 	z.d[0] = 0;								//	initialize GHASH result
@@ -63,7 +63,7 @@ static void aes_gcm_body(uint8_t * dst, uint8_t tag[16],
 
 		i = len;
 		while (i >= 16) {					//	full block
-			p.w[3] = _rv32_rev8(++ctr);
+			p.w[3] = __builtin_bswap32(++ctr);
 			enc_ecb(c.b, p.b, rk);
 			memcpy(b.b, src, 16);			//	load plaintext
 			c.d[0] ^= b.d[0];
@@ -76,7 +76,7 @@ static void aes_gcm_body(uint8_t * dst, uint8_t tag[16],
 		}
 
 		if (i > 0) {						//	partial block
-			p.w[3] = _rv32_rev8(++ctr);
+			p.w[3] = __builtin_bswap32(++ctr);
 			enc_ecb(c.b, p.b, rk);
 			memcpy(b.b, src, i);			//	load plaintext
 			c.d[0] ^= b.d[0];
@@ -90,7 +90,7 @@ static void aes_gcm_body(uint8_t * dst, uint8_t tag[16],
 
 		i = len;
 		while (i >= 16) {					//	full block
-			p.w[3] = _rv32_rev8(++ctr);
+			p.w[3] = __builtin_bswap32(++ctr);
 			enc_ecb(b.b, p.b, rk);
 			memcpy(c.b, src, 16);			//	load ciphertext
 			b.d[0] ^= c.d[0];
@@ -103,7 +103,7 @@ static void aes_gcm_body(uint8_t * dst, uint8_t tag[16],
 		}
 
 		if (i > 0) {						//	partial block
-			p.w[3] = _rv32_rev8(++ctr);
+			p.w[3] = __builtin_bswap32(++ctr);
 			enc_ecb(b.b, p.b, rk);
 			memcpy(c.b, src, i);
 			b.d[0] ^= c.d[0];
@@ -115,8 +115,8 @@ static void aes_gcm_body(uint8_t * dst, uint8_t tag[16],
 	}
 
 	c.d[0] = 0;								//	pad with bit length
-	c.w[2] = _rv32_rev8(len >> 29);
-	c.w[3] = _rv32_rev8(len << 3);
+	c.w[2] = __builtin_bswap32(len >> 29);
+	c.w[3] = __builtin_bswap32(len << 3);
 	ghash_mul(&z, &c, &h);					//	last GHASH block
 	ghash_rev(&z);							//	flip result bits
 	t.d[0] = t.d[0] ^ z.d[0];				//	XOR with AES_k(IV | 1)

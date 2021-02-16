@@ -4,8 +4,10 @@
 
 #	===	Cross-compile for RV32 target, run with spike emulator.
 
-#	(lacking K flag here)
-CFLAGS	+=	-march=rv32imac -mabi=ilp32
+#	(lacking K flag)
+ARCH_32	=	rv32imac
+ABI_32	=	ilp32
+CFLAGS	+=	-march=$(ARCH_32) -mabi=$(ABI_32)
 
 #	toolchain
 XCHAIN	=	$(RISCV)/bin/riscv64-unknown-elf-
@@ -22,5 +24,5 @@ include	Makefile
 
 #	execution target
 spike32:	$(XBIN)
-	$(SPIKE) --isa=rv32imacbk $(PK32) ./$(XBIN)
+	$(SPIKE) --isa=$(ARCH_32) $(PK32) ./$(XBIN)
 
