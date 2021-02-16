@@ -3,20 +3,14 @@
 #   Copyright (c) 2021, PQShield Ltd.  All rights reserved.
 
 #	export all variables to sub-makefiles
-export				
-
-#	some cross-compilers
-#XCHAIN	=	riscv64-unknown-elf-
-#XCHAIN	=	arm-linux-gnueabi-
-#XCHAIN	=	aarch64-linux-gnu-
-#XCHAIN	=	i686-linux-gnu-
+export
 
 XBIN	=	xtest
 CSRC	=	$(wildcard *.c */*.c)
 OBJS	=	$(CSRC:.c=.o)
 XCC		?=	$(XCHAIN)gcc
 
-CFLAGS	+=	-Wall -Wextra -O2 -I. 
+CFLAGS	+=	-Wall -Wextra -O2 -g -I. 
 
 #	intrinsics emulation; the testing goal is that this can be OFF
 CFLAGS	+=	-DRVINTRIN_EMULATE=1
