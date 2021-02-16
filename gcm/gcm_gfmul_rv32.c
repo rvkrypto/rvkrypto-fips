@@ -16,10 +16,10 @@
 
 void ghash_rev_rv32(gf128_t * z)
 {
-	z->w[0] = _rv32_grev(z->w[0], 7);
-	z->w[1] = _rv32_grev(z->w[1], 7);
-	z->w[2] = _rv32_grev(z->w[2], 7);
-	z->w[3] = _rv32_grev(z->w[3], 7);
+	z->w[0] = _rv32_rev_b(z->w[0]);
+	z->w[1] = _rv32_rev_b(z->w[1]);
+	z->w[2] = _rv32_rev_b(z->w[2]);
+	z->w[3] = _rv32_rev_b(z->w[3]);
 }
 
 //	multiply z = ( z ^ rev(x) ) * h
@@ -43,10 +43,10 @@ void ghash_mul_rv32(gf128_t * z, const gf128_t * x, const gf128_t * h)
 	z3 = z->w[3];
 
 	//	4 x GREV
-	x0 = _rv32_grev(x0, 7);					//	reverse input x only
-	x1 = _rv32_grev(x1, 7);
-	x2 = _rv32_grev(x2, 7);
-	x3 = _rv32_grev(x3, 7);
+	x0 = _rv32_rev_b(x0);					//	reverse input x only
+	x1 = _rv32_rev_b(x1);
+	x2 = _rv32_rev_b(x2);
+	x3 = _rv32_rev_b(x3);
 
 	//	4 x XOR
 	x0 = x0 ^ z0;							//	z is kept unreversed
@@ -144,10 +144,10 @@ void ghash_mul_rv32_kar(gf128_t * z, const gf128_t * x, const gf128_t * h)
 	y3 = h->w[3];
 
 	//	4 x GREV
-	x0 = _rv32_grev(x0, 7);					//	reverse input x only
-	x1 = _rv32_grev(x1, 7);
-	x2 = _rv32_grev(x2, 7);
-	x3 = _rv32_grev(x3, 7);
+	x0 = _rv32_rev_b(x0);					//	reverse input x only
+	x1 = _rv32_rev_b(x1);
+	x2 = _rv32_rev_b(x2);
+	x3 = _rv32_rev_b(x3);
 
 	//	4 x XOR
 	x0 = x0 ^ z0;							//	z is updated

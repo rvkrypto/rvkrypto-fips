@@ -22,7 +22,8 @@ static inline int32_t _rv32_sltu(int32_t rs1, int32_t rs2)
 #else
 
 static inline int32_t _rv32_sltu(int32_t rs1, int32_t rs2) 
-{	int32_t rd;
+{
+	int32_t rd;
 	__asm__ ("sltu	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2));
 	return rd; 
 }
@@ -69,12 +70,12 @@ static inline int32_t _rv32_sltu(int32_t rs1, int32_t rs2)
 	tl = (xc ^ (x8 & (xa ^ xc)));						\
 	th = (xd ^ (x9 & (xb ^ xd)));						\
 	STEP_ADD64(xe, xf, xe, xf, tl, th);					\
-	tl = _rv32_sha512sum1r(x8, x9);					\
-	th = _rv32_sha512sum1r(x9, x8);					\
+	tl = _rv32_sha512sum1r(x8, x9);						\
+	th = _rv32_sha512sum1r(x9, x8);						\
 	STEP_ADD64(xe, xf, xe, xf, tl, th);					\
 	STEP_ADD64(x6, x7, x6, x7, xe, xf);					\
-	tl = _rv32_sha512sum0r(x0, x1);					\
-	th = _rv32_sha512sum0r(x1, x0);					\
+	tl = _rv32_sha512sum0r(x0, x1);						\
+	th = _rv32_sha512sum0r(x1, x0);						\
 	STEP_ADD64(xe, xf, xe, xf, tl, th);					\
 	tl = (((x0 | x4) & x2) | (x4 & x0));				\
 	th = (((x1 | x5) & x3) | (x5 & x1));				\
@@ -147,10 +148,10 @@ void sha2_cf512_rvk32(void *s)
 
 	mp = sp + 16;
 	do {
-		tl = mp[1];				//	revert the block
+		tl = mp[1];				//	swap words and reverse bytes in words
 		th = mp[0];
-		mp[0] = _rv32_grev(tl, 0x18);
-		mp[1] = _rv32_grev(th, 0x18);
+		mp[0] = _rv32_rev8(tl);
+		mp[1] = _rv32_rev8(th);
 		mp += 2;
 	} while (mp != sp + 48);
 
