@@ -23,11 +23,11 @@
 #include <limits.h>
 #include <stdint.h>
 
-//	always include bitmanip intrinsics; emulation macros defined there
+//	always include bitmanip intrinsics; architecture macros defined there
 #include "rvintrin.h"
 
 //	IMPORTANT:
-//	Also eeit warnings if some FIPS mode is enabled and emulation flag is on.
+
 //	Compilers should not emit emulation code for machine intrinsics.
 //	(especially conditionals or table lookups), just the machine instructions.
 //	If architecture is not enabled, fail.
@@ -36,6 +36,8 @@
 #  warning "Target is not RISC-V. Enabling <rvkintrin.h> emulation mode."
 #  define RVINTRIN_EMULATE 1
 #endif
+
+//	TODO: Also emit warnings if FIPS mode is enabled and emulation flag is on.
 
 #ifndef RVINTRIN_EMULATE
 
