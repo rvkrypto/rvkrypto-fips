@@ -8,6 +8,10 @@
 #ifndef _AES_API_H_
 #define _AES_API_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 //	number of rounds
@@ -62,5 +66,9 @@ extern void (*aes192_dec_ecb)(uint8_t pt[16], const uint8_t ct[16],
 
 extern void (*aes256_dec_ecb)(uint8_t pt[16], const uint8_t ct[16],
 							  const uint32_t rk[AES256_RK_WORDS]);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif										//	_AES_API_H_

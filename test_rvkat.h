@@ -10,6 +10,10 @@
 #ifndef _TEST_RVKAT_H_
 #define _TEST_RVKAT_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <stddef.h>
 
@@ -27,5 +31,9 @@ int rvkat_chkhex(const char *lab, const void *data, size_t len, const char *ref)
 
 //	boolean return value check
 int rvkat_chkret(const char *lab, int want, int have);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif	//	 _TEST_RVKAT_H_

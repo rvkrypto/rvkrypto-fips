@@ -10,6 +10,10 @@
 #ifndef _SM4_API_H_
 #define _SM4_API_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 //	Size of the expanded key.
@@ -28,5 +32,9 @@ void sm4_dec_key(uint32_t rk[SM4_RK_WORDS], const uint8_t key[16]);
 //	aliases
 #define sm4_enc_ecb(ct, pt, rk) sm4_encdec(ct, pt, rk)
 #define sm4_dec_ecb(pt, ct, rk) sm4_encdec(pt, ct, rk)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif										//	_SM4_API_H_

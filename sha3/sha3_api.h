@@ -7,6 +7,10 @@
 #ifndef _SHA3_API_H_
 #define _SHA3_API_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -44,5 +48,9 @@ void shake_xof(sha3_ctx_t * c);
 
 //	squeeze output (can call repeat)
 void shake_out(uint8_t * out, size_t len, sha3_ctx_t * c);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif	//	_SHA3_API_H_
