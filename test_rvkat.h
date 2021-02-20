@@ -4,7 +4,7 @@
 
 //	functions to facilitate simple algorithm self tests
 
-//	RVK_ALGTEST_VERBOSE_STDIO will use stdio for output, replace
+//	RVK_ALGTEST_VERBOSE_SIO will use stdio for output, replace
 //	with what is suitable for your target.
 
 #ifndef _TEST_RVKAT_H_

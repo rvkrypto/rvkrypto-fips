@@ -18,7 +18,7 @@ CFLAGS	+=	-Wall -Wextra -O2 -g -I.
 #CFLAGS	+=	-DRVINTRIN_EMULATE=1
 
 #	note that the final program return value is the output without this
-CFLAGS	+=	-DRVK_ALGTEST_VERBOSE_STDIO=1
+CFLAGS	+=	-DRVK_ALGTEST_VERBOSE_SIO=1
 #LDFLAGS	+=	-static		#	easier for cross compilers
 
 $(XBIN): $(OBJS)
@@ -33,7 +33,7 @@ $(XBIN).dis: $(XBIN)
 run:	$(XBIN)
 	./$(XBIN)
 	@echo $(XBIN) "finished."
-#	"finished" will not print on failure ( no RVK_ALGTEST_VERBOSE_STDIO )
+#	"finished" will not print on failure ( no RVK_ALGTEST_VERBOSE_SIO )
 
 clean:
 	rm -rf $(OBJS) $(XBIN) $(XBIN).dis *~

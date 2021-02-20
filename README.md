@@ -85,8 +85,8 @@ being defined in `Makefile`.
 You can also compile the tests natively on a non-RV host with simple `make`:
 ```
 $ make
-gcc -Wall -O2 -I.  -DRVINTRIN_EMULATE=1 -DRVK_ALGTEST_VERBOSE_STDIO=1 -c rvk_emu.c -o rvk_emu.o
-gcc -Wall -O2 -I.  -DRVINTRIN_EMULATE=1 -DRVK_ALGTEST_VERBOSE_STDIO=1 -c test_aes.c -o test_aes.o
+gcc -Wall -O2 -I.  -DRVINTRIN_EMULATE=1 -DRVK_ALGTEST_VERBOSE_SIO=1 -c rvk_emu.c -o rvk_emu.o
+gcc -Wall -O2 -I.  -DRVINTRIN_EMULATE=1 -DRVK_ALGTEST_VERBOSE_SIO=1 -c test_aes.c -o test_aes.o
 (..)
 ```
 Note that even in this case the implementations depend on the `xlen` of the
