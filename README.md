@@ -1,6 +1,6 @@
 #	rvkrypto-fips
 
-FIPS 140-3 and higher-level algorithm Tests for RISC-V Crypto Extension
+FIPS and higher-level algorithm tests for RISC-V Crypto Extension
 
 2021-02-14	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 
@@ -17,7 +17,7 @@ first part of the Krypto extension reaching "stable" status.
 
 After intrinsics are agreed and initial testing succeeds, we can start
 pushing RV Krypto optimizations into 
-[FIPS OpenSSL](https://www.openssl.org/docs/OpenSSL300Design.html)
+[FIPS 140-3 OpenSSL](https://www.openssl.org/docs/OpenSSL300Design.html)
 and other open source middleware.
 
 Please consider the 
