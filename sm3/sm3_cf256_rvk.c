@@ -69,23 +69,23 @@ void sm3_cf256_rvk(void *s)
 
 	//	load and reverse bytes
 
-	m0 = _rv32_rev8(mp[0]);
-	m1 = _rv32_rev8(mp[1]);
-	m2 = _rv32_rev8(mp[2]);
-	m3 = _rv32_rev8(mp[3]);
-	m4 = _rv32_rev8(mp[4]);
-	m5 = _rv32_rev8(mp[5]);
-	m6 = _rv32_rev8(mp[6]);
-	m7 = _rv32_rev8(mp[7]);
-	m8 = _rv32_rev8(mp[8]);
-	m9 = _rv32_rev8(mp[9]);
-	ma = _rv32_rev8(mp[10]);
-	mb = _rv32_rev8(mp[11]);
-	mc = _rv32_rev8(mp[12]);
-	md = _rv32_rev8(mp[13]);
-	me = _rv32_rev8(mp[14]);
-	mf = _rv32_rev8(mp[15]);
-
+	m0 = _rv_grev(mp[0], 0x18);
+	m1 = _rv_grev(mp[1], 0x18);
+	m2 = _rv_grev(mp[2], 0x18);
+	m3 = _rv_grev(mp[3], 0x18);
+	m4 = _rv_grev(mp[4], 0x18);
+	m5 = _rv_grev(mp[5], 0x18);
+	m6 = _rv_grev(mp[6], 0x18);
+	m7 = _rv_grev(mp[7], 0x18);
+	m8 = _rv_grev(mp[8], 0x18);
+	m9 = _rv_grev(mp[9], 0x18);
+	ma = _rv_grev(mp[10], 0x18);
+	mb = _rv_grev(mp[11], 0x18);
+	mc = _rv_grev(mp[12], 0x18);
+	md = _rv_grev(mp[13], 0x18);
+	me = _rv_grev(mp[14], 0x18);
+	mf = _rv_grev(mp[15], 0x18);
+	
 	tj = 0x79CC4519;
 
 	STEP_SM3_RF0(a, b, c, d, e, f, g, h, m0, m4);
