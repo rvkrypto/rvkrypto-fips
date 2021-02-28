@@ -17,11 +17,7 @@ extern "C" {
 #include <stdint.h>
 #include <stddef.h>
 
-//	print information
-void rvkat_info(const char *info);
-
-//	print hexadecimal "data", length "len", with label "lab"
-void rvkat_hexout(const char *lab, const void *data, size_t len);
+//	===	TESTING === used in tests
 
 //	read a hex string of "maxbytes", return byte length
 size_t rvkat_gethex(uint8_t *buf, size_t maxbytes, const char *str);
@@ -29,8 +25,26 @@ size_t rvkat_gethex(uint8_t *buf, size_t maxbytes, const char *str);
 //	check "data" of "len" bytes against a hexadecimal test vector "ref"
 int rvkat_chkhex(const char *lab, const void *data, size_t len, const char *ref);
 
-//	boolean return value check
+//	boolean return value check (integer -- print decimal)
 int rvkat_chkret(const char *lab, int want, int have);
+
+//	32-bit return value check (print hex)
+int rvkat_chku32(const char *lab, uint32_t want, uint32_t have);
+
+//	64-bit return value check (print hex)
+int rvkat_chku64(const char *lab, uint64_t want, uint64_t have);
+
+//	===	DEBUG ==  available for information / debug purposes only
+
+//	print information
+void rvkat_info(const char *info);
+
+//	print hexadecimal "data", length "len", with label "lab"
+void rvkat_hexout(const char *lab, const void *data, size_t len);
+
+//	print a space ' ' and hexademical unsigned without a label
+void rvkat_hexu32(uint32_t x);
+void rvkat_hexu64(uint64_t x);
 
 #ifdef __cplusplus
 }
