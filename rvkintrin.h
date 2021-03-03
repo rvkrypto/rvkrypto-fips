@@ -28,8 +28,8 @@
 
 //	IMPORTANT:
 
-//	Compilers should not emit emulation code for machine intrinsics.
-//	(especially conditionals or table lookups), just the machine instructions.
+//	Compilers should never emit emulation code (especially conditionals or
+//	table lookups) for these machine intrinsics, just the instructions.
 //	If architecture is not enabled, fail.
 
 #if !defined(__riscv_xlen) && !defined(RVINTRIN_EMULATE)
@@ -54,7 +54,7 @@ static inline int32_t _rv32_aes32esmi(int32_t rs1, int32_t rs2, int bs)
 	{__asm__("aes32esmi %0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
 #endif
 
-//	=== AES64: Zkn (RV32), Zknd, Zkne
+//	=== AES64: Zkn (RV64), Zknd, Zkne
 
 #ifdef RVINTRIN_RV64
 static inline int64_t _rv64_aes64dsm(int64_t rs1, int64_t rs2)
@@ -115,25 +115,29 @@ static inline int64_t _rv64_sha512sum1(int64_t rs1)
 #endif
 
 //	=== SM3:	Zks (RV32, RV64), Zksh 
+
 static inline long _rv_sm3p0 (long rs1)
 	{long rd; __asm__("sm3p0	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
 static inline long _rv_sm3p1 (long rs1)
 	{long rd; __asm__("sm3p1	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
 
-//	=== SM4:	Zks (RV32, RV64), Zkse
+//	=== SM4:	Zks (RV32, RV64), Zksed
+
 static inline long _rv_sm4ks (long rs1, long rs2, int bs)
 	{__asm__("sm4ks	%0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
 static inline long _rv_sm4ed (long rs1, long rs2, int bs)
 	{__asm__("sm4ed	%0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
 
-//	Entropy source: Zkr (RV32, RV64)
+//	===	Entropy source: Zkr (RV32, RV64)
 
 static inline long _rv_pollentropy()
 	{long rd; __asm__ volatile ("pollentropy %0" : "=r"(rd)); return rd;}
 static inline long _rv_getnoise()
 	{long rd; __asm__ volatile ("getnoise %0" : "=r"(rd)); return rd;}
 
-#else // RVINTRIN_EMULATE
+#else	
+
+//	===	RVINTRIN_EMULATE ==============================================
 
 /*
  *	_rvk_emu_*(...)
