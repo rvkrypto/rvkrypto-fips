@@ -67,13 +67,33 @@ Zkr entropy sources, you'll need to provide
 `_rv_pollentropy()` and `_rv_getnoise()` yourself; the emulation mode 
 provides just function prototypes for these.
 
-Testing notes for compilers:
+Notes about compilers:
 
 *	Compilers must never emit emulation code for machine intrinsics;
 	compilation must fail unless appropriate architecture is specified.
 *	Actual CMVP testing is of course with native instructions only.
 	CAVP tests must fail if emulation is used as they contain table
 	lookups and conditionals (forbidden in constant-time code).
+*	Instructions should be mapped into architectural bultins in "real"
+	compiler implementations (instead of inline assembler as is done here).
+	The inline assembler solution used here should be seen as temporary.
+*	The built-in architecture intrinsics are currently expected to be with 
+	`__builtin_riscv_*` prefix, while these (shorter) `_rv_*`, `_rv32_*`, 
+	`_rv64_*` will remain available via `rvintrin.h` and `rvkintrin.h`
+	header mappings. If you don't want short-form intrinsics cluttering 
+	your namespace, just don't include these headers.
+*	Applications using the `rvintrin.h` and `rvkintrin.h` headers can remain
+	unchanged. These intrinsics serve a similar programming convenience
+	purpose as the Intel "short" intrinsics
+	https://software.intel.com/sites/landingpage/IntrinsicsGuide/# do for that
+	ISA. Otherwise programmers would no doubt shorten the `__builtin_riscv_*`
+	prefix in various ways themselves. As an example, the Intel intrinsic 
+	is `_mm_aesenc_si128()` 
+	while the GCC intrinsic is `__builtin_ia32_aesenc128()`.	
+*	The headers themselves will switch from inline assembler to
+	architectural builtins once those are available. We of course hope that
+	the bult-in namic will match between LLVM and GCC.
+
 
 ##	Compiling
 
