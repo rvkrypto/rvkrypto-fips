@@ -44,13 +44,13 @@
 //	=== AES32: Zkn (RV32), Zknd, Zkne 
 
 #ifdef RVINTRIN_RV32
-static inline int32_t _rv32_aes32dsi(int32_t rs1, int32_t rs2, int bs)
+static inline int32_t _rv32_aes32dsi(int32_t rs1, int32_t rs2, uint8_t bs)
 	{__asm__("aes32dsi	%0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
-static inline int32_t _rv32_aes32dsmi(int32_t rs1, int32_t rs2, int bs)
+static inline int32_t _rv32_aes32dsmi(int32_t rs1, int32_t rs2, uint8_t bs)
 	{__asm__("aes32dsmi %0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
-static inline int32_t _rv32_aes32esi(int32_t rs1, int32_t rs2, int bs)
+static inline int32_t _rv32_aes32esi(int32_t rs1, int32_t rs2, uint8_t bs)
 	{__asm__("aes32esi	%0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
-static inline int32_t _rv32_aes32esmi(int32_t rs1, int32_t rs2, int bs)
+static inline int32_t _rv32_aes32esmi(int32_t rs1, int32_t rs2, uint8_t bs)
 	{__asm__("aes32esmi %0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
 #endif
 
@@ -123,9 +123,9 @@ static inline long _rv_sm3p1 (long rs1)
 
 //	=== SM4:	Zks (RV32, RV64), Zksed
 
-static inline long _rv_sm4ks (long rs1, long rs2, int bs)
+static inline long _rv_sm4ks (long rs1, long rs2, uint8_t bs)
 	{__asm__("sm4ks	%0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
-static inline long _rv_sm4ed (long rs1, long rs2, int bs)
+static inline long _rv_sm4ed (long rs1, long rs2, uint8_t bs)
 	{__asm__("sm4ed	%0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
 
 //	===	Entropy source: Zkr (RV32, RV64)
@@ -210,7 +210,7 @@ static inline uint32_t _rvk_emu_aes_inv_mc_32(uint32_t x)
 
 //	=== AES32: Zkn (RV32), Zknd
 
-static inline int32_t _rv32_aes32dsi(int32_t rs1, int32_t rs2, int bs)
+static inline int32_t _rv32_aes32dsi(int32_t rs1, int32_t rs2, uint8_t bs)
 {
 	uint32_t x;
 
@@ -221,7 +221,7 @@ static inline int32_t _rv32_aes32dsi(int32_t rs1, int32_t rs2, int bs)
 	return rs1 ^ _rv32_rol(x, bs);
 }
 
-static inline int32_t _rv32_aes32dsmi(int32_t rs1, int32_t rs2, int bs)
+static inline int32_t _rv32_aes32dsmi(int32_t rs1, int32_t rs2, uint8_t bs)
 {
 	uint32_t x;
 
@@ -235,7 +235,7 @@ static inline int32_t _rv32_aes32dsmi(int32_t rs1, int32_t rs2, int bs)
 
 //	=== AES32: ZKn (RV32), Zkne
 
-static inline int32_t _rv32_aes32esi(int32_t rs1, int32_t rs2, int bs)
+static inline int32_t _rv32_aes32esi(int32_t rs1, int32_t rs2, uint8_t bs)
 {
 	uint32_t x;
 
@@ -246,7 +246,7 @@ static inline int32_t _rv32_aes32esi(int32_t rs1, int32_t rs2, int bs)
 	return rs1 ^ _rv32_rol(x, bs);
 }
 
-static inline int32_t _rv32_aes32esmi(int32_t rs1, int32_t rs2, int bs)
+static inline int32_t _rv32_aes32esmi(int32_t rs1, int32_t rs2, uint8_t bs)
 {
 	uint32_t x;
 
@@ -448,7 +448,7 @@ static inline long _rv_sm3p1(long rs1)
 
 //	=== SM4: Zks (RV32 & RV64), Zkse
 
-static inline long _rv_sm4ed(long rs1, long rs2, int bs)
+static inline long _rv_sm4ed(long rs1, long rs2, uint8_t bs)
 {
 	uint32_t x;
 
@@ -463,7 +463,7 @@ static inline long _rv_sm4ed(long rs1, long rs2, int bs)
 	return rs1 ^ _rv32_rol(x, bs);
 }
 
-static inline long _rv_sm4ks(long rs1, long rs2, int bs)
+static inline long _rv_sm4ks(long rs1, long rs2, uint8_t bs)
 {
 	uint32_t x;
 
