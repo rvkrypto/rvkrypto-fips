@@ -92,7 +92,7 @@ Notes about compilers:
 	while the GCC intrinsic is `__builtin_ia32_aesenc128()`.	
 *	The headers themselves will switch from inline assembler to
 	architectural builtins once those are available. We of course hope that
-	the bult-in namic will match between LLVM and GCC.
+	the bult-in naming will match between LLVM and GCC.
 
 
 ##	Compiling
