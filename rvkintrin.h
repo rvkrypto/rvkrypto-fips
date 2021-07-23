@@ -45,13 +45,13 @@
 
 #ifdef RVINTRIN_RV32
 static inline int32_t _rv32_aes32dsi(int32_t rs1, int32_t rs2, uint8_t bs)
-	{__asm__("aes32dsi	%0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
+	{__asm__("aes32dsi	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
 static inline int32_t _rv32_aes32dsmi(int32_t rs1, int32_t rs2, uint8_t bs)
-	{__asm__("aes32dsmi %0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
+	{__asm__("aes32dsmi %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
 static inline int32_t _rv32_aes32esi(int32_t rs1, int32_t rs2, uint8_t bs)
-	{__asm__("aes32esi	%0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
+	{__asm__("aes32esi	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
 static inline int32_t _rv32_aes32esmi(int32_t rs1, int32_t rs2, uint8_t bs)
-	{__asm__("aes32esmi %0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
+	{__asm__("aes32esmi %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
 #endif
 
 //	=== AES64: Zkn (RV64), Zknd, Zkne
@@ -124,9 +124,9 @@ static inline long _rv_sm3p1 (long rs1)
 //	=== SM4:	Zks (RV32, RV64), Zksed
 
 static inline long _rv_sm4ks (long rs1, long rs2, uint8_t bs)
-	{__asm__("sm4ks	%0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
+	{__asm__("sm4ks	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
 static inline long _rv_sm4ed (long rs1, long rs2, uint8_t bs)
-	{__asm__("sm4ed	%0, %1, %2" : "+r"(rs1) : "r"(rs2), "i"(bs)); return rs1;}
+	{__asm__("sm4ed	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
 
 //	===	Entropy source: Zkr (RV32, RV64)
 

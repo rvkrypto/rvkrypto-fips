@@ -1,11 +1,15 @@
 #	rvkrypto-fips
 
-FIPS and higher-level algorithm tests for RISC-V Crypto Extension
+Algorithm tests for RISC-V Crypto Extension.
 
 2021-02-14	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 
+Version: 2021-07-23	Updated to post-arch review 0.9.4. (No "rt" encoding for
+AES/SM4, sign extension of some RV64 that operate on 32-bit words.)
+
 *Information and recommendations here are unofficial and under discussion in
 the [CETG](https://wiki.riscv.org/display/TECH/Cryptographic+Extensions+TG).*
+
 
 This repo currently provides 
 [RISC-V Cryptographic Extensions](https://github.com/riscv/riscv-crypto)
@@ -25,7 +29,6 @@ Please consider the
 reference. There are very similar implementations in that repo, as these
 particular instruction extensions were designed to be used in algorithms
 in very specific ways.
-
 
 **NOTE.** 
 
@@ -97,8 +100,15 @@ Notes about compilers:
 
 ##	Compiling
 
-You can use `make -f rv32.mk` or `make -f rv64.mk` to compile and
-execute the tests on spike (add `xtest` to build the binary only).
+You can use 
+```
+make -f rv32.mk
+``` 
+For RV32 target or 
+```
+make -f rv64.mk
+`` to compile and execute the tests on spike (add `xtest` to build the
+binary only).
 The goal is that these will run nicely without `RVINTRIN_EMULATE` 
 being defined in `Makefile`.
 
