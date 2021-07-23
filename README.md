@@ -4,8 +4,11 @@ Algorithm tests for RISC-V Crypto Extension.
 
 2021-02-14	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 
-Version: 2021-07-23	Updated to post-arch review 0.9.4. (No "rt" encoding for
-AES/SM4, sign extension of some RV64 that operate on 32-bit words.)
+**Version 0.9.4beta:** 
+2021-07-23	Updated to post-arch review 0.9.4. 
+
+(0.9.2 encoding for AES/SM4, sign extension of some RV64 that operate on
+32-bit words. Pollentropy is not an instruction any more -- just a CSR.)
 
 *Information and recommendations here are unofficial and under discussion in
 the [CETG](https://wiki.riscv.org/display/TECH/Cryptographic+Extensions+TG).*
@@ -43,6 +46,22 @@ without any warranty whatsoever. However, this repo is a freely
 *Cheers, - markku*
 
 
+##	(Cross) Compiling 
+
+If you have a RISC-V compiler and spike emulator with 0.9.4 Scalar Crypto
+Extension, try:
+```
+make -f rv32.mk
+``` 
+or
+```
+make -f rv64.mk
+``` 
+for 32-bit and 64-bit RISC-V ISAs, respectively. This will create the
+`xtest` test binary and execute it on spike. Add `xtest` as the target
+to build the test binary only.
+
+
 ##	Proposed Krypto Intrinsics
 
 The proposed Krypto intrinsics are in [rvkintrin.h](rvkintrin.h).
@@ -65,10 +84,7 @@ When compiled with `RVINTRIN_EMULATE`, the intrinsics will work on
 RV32I/RV64I (or arm/aarch64, i386/amd64) as if it had Bitmanip and Krypto
 support -- but much more slowly, and without the constant-time security 
 feature of Krypto. For AES and SM4 support, you'll need to link with 
-[rvk_emu.c](rvk_emu.c) that provides 8-bit S-Boxes. For emulation of 
-Zkr entropy sources, you'll need to provide
-`_rv_pollentropy()` and `_rv_getnoise()` yourself; the emulation mode 
-provides just function prototypes for these.
+[rvk_emu.c](rvk_emu.c) that provides 8-bit S-Boxes. 
 
 Notes about compilers:
 
@@ -98,19 +114,7 @@ Notes about compilers:
 	the bult-in naming will match between LLVM and GCC.
 
 
-##	Compiling
-
-You can use 
-```
-make -f rv32.mk
-``` 
-For RV32 target or 
-```
-make -f rv64.mk
-`` to compile and execute the tests on spike (add `xtest` to build the
-binary only).
-The goal is that these will run nicely without `RVINTRIN_EMULATE` 
-being defined in `Makefile`.
+##	Intrinsics emulation on other ISA
 
 You can also compile the tests natively on a non-RV host with simple `make`:
 ```
@@ -183,8 +187,9 @@ NIAP for National Security Systems, BSI in Germany, ANSSI in France, etc.
 
 While basic algorithm testing can be largely automated, vendors
 are very likely to need cryptographic security specialists when:
-* Designing entropy sources or 
+* Designing entropy sources for the Zkr, which is CSR part of Scalar Crypto or 
 * Designing implementations for side-channel (non-invasive) security.
+
 
 Entropy sources are easy to get wrong as the product will 
 "work" regardless of the quality of cryptographic keys. 
@@ -192,18 +197,11 @@ Automated testing alone is not sufficient to satisfy
 [SP 800-90B](https://doi.org/10.6028/NIST.SP.800-90B) or
 [AIS-31 PTG.2](https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Zertifizierung/Interpretationen/AIS_31_Functionality_classes_for_random_number_generators_e.pdf)
 requirements. These certification processes require additional
-evidence about matters such as noise source entropy estimation, 
+evidence about matters such as noise source entropy justification, 
 appropriateness of conditioning components, and health testing.
 
 Side-channel claims must also be independently verified.
 In a Common Criteria setting, this is often done by evaluating
 [attack potential in a laboratory setting](https://www.sogis.eu/documents/cc/domains/sc/JIL-Application-of-Attack-Potential-to-Smartcards-v3-1.pdf)
 against a specific protection profile (PP).
-
-We urge vendors to make the **ZKr** (`pollentropy` and `getnoise`)
-extension available only if they are confident that the entropy source
-and its interfaces are actually compliant with either SP 800-90B or 
-AIS-31 PTG.2. We also urge care when making side-channel security claims,
-as such claims will put "non-invasive in the testing scope" (in crypto
-module jargon) and greatly increase the risk of failing validation.
 
