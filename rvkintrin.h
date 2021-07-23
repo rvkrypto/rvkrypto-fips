@@ -44,14 +44,14 @@
 //	=== AES32: Zkn (RV32), Zknd, Zkne
 
 #ifdef RVINTRIN_RV32
-static inline int32_t _rv32_aes32dsi(int32_t rs1, int32_t rs2, uint8_t bs)
-	{__asm__("aes32dsi	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
-static inline int32_t _rv32_aes32dsmi(int32_t rs1, int32_t rs2, uint8_t bs)
-	{__asm__("aes32dsmi %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
-static inline int32_t _rv32_aes32esi(int32_t rs1, int32_t rs2, uint8_t bs)
-	{__asm__("aes32esi	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
-static inline int32_t _rv32_aes32esmi(int32_t rs1, int32_t rs2, uint8_t bs)
-	{__asm__("aes32esmi %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
+static inline int32_t _rv32_aes32dsi (int32_t rs1, int32_t rs2, int bs) 
+	{int32_t rd; __asm__("aes32dsi  %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd;}
+static inline int32_t _rv32_aes32dsmi(int32_t rs1, int32_t rs2, int bs) 
+	{int32_t rd; __asm__("aes32dsmi %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd;}
+static inline int32_t _rv32_aes32esi (int32_t rs1, int32_t rs2, int bs) 
+	{int32_t rd; __asm__("aes32esi  %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd;}
+static inline int32_t _rv32_aes32esmi(int32_t rs1, int32_t rs2, int bs) 
+	{int32_t rd; __asm__("aes32esmi %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd;}
 #endif
 
 //	=== AES64: Zkn (RV64), Zknd, Zkne
@@ -61,8 +61,8 @@ static inline int64_t _rv64_aes64dsm(int64_t rs1, int64_t rs2)
 	{int64_t rd; __asm__("aes64dsm	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
 static inline int64_t _rv64_aes64ds(int64_t rs1, int64_t rs2)
 	{int64_t rd; __asm__("aes64ds	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
-static inline int64_t _rv64_aes64ks1i(int64_t rs1, int rcon)
-	{int64_t rd; __asm__("aes64ks1i %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(rcon)); return rd;}
+static inline int64_t _rv64_aes64ks1i(int64_t rs1, int rnum)
+	{int64_t rd; __asm__("aes64ks1i %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(rnum)); return rd;}
 static inline int64_t _rv64_aes64ks2(int64_t rs1, int64_t rs2)
 	{int64_t rd; __asm__("aes64ks2	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
 static inline int64_t _rv64_aes64im(int64_t rs1)
@@ -116,17 +116,17 @@ static inline int64_t _rv64_sha512sum1(int64_t rs1)
 
 //	=== SM3:	Zks (RV32, RV64), Zksh
 
-static inline long _rv_sm3p0 (long rs1)
+static inline long _rv_sm3p0(long rs1)
 	{long rd; __asm__("sm3p0	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
-static inline long _rv_sm3p1 (long rs1)
+static inline long _rv_sm3p1(long rs1)
 	{long rd; __asm__("sm3p1	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
 
 //	=== SM4:	Zks (RV32, RV64), Zksed
 
-static inline long _rv_sm4ks (long rs1, long rs2, uint8_t bs)
-	{__asm__("sm4ks %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
-static inline long _rv_sm4ed (long rs1, long rs2, uint8_t bs)
-	{__asm__("sm4ed %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
+static inline long _rv_sm4ks(int32_t rs1, int32_t rs2, int bs)
+	{long rd; __asm__("sm4ks %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd;}
+static inline long _rv_sm4ed(int32_t rs1, int32_t rs2, int bs) 
+	{long rd; __asm__("sm4ed %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd;}
 
 #else
 
@@ -307,7 +307,7 @@ static inline int64_t _rv64_aes64esm(int64_t rs1, int64_t rs2)
 	return x;
 }
 
-static inline int64_t _rv64_aes64ks1i(int64_t rs1, int rcon)
+static inline int64_t _rv64_aes64ks1i(int64_t rs1, int rnum)
 {
 	//	AES Round Constants
 	const uint8_t aes_rcon[] = {
@@ -319,9 +319,9 @@ static inline int64_t _rv64_aes64ks1i(int64_t rs1, int rcon)
 	t = rs1 >> 32;							//	high word
 	rc = 0;
 
-	if (rcon < 10) {						//	10: don't do it
+	if (rnum < 10) {						//	10: don't do it
 		t = _rv32_ror(t, 8);
-		rc = aes_rcon[rcon];				//	round constant
+		rc = aes_rcon[rnum];				//	round constant
 	}
 	//	SubWord
 	t = ((uint32_t) _rvk_emu_aes_fwd_sbox[t & 0xFF]) |
