@@ -946,6 +946,11 @@ static inline long _rv_fsr(long rs1, long rs3, long rs2) { return _rv64_fsr(rs1,
 	static inline int64_t _rv64_ ## _name(int64_t rs1) { return _rv64_grev(rs1, _arg); }
 #endif
 
+//	new	pseudo-instruction name from krste / arch review  2021-09-08
+RVINTRIN_GREV_PSEUDO_OP32( 7, brev8)
+RVINTRIN_GREV_PSEUDO_OP64( 7, brev8)
+
+//	these are the old formats from bitmanip
 RVINTRIN_GREV_PSEUDO_OP32( 1, rev_p)
 RVINTRIN_GREV_PSEUDO_OP32( 2, rev2_n)
 RVINTRIN_GREV_PSEUDO_OP32( 3, rev_n)
