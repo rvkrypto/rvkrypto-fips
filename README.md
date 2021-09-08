@@ -4,15 +4,11 @@ Algorithm tests for RISC-V Crypto Extension.
 
 2021-02-14	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 
-**Version 0.9.4beta:** 
-2021-07-23	Updated to post-arch review 0.9.4. 
-
-(0.9.2 encoding for AES/SM4, sign extension of some RV64 that operate on
-32-bit words. Pollentropy is not an instruction any more -- just a CSR.)
+**Version 1.0.0beta** 
+2021-09-08	Updated to post-arch review 1.0rc2 (apart from xperm names).
 
 *Information and recommendations here are unofficial and under discussion in
 the [CETG](https://wiki.riscv.org/display/TECH/Cryptographic+Extensions+TG).*
-
 
 This repo currently provides 
 [RISC-V Cryptographic Extensions](https://github.com/riscv/riscv-crypto)
