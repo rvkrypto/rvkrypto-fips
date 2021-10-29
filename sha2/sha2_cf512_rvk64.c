@@ -79,22 +79,22 @@ void sha2_cf512_rvk64(void *s)
 
 	//	reverse byte order with rev8
 
-	m0 = _rv64_rev8(mp[0]);
-	m1 = _rv64_rev8(mp[1]);
-	m2 = _rv64_rev8(mp[2]);
-	m3 = _rv64_rev8(mp[3]);
-	m4 = _rv64_rev8(mp[4]);
-	m5 = _rv64_rev8(mp[5]);
-	m6 = _rv64_rev8(mp[6]);
-	m7 = _rv64_rev8(mp[7]);
-	m8 = _rv64_rev8(mp[8]);
-	m9 = _rv64_rev8(mp[9]);
-	ma = _rv64_rev8(mp[10]);
-	mb = _rv64_rev8(mp[11]);
-	mc = _rv64_rev8(mp[12]);
-	md = _rv64_rev8(mp[13]);
-	me = _rv64_rev8(mp[14]);
-	mf = _rv64_rev8(mp[15]);
+	m0 = __builtin_bswap64(mp[0]);
+	m1 = __builtin_bswap64(mp[1]);
+	m2 = __builtin_bswap64(mp[2]);
+	m3 = __builtin_bswap64(mp[3]);
+	m4 = __builtin_bswap64(mp[4]);
+	m5 = __builtin_bswap64(mp[5]);
+	m6 = __builtin_bswap64(mp[6]);
+	m7 = __builtin_bswap64(mp[7]);
+	m8 = __builtin_bswap64(mp[8]);
+	m9 = __builtin_bswap64(mp[9]);
+	ma = __builtin_bswap64(mp[10]);
+	mb = __builtin_bswap64(mp[11]);
+	mc = __builtin_bswap64(mp[12]);
+	md = __builtin_bswap64(mp[13]);
+	me = __builtin_bswap64(mp[14]);
+	mf = __builtin_bswap64(mp[15]);
 
 	while (1) {
 

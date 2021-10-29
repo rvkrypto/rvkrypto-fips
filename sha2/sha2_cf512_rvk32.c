@@ -150,8 +150,8 @@ void sha2_cf512_rvk32(void *s)
 	do {
 		tl = mp[1];				//	swap words and reverse bytes in words
 		th = mp[0];
-		mp[0] = _rv32_rev8(tl);
-		mp[1] = _rv32_rev8(th);
+		mp[0] = __builtin_bswap32(tl);
+		mp[1] = __builtin_bswap32(th);
 		mp += 2;
 	} while (mp != sp + 48);
 
