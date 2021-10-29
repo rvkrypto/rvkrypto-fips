@@ -4,15 +4,15 @@
 
 //	A basic (very limited!) AES-GCM interface for testing purposes.
 
-#include "rvintrin.h"
+#include <string.h>
+
+#include "rvkintrin.h"
 #include "test_rvkat.h"
 #include "rv_endian.h"
 
 #include "../aes/aes_api.h"
 #include "gcm_api.h"
 #include "gcm_gfmul.h"
-
-#include <string.h>
 
 static void ghash_rev_undef(gf128_t *x)
 {

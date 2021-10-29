@@ -5,8 +5,8 @@
 //	RISC-V "K" extension proposal intrinsics and emulation
 
 /*
- *	Krypto intrinsics follow the conventions of original rvintrin.h (from Claire Wolf),
- *	and many parts have been lifted from that file.
+ *	Krypto intrinsics follow the conventions of original the rvintrin.h
+ *	file from Claire Wolf. Many parts have been lifted from that file.
  *
  *	_rv_*(...)
  *	  RV32/64 intrinsics that operate on the "long" data type
@@ -17,9 +17,10 @@
  *	_rv64_*(...)
  *	  RV64-only intrinsics that operate on the "int64_t" data type
  *
- *	The header also supports "intrinsics emulation", which is not secure.
- *	RVINTRIN_EMULATE enables this. Additional functions with _rvk_emu prefix
- *	relate to emulation.
+ *	The header also supports "intrinsics emulation" (which is solely for
+ *	development -- it is not secure as it violates Zkt data-independent
+ *	timing requirements). RVINTRIN_EMULATE enables this. Additional
+ *	functions with _rvk_emu prefix relate to emulation.
  *
  */
 
@@ -34,7 +35,16 @@
 #  define RVINTRIN_EMULATE 1
 #endif
 
+//	=== BUILTINS ======================================================
+
+//	This file needs mappings to compiler builtins due to the drawbacks
+//	of using inline assembler in the compiler pipeline.
+
+//	...
+
 #ifndef RVINTRIN_EMULATE
+
+//	=== INLINE ASSEMBLER ==============================================
 
 #if __riscv_xlen == 32
 #  define RVINTRIN_RV32
@@ -48,35 +58,24 @@
 #  error "Architecture not defined."
 #endif
 
-#ifndef RVINTRIN_EMULATE
-
-//	=== BUILTINS ======================================================
-
-//	This file needs mappings to compiler builtins due to the many drawbacks
-//	of using inline assembler in the compiler pipeline.
-
-
-//	=== INLINE ASSEMBLER ==============================================
-
-//	===	(inline)	Zbkb:	Bitmanipulation instructions for Cryptography
+//	=== (inline)	Zbkb:	Bitmanipulation instructions for Cryptography
 
 #ifdef RVINTRIN_RV32
 static inline int32_t _rv32_ror(int32_t rs1, int32_t rs2)
-	{ int32_t rd; if (__builtin_constant_p(rs2)) __asm__ ("rori    %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(31 &  rs2)); else __asm__ ("ror     %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int32_t rd; if (__builtin_constant_p(rs2)) __asm__ ("rori	 %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(31 &  rs2)); else __asm__ ("ror	 %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int32_t _rv32_rol(int32_t rs1, int32_t rs2)
-	{ int32_t rd; if (__builtin_constant_p(rs2)) __asm__ ("rori    %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(31 & -rs2)); else __asm__ ("rol     %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
-
+	{ int32_t rd; if (__builtin_constant_p(rs2)) __asm__ ("rori	 %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(31 & -rs2)); else __asm__ ("rol	 %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 #endif
 
 #ifdef RVINTRIN_RV64
 static inline int32_t _rv32_ror(int32_t rs1, int32_t rs2)
-	{ int32_t rd; if (__builtin_constant_p(rs2)) __asm__ ("roriw   %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(31 &  rs2)); else __asm__ ("rorw    %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int32_t rd; if (__builtin_constant_p(rs2)) __asm__ ("roriw  %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(31 &  rs2)); else __asm__ ("rorw  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int32_t _rv32_rol(int32_t rs1, int32_t rs2)
-	{ int32_t rd; if (__builtin_constant_p(rs2)) __asm__ ("roriw   %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(31 & -rs2)); else __asm__ ("rolw    %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int32_t rd; if (__builtin_constant_p(rs2)) __asm__ ("roriw  %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(31 & -rs2)); else __asm__ ("rolw  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int64_t _rv64_ror(int64_t rs1, int64_t rs2)
-	{ int64_t rd; if (__builtin_constant_p(rs2)) __asm__ ("rori    %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(63 &  rs2)); else __asm__ ("ror     %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int64_t rd; if (__builtin_constant_p(rs2)) __asm__ ("rori	 %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(63 &  rs2)); else __asm__ ("ror	 %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int64_t _rv64_rol(int64_t rs1, int64_t rs2)
-	{ int64_t rd; if (__builtin_constant_p(rs2)) __asm__ ("rori    %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(63 & -rs2)); else __asm__ ("rol     %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int64_t rd; if (__builtin_constant_p(rs2)) __asm__ ("rori	 %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(63 & -rs2)); else __asm__ ("rol	 %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 #endif
 
 static inline long _rv_andn(long rs1, long rs2)
@@ -90,7 +89,7 @@ static inline long _rv_xnor(long rs1, long rs2)
 static inline int32_t _rv32_pack(int32_t rs1, int32_t rs2)
 	{ int32_t rd; __asm__ ("pack  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int32_t _rv32_packh(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("packh %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int32_t rd; __asm__ ("packh  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 #endif
 
 #ifdef RVINTRIN_RV64
@@ -102,203 +101,184 @@ static inline int32_t _rv32_pack(int32_t rs1, int32_t rs2)
 	{ int32_t rd; __asm__ ("packw  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 #endif
 
-static inline long _rv_brev8(long rs1)
-	{ long rd; __asm__("brev8  %0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
-static inline long _rv_rev8(long rs1)
-	{ long rd; __asm__("rev8  %0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
-
 #ifdef RVINTRIN_RV32
-#define _rv32_andn	_rv_andn
-#define _rv32_orn	_rv_orn
-#define _rv32_xnor	_rv_xnor
-#define _rv32_brev8	_rv_brev8
-#define _rv32_rev8	_rv_rev8
+static inline int32_t _rv32_brev8(int32_t rs1)
+	{ int32_t rd; __asm__ ("grevi  %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(7)); return rd; }
+static inline int32_t _rv32_rev8(int32_t rs1)
+	{ int32_t rd; __asm__ ("grevi  %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(24)); return rd; }
 #endif
 
 #ifdef RVINTRIN_RV64
-#define _rv64_andn	_rv_andn
-#define _rv64_orn	_rv_orn
-#define _rv64_xnor	_rv_xnor
-#define _rv64_brev8	_rv_brev8
-#define _rv64_rev8	_rv_rev8
+static inline int64_t _rv64_brev8(int64_t rs1)
+	{ int64_t rd; __asm__ ("grevi  %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(7)); return rd; }
+static inline int64_t _rv64_rev8(int64_t rs1)
+	{ int64_t rd; __asm__ ("grevi  %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(56)); return rd; }
 #endif
-
-#ifdef RVINTRIN_RV32
-static inline int32_t _rv32_clmul(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("clmul   %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
-static inline int32_t _rv32_clmulh(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("clmulh  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
-#endif
-
-#ifdef RVINTRIN_RV64
-static inline int64_t _rv64_clmul(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__ ("clmul   %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
-static inline int64_t _rv64_clmulh(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__ ("clmulh  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
-#endif
-
 
 #ifdef RVINTRIN_RV32
 static inline int32_t _rv32_zip(int32_t rs1)
-	{ int32_t rd; __asm__ ("zip  %0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
+	{ int32_t rd; __asm__ ("shfli  %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(15)); return rd; }
 static inline int32_t _rv32_unzip(int32_t rs1)
-	{ int32_t rd; __asm__ ("unzip  %0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
+	{ int32_t rd; __asm__ ("unshfli	 %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(15)); return rd; }
 #endif
-
 
 //	=== (inline)	Zbkc:	Carry-less multiply instructions
 
 #ifdef RVINTRIN_RV32
 static inline int32_t _rv32_clmul(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("clmul   %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int32_t rd; __asm__ ("clmul  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int32_t _rv32_clmulh(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("clmulh  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int32_t rd; __asm__ ("clmulh	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 #endif
 
 #ifdef RVINTRIN_RV64
 static inline int64_t _rv64_clmul(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__ ("clmul   %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int64_t rd; __asm__ ("clmul  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int64_t _rv64_clmulh(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__ ("clmulh  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int64_t rd; __asm__ ("clmulh	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 #endif
-
 
 //	=== (inline)	Zbkx:	Crossbar permutation instructions
 
 #ifdef RVINTRIN_RV32
 static inline int32_t _rv32_xperm8(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("xperm8 %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int32_t rd; __asm__ ("xperm8	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int32_t _rv32_xperm4(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("xperm4 %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int32_t rd; __asm__ ("xperm4	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 #endif
 
 #ifdef RVINTRIN_RV64
 static inline int64_t _rv64_xperm8(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__ ("xperm8 %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int64_t rd; __asm__ ("xperm8	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int64_t _rv64_xperm4(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__ ("xperm4 %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
+	{ int64_t rd; __asm__ ("xperm4	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 #endif
 
-
-//	===	(inline)	Zknd:	NIST Suite: AES Decryption
+//	=== (inline)	Zknd:	NIST Suite: AES Decryption
 
 #ifdef RVINTRIN_RV32
-static inline int32_t _rv32_aes32dsi (int32_t rs1, int32_t rs2, int bs) 
-	{ int32_t rd; __asm__("aes32dsi  %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd;}
-static inline int32_t _rv32_aes32dsmi(int32_t rs1, int32_t rs2, int bs) 
-	{ int32_t rd; __asm__("aes32dsmi %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd;}
+static inline int32_t _rv32_aes32dsi(int32_t rs1, int32_t rs2, int bs)
+	{ int32_t rd; __asm__("aes32dsi	 %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd; }
+static inline int32_t _rv32_aes32dsmi(int32_t rs1, int32_t rs2, int bs)
+	{ int32_t rd; __asm__("aes32dsmi  %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd; }
 #endif
 
 #ifdef RVINTRIN_RV64
 static inline int64_t _rv64_aes64ds(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__("aes64ds	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
+	{ int64_t rd; __asm__("aes64ds	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int64_t _rv64_aes64dsm(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__("aes64dsm	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
+	{ int64_t rd; __asm__("aes64dsm %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int64_t _rv64_aes64im(int64_t rs1)
-	{ int64_t rd; __asm__("aes64im	%0, %1	 " : "=r"(rd) : "r"(rs1)); return rd;}
+	{ int64_t rd; __asm__("aes64im	%0, %1	 " : "=r"(rd) : "r"(rs1)); return rd; }
 static inline int64_t _rv64_aes64ks1i(int64_t rs1, int rnum)
-	{ int64_t rd; __asm__("aes64ks1i %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(rnum)); return rd;}
+	{ int64_t rd; __asm__("aes64ks1i %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(rnum)); return rd; }
 static inline int64_t _rv64_aes64ks2(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__("aes64ks2	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
+	{ int64_t rd; __asm__("aes64ks2 %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 #endif
-
 
 //	=== (inline)	Zkne:	NIST Suite: AES Encryption
 
 #ifdef RVINTRIN_RV32
-static inline int32_t _rv32_aes32esi (int32_t rs1, int32_t rs2, int bs) 
-	{ int32_t rd; __asm__("aes32esi  %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd;}
-static inline int32_t _rv32_aes32esmi(int32_t rs1, int32_t rs2, int bs) 
-	{ int32_t rd; __asm__("aes32esmi %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd;}
+static inline int32_t _rv32_aes32esi(int32_t rs1, int32_t rs2, int bs)
+	{ int32_t rd; __asm__("aes32esi	 %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd; }
+static inline int32_t _rv32_aes32esmi(int32_t rs1, int32_t rs2, int bs)
+	{ int32_t rd; __asm__("aes32esmi %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd; }
 #endif
 
 #ifdef RVINTRIN_RV64
 static inline int64_t _rv64_aes64es(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__("aes64es	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
+	{ int64_t rd; __asm__("aes64es	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int64_t _rv64_aes64esm(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__("aes64esm	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
-static inline int64_t _rv64_aes64ks1i(int64_t rs1, int rnum)
-	{ int64_t rd; __asm__("aes64ks1i %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(rnum)); return rd;}
-static inline int64_t _rv64_aes64ks2(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__("aes64ks2	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
+	{ int64_t rd; __asm__("aes64esm %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 #endif
-
 
 //	=== (inline)	Zknh:	NIST Suite: Hash Function Instructions
 
-static inline long _rv_sha256sig0 (long rs1)
-	{ long rd; __asm__ ("sha256sig0	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
-static inline long _rv_sha256sig1 (long rs1)
-	{ long rd; __asm__ ("sha256sig1	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
-static inline long _rv_sha256sum0 (long rs1)
-	{ long rd; __asm__ ("sha256sum0	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
-static inline long _rv_sha256sum1 (long rs1)
-	{ long rd; __asm__ ("sha256sum1	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
+static inline long _rv_sha256sig0(long rs1)
+	{ long rd; __asm__ ("sha256sig0 %0, %1" : "=r"(rd) : "r"(rs1)); return rd; }
+static inline long _rv_sha256sig1(long rs1)
+	{ long rd; __asm__ ("sha256sig1 %0, %1" : "=r"(rd) : "r"(rs1)); return rd; }
+static inline long _rv_sha256sum0(long rs1)
+	{ long rd; __asm__ ("sha256sum0 %0, %1" : "=r"(rd) : "r"(rs1)); return rd; }
+static inline long _rv_sha256sum1(long rs1)
+	{ long rd; __asm__ ("sha256sum1 %0, %1" : "=r"(rd) : "r"(rs1)); return rd; }
 
 #ifdef RVINTRIN_RV32
 static inline int32_t _rv32_sha512sig0h(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("sha512sig0h	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
+	{ int32_t rd; __asm__ ("sha512sig0h %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int32_t _rv32_sha512sig0l(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("sha512sig0l	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
+	{ int32_t rd; __asm__ ("sha512sig0l %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int32_t _rv32_sha512sig1h(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("sha512sig1h	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
+	{ int32_t rd; __asm__ ("sha512sig1h %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int32_t _rv32_sha512sig1l(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("sha512sig1l	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
+	{ int32_t rd; __asm__ ("sha512sig1l %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int32_t _rv32_sha512sum0r(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("sha512sum0r	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
+	{ int32_t rd; __asm__ ("sha512sum0r %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 static inline int32_t _rv32_sha512sum1r(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("sha512sum1r	%0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd;}
+	{ int32_t rd; __asm__ ("sha512sum1r %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 #endif
 
 #ifdef RVINTRIN_RV64
 static inline int64_t _rv64_sha512sig0(int64_t rs1)
-	{ int64_t rd; __asm__ ("sha512sig0	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
+	{ int64_t rd; __asm__ ("sha512sig0	%0, %1" : "=r"(rd) : "r"(rs1)); return rd; }
 static inline int64_t _rv64_sha512sig1(int64_t rs1)
-	{ int64_t rd; __asm__ ("sha512sig1	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
+	{ int64_t rd; __asm__ ("sha512sig1	%0, %1" : "=r"(rd) : "r"(rs1)); return rd; }
 static inline int64_t _rv64_sha512sum0(int64_t rs1)
-	{ int64_t rd; __asm__ ("sha512sum0	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
+	{ int64_t rd; __asm__ ("sha512sum0	%0, %1" : "=r"(rd) : "r"(rs1)); return rd; }
 static inline int64_t _rv64_sha512sum1(int64_t rs1)
-	{ int64_t rd; __asm__ ("sha512sum1	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
+	{ int64_t rd; __asm__ ("sha512sum1	%0, %1" : "=r"(rd) : "r"(rs1)); return rd; }
 #endif
 
 //	=== (inline)	Zksed:	ShangMi Suite: SM4 Block Cipher Instructions
 
 static inline long _rv_sm4ks(int32_t rs1, int32_t rs2, int bs)
-	{ long rd; __asm__("sm4ks %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd;}
-static inline long _rv_sm4ed(int32_t rs1, int32_t rs2, int bs) 
-	{ long rd; __asm__("sm4ed %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd;}
-
+	{ long rd; __asm__("sm4ks %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd; }
+static inline long _rv_sm4ed(int32_t rs1, int32_t rs2, int bs)
+	{ long rd; __asm__("sm4ed %0, %1, %2, %3" : "=r"(rd) : "r"(rs1), "r"(rs2), "i"(bs)); return rd; }
 
 //	=== (inline)	Zksh:	ShangMi Suite: SM3 Hash Function Instructions
 
 static inline long _rv_sm3p0(long rs1)
-	{ long rd; __asm__("sm3p0	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
+	{ long rd; __asm__("sm3p0  %0, %1" : "=r"(rd) : "r"(rs1)); return rd; }
 static inline long _rv_sm3p1(long rs1)
-	{ long rd; __asm__("sm3p1	%0, %1" : "=r"(rd) : "r"(rs1)); return rd;}
-
+	{ long rd; __asm__("sm3p1  %0, %1" : "=r"(rd) : "r"(rs1)); return rd; }
 
 #else
 
 //	=== RVINTRIN_EMULATE ==============================================
 
-//	===	(emulated)	Zbkb:	Bitmanipulation instructions for Cryptography
+#if UINT_MAX != 0xffffffffU
+#  error "<rvkintrin.h> emulation mode only supports systems with sizeof(int) = 4."
+#endif
+
+#if (ULLONG_MAX == 0xffffffffLLU) || (ULLONG_MAX != 0xffffffffffffffffLLU)
+#  error "<rvkintrin.h> emulation mode only supports systems with sizeof(long long) = 8."
+#endif
+
+#if UINT_MAX == ULONG_MAX
+#  define RVINTRIN_RV32
+#else
+#  define RVINTRIN_RV64
+#endif
+
+//	=== (emulated)	Zbkb:	Bitmanipulation instructions for Cryptography
 
 //	shift helpers (that mask/limit the amount of shift)
 
-static inline int32_t _rvk_emu_rv32_sll(int32_t rs1, int32_t rs2) 
+static inline int32_t _rvk_emu_rv32_sll(int32_t rs1, int32_t rs2)
 	{ return rs1 << (rs2 & 31); }
-static inline int32_t _rvk_emu_rv32_srl(int32_t rs1, int32_t rs2) 
+static inline int32_t _rvk_emu_rv32_srl(int32_t rs1, int32_t rs2)
 	{ return (uint32_t)rs1 >> (rs2 & 31); }
 static inline int64_t _rvk_emu_rv64_sll(int64_t rs1, int64_t rs2)
 	{ return rs1 << (rs2 & 63); }
 static inline int64_t _rvk_emu_rv64_srl(int64_t rs1, int64_t rs2)
 	{ return (uint64_t)rs1 >> (rs2 & 63); }
 
-//	rotate (a part of the extension). no separate intrinsic for rori 
+//	rotate (a part of the extension). no separate intrinsic for rori
 
-static inline int32_t _rv32_rol(int32_t rs1, int32_t rs2) 
+static inline int32_t _rv32_rol(int32_t rs1, int32_t rs2)
 	{ return _rvk_emu_rv32_sll(rs1, rs2) | _rvk_emu_rv32_srl(rs1, -rs2); }
-static inline int32_t _rv32_ror(int32_t rs1, int32_t rs2) 
+static inline int32_t _rv32_ror(int32_t rs1, int32_t rs2)
 	{ return _rvk_emu_rv32_srl(rs1, rs2) | _rvk_emu_rv32_sll(rs1, -rs2); }
 
 static inline int64_t _rv64_rol(int64_t rs1, int64_t rs2)
@@ -318,7 +298,7 @@ static inline long _rv_xnor(long rs1, long rs2)
 //	pack, packh
 
 static inline int32_t _rv32_pack(int32_t rs1, int32_t rs2)
-	{ return (rs1 & 0x0000ffff)   | (rs2 << 16); }
+	{ return (rs1 & 0x0000ffff) | (rs2 << 16); }
 static inline int64_t _rv64_pack(int64_t rs1, int64_t rs2)
 	{ return (rs1 & 0xffffffffLL) | (rs2 << 32); }
 
@@ -327,7 +307,44 @@ static inline int32_t _rv32_packh(int32_t rs1, int32_t rs2)
 static inline int64_t _rv64_packh(int64_t rs1, int64_t rs2)
 	{ return (rs1 & 0xff) | ((rs2 & 0xff) << 8); }
 
-//	shuffle (zip and unzip)
+//	brev8, rev8
+
+static inline int32_t _rvk_emu_rv32_grev(int32_t rs1, int32_t rs2)
+{
+	uint32_t x = rs1;
+	int shamt = rs2 & 31;
+	if (shamt &	 1) x = ((x & 0x55555555) <<  1) | ((x & 0xAAAAAAAA) >>	 1);
+	if (shamt &	 2) x = ((x & 0x33333333) <<  2) | ((x & 0xCCCCCCCC) >>	 2);
+	if (shamt &	 4) x = ((x & 0x0F0F0F0F) <<  4) | ((x & 0xF0F0F0F0) >>	 4);
+	if (shamt &	 8) x = ((x & 0x00FF00FF) <<  8) | ((x & 0xFF00FF00) >>	 8);
+	if (shamt & 16) x = ((x & 0x0000FFFF) << 16) | ((x & 0xFFFF0000) >> 16);
+	return x;
+}
+
+static inline int64_t _rvk_emu_rv64_grev(int64_t rs1, int64_t rs2)
+{
+	uint64_t x = rs1;
+	int shamt = rs2 & 63;
+	if (shamt &	 1) x = ((x & 0x5555555555555555LL) <<	1) | ((x & 0xAAAAAAAAAAAAAAAALL) >>	 1);
+	if (shamt &	 2) x = ((x & 0x3333333333333333LL) <<	2) | ((x & 0xCCCCCCCCCCCCCCCCLL) >>	 2);
+	if (shamt &	 4) x = ((x & 0x0F0F0F0F0F0F0F0FLL) <<	4) | ((x & 0xF0F0F0F0F0F0F0F0LL) >>	 4);
+	if (shamt &	 8) x = ((x & 0x00FF00FF00FF00FFLL) <<	8) | ((x & 0xFF00FF00FF00FF00LL) >>	 8);
+	if (shamt & 16) x = ((x & 0x0000FFFF0000FFFFLL) << 16) | ((x & 0xFFFF0000FFFF0000LL) >> 16);
+	if (shamt & 32) x = ((x & 0x00000000FFFFFFFFLL) << 32) | ((x & 0xFFFFFFFF00000000LL) >> 32);
+	return x;
+}
+
+static inline int32_t _rv32_brev8(int32_t rs1)
+	{ return _rvk_emu_rv32_grev(rs1, 7); }
+static inline int32_t _rv32_rev8(int32_t rs1)
+	{ return _rvk_emu_rv32_grev(rs1, 24); }
+
+static inline int64_t _rv64_brev8(int64_t rs1)
+	{ return _rvk_emu_rv64_grev(rs1, 7); }
+static inline int64_t _rv64_rev8(int64_t rs1)
+	{ return _rvk_emu_rv64_grev(rs1, 56); }
+
+//	shuffle (zip and unzip, RV32 only)
 
 static inline uint32_t _rvk_emu_shuffle32_stage(uint32_t src, uint32_t maskL, uint32_t maskR, int N)
 {
@@ -335,7 +352,6 @@ static inline uint32_t _rvk_emu_shuffle32_stage(uint32_t src, uint32_t maskL, ui
 	x |= ((src <<  N) & maskL) | ((src >>  N) & maskR);
 	return x;
 }
-
 static inline int32_t _rvk_emu_rv32_shfl(int32_t rs1, int32_t rs2)
 {
 	uint32_t x = rs1;
@@ -362,62 +378,12 @@ static inline int32_t _rvk_emu_rv32_unshfl(int32_t rs1, int32_t rs2)
 	return x;
 }
 
-#define RVINTRIN_SHFL_PSEUDO_OP32(_arg, _name) \
-	static inline int32_t _rv32_   ## _name(int32_t rs1) { return _rvk_emu_rv32_shfl  (rs1, _arg); } \
-	static inline int32_t _rv32_un ## _name(int32_t rs1) { return _rvk_emu_rv32_unshfl(rs1, _arg); }
-#endif
+static inline int32_t _rv32_zip(int32_t rs1)
+	{ return _rvk_emu_rv32_shfl(rs1, 15); }
+static inline int32_t _rv32_unzip(int32_t rs1)
+	{ return _rvk_emu_rv32_unshfl(rs1, 15); }
 
-RVINTRIN_SHFL_PSEUDO_OP32(15, zip)
-
-//	brev8, rev8
-
-static inline int32_t _rvk_emu_rv32_grev(int32_t rs1, int32_t rs2)
-{
-	uint32_t x = rs1;
-	int shamt = rs2 & 31;
-	if (shamt &  1) x = ((x & 0x55555555) <<  1) | ((x & 0xAAAAAAAA) >>  1);
-	if (shamt &  2) x = ((x & 0x33333333) <<  2) | ((x & 0xCCCCCCCC) >>  2);
-	if (shamt &  4) x = ((x & 0x0F0F0F0F) <<  4) | ((x & 0xF0F0F0F0) >>  4);
-	if (shamt &  8) x = ((x & 0x00FF00FF) <<  8) | ((x & 0xFF00FF00) >>  8);
-	if (shamt & 16) x = ((x & 0x0000FFFF) << 16) | ((x & 0xFFFF0000) >> 16);
-	return x;
-}
-
-static inline int64_t _rvk_emu_rv64_grev(int64_t rs1, int64_t rs2)
-{
-	uint64_t x = rs1;
-	int shamt = rs2 & 63;
-	if (shamt &  1) x = ((x & 0x5555555555555555LL) <<  1) | ((x & 0xAAAAAAAAAAAAAAAALL) >>  1);
-	if (shamt &  2) x = ((x & 0x3333333333333333LL) <<  2) | ((x & 0xCCCCCCCCCCCCCCCCLL) >>  2);
-	if (shamt &  4) x = ((x & 0x0F0F0F0F0F0F0F0FLL) <<  4) | ((x & 0xF0F0F0F0F0F0F0F0LL) >>  4);
-	if (shamt &  8) x = ((x & 0x00FF00FF00FF00FFLL) <<  8) | ((x & 0xFF00FF00FF00FF00LL) >>  8);
-	if (shamt & 16) x = ((x & 0x0000FFFF0000FFFFLL) << 16) | ((x & 0xFFFF0000FFFF0000LL) >> 16);
-	if (shamt & 32) x = ((x & 0x00000000FFFFFFFFLL) << 32) | ((x & 0xFFFFFFFF00000000LL) >> 32);
-	return x;
-}
-
-#ifdef RVINTRIN_RV32
-
-#define RVINTRIN_GREV_PSEUDO_OP32(_arg, _name) \
-	static inline int32_t _rv32_ ## _name(int32_t rs1) { return _rvk_emu_rv32_grev(rs1, _arg); }
-
-#define RVINTRIN_GREV_PSEUDO_OP64(_arg, _name)
-
-#else
-
-#define RVINTRIN_GREV_PSEUDO_OP32(_arg, _name) \
-	static inline int32_t _rv32_ ## _name(int32_t rs1) { return _rvk_emu_rv32_grev(rs1, _arg); }
-
-#define RVINTRIN_GREV_PSEUDO_OP64(_arg, _name) \
-	static inline int64_t _rv64_ ## _name(int64_t rs1) { return _rvk_emu_rv64_grev(rs1, _arg); }
-#endif
-
-RVINTRIN_GREV_PSEUDO_OP32( 7, brev8)
-RVINTRIN_GREV_PSEUDO_OP64( 7, brev8)
-RVINTRIN_GREV_PSEUDO_OP32(24, rev8)
-RVINTRIN_GREV_PSEUDO_OP64(56, rev8)
-
-//	===	(emulated)	Zbkc: Carry-less multiply instructions
+//	=== (emulated)	Zbkc: Carry-less multiply instructions
 
 static inline int32_t _rv32_clmul(int32_t rs1, int32_t rs2)
 {
@@ -455,7 +421,7 @@ static inline int64_t _rv64_clmulh(int64_t rs1, int64_t rs2)
 	return x;
 }
 
-//	===	(emulated)	Zbkx: Crossbar permutation instructions
+//	=== (emulated)	Zbkx: Crossbar permutation instructions
 
 static inline uint32_t _rvk_emu_xperm32(uint32_t rs1, uint32_t rs2, int sz_log2)
 {
@@ -470,11 +436,11 @@ static inline uint32_t _rvk_emu_xperm32(uint32_t rs1, uint32_t rs2, int sz_log2)
 	return r;
 }
 
-static inline int32_t _rv32_xperm4(int32_t rs1, int32_t rs2) 
-	{	return _rvk_emu_xperm32(rs1, rs2, 2);	}
+static inline int32_t _rv32_xperm4(int32_t rs1, int32_t rs2)
+	{ return _rvk_emu_xperm32(rs1, rs2, 2); }
 
 static inline int32_t _rv32_xperm8(int32_t rs1, int32_t rs2)
-	{	return _rvk_emu_xperm32(rs1, rs2, 3);	}
+	{ return _rvk_emu_xperm32(rs1, rs2, 3); }
 
 static inline uint64_t _rvk_emu_xperm64(uint64_t rs1, uint64_t rs2, int sz_log2)
 {
@@ -490,11 +456,10 @@ static inline uint64_t _rvk_emu_xperm64(uint64_t rs1, uint64_t rs2, int sz_log2)
 }
 
 static inline int64_t _rv64_xperm4(int64_t rs1, int64_t rs2)
-	{	return _rvk_emu_xperm64(rs1, rs2, 2);	}
+	{ return _rvk_emu_xperm64(rs1, rs2, 2); }
 
 static inline int64_t _rv64_xperm8(int64_t rs1, int64_t rs2)
-	{	return _rvk_emu_xperm64(rs1, rs2, 3);	}
-
+	{ return _rvk_emu_xperm64(rs1, rs2, 3); }
 
 /*
  *	_rvk_emu_*(...)
@@ -565,7 +530,7 @@ static inline uint32_t _rvk_emu_aes_inv_mc_32(uint32_t x)
 		_rv32_rol(_rvk_emu_aes_inv_mc_8((x >> 24) & 0xFF), 24);
 }
 
-//	===	(emulated)	Zknd:	NIST Suite: AES Decryption
+//	=== (emulated)	Zknd:	NIST Suite: AES Decryption
 
 static inline int32_t _rv32_aes32dsi(int32_t rs1, int32_t rs2, uint8_t bs)
 {
@@ -603,6 +568,12 @@ static inline int64_t _rv64_aes64ds(int64_t rs1, int64_t rs2)
 		(((int64_t) _rvk_emu_aes_inv_sbox[(rs2 >> 24) & 0xFF]) << 56);
 }
 
+static inline int64_t _rv64_aes64im(int64_t rs1)
+{
+	return ((int64_t) _rvk_emu_aes_inv_mc_32(rs1)) |
+		(((int64_t) _rvk_emu_aes_inv_mc_32(rs1 >> 32)) << 32);
+}
+
 static inline int64_t _rv64_aes64dsm(int64_t rs1, int64_t rs2)
 {
 	int64_t x;
@@ -610,12 +581,6 @@ static inline int64_t _rv64_aes64dsm(int64_t rs1, int64_t rs2)
 	x = _rv64_aes64ds(rs1, rs2);			//	Inverse ShiftRows, SubBytes
 	x = _rv64_aes64im(x);					//	Inverse MixColumns
 	return x;
-}
-
-static inline int64_t _rv64_aes64im(int64_t rs1)
-{
-	return ((int64_t) _rvk_emu_aes_inv_mc_32(rs1)) |
-		(((int64_t) _rvk_emu_aes_inv_mc_32(rs1 >> 32)) << 32);
 }
 
 static inline int64_t _rv64_aes64ks1i(int64_t rs1, int rnum)
@@ -655,8 +620,7 @@ static inline int64_t _rv64_aes64ks2(int64_t rs1, int64_t rs2)
 		(((int64_t) t) << 32) ^ (rs2 & 0xFFFFFFFF00000000ULL);
 }
 
-
-//	===	(emulated)	Zkne:	NIST Suite: AES Encryption
+//	=== (emulated)	Zkne:	NIST Suite: AES Encryption
 
 static inline int32_t _rv32_aes32esi(int32_t rs1, int32_t rs2, uint8_t bs)
 {
@@ -705,7 +669,6 @@ static inline int64_t _rv64_aes64esm(int64_t rs1, int64_t rs2)
 	return x;
 }
 
-
 //	=== (emulated)	Zknh:	NIST Suite: Hash Function Instructions
 
 static inline long _rv_sha256sig0(long rs1)
@@ -750,41 +713,46 @@ static inline long _rv_sha256sum1(long rs1)
 #define _rv64_sha256sum1	_rv_sha256sum1
 #endif
 
-
 static inline int32_t _rv32_sha512sig0h(int32_t rs1, int32_t rs2)
 {
-	return	_rv32_srl(rs1, 1) ^ _rvk_emu_rv32_srl(rs1, 7) ^ _rvk_emu_rv32_srl(rs1, 8) ^
-			_rv32_sll(rs2, 31) ^ _rvk_emu_rv32_sll(rs2, 24);
+	return	_rvk_emu_rv32_srl(rs1, 1) ^ _rvk_emu_rv32_srl(rs1, 7) ^
+			_rvk_emu_rv32_srl(rs1, 8) ^ _rvk_emu_rv32_sll(rs2, 31) ^
+			_rvk_emu_rv32_sll(rs2, 24);
 }
 
 static inline int32_t _rv32_sha512sig0l(int32_t rs1, int32_t rs2)
 {
-	return	_rv32_srl(rs1, 1) ^ _rvk_emu_rv32_srl(rs1, 7) ^ _rvk_emu_rv32_srl(rs1, 8) ^
-			_rv32_sll(rs2, 31) ^ _rvk_emu_rv32_sll(rs2, 25) ^ _rvk_emu_rv32_sll(rs2, 24);
+	return	_rvk_emu_rv32_srl(rs1, 1) ^ _rvk_emu_rv32_srl(rs1, 7) ^
+			_rvk_emu_rv32_srl(rs1, 8) ^ _rvk_emu_rv32_sll(rs2, 31) ^
+			_rvk_emu_rv32_sll(rs2, 25) ^ _rvk_emu_rv32_sll(rs2, 24);
 }
 
 static inline int32_t _rv32_sha512sig1h(int32_t rs1, int32_t rs2)
 {
-	return	_rv32_sll(rs1, 3) ^ _rvk_emu_rv32_srl(rs1, 6) ^ _rvk_emu_rv32_srl(rs1, 19) ^
-			_rv32_srl(rs2, 29) ^ _rvk_emu_rv32_sll(rs2, 13);
+	return	_rvk_emu_rv32_sll(rs1, 3) ^ _rvk_emu_rv32_srl(rs1, 6) ^
+			_rvk_emu_rv32_srl(rs1, 19) ^ _rvk_emu_rv32_srl(rs2, 29) ^
+			_rvk_emu_rv32_sll(rs2, 13);
 }
 
 static inline int32_t _rv32_sha512sig1l(int32_t rs1, int32_t rs2)
 {
-	return	_rv32_sll(rs1, 3) ^ _rvk_emu_rv32_srl(rs1, 6) ^ _rvk_emu_rv32_srl(rs1, 19) ^
-			_rv32_srl(rs2, 29) ^ _rvk_emu_rv32_sll(rs2, 26) ^ _rvk_emu_rv32_sll(rs2, 13);
+	return	_rvk_emu_rv32_sll(rs1, 3) ^ _rvk_emu_rv32_srl(rs1, 6) ^
+			_rvk_emu_rv32_srl(rs1, 19) ^ _rvk_emu_rv32_srl(rs2, 29) ^
+			_rvk_emu_rv32_sll(rs2, 26) ^ _rvk_emu_rv32_sll(rs2, 13);
 }
 
 static inline int32_t _rv32_sha512sum0r(int32_t rs1, int32_t rs2)
 {
-	return	_rv32_sll(rs1, 25) ^ _rvk_emu_rv32_sll(rs1, 30) ^ _rvk_emu_rv32_srl(rs1, 28) ^
-			_rv32_srl(rs2, 7) ^ _rvk_emu_rv32_srl(rs2, 2) ^ _rvk_emu_rv32_sll(rs2, 4);
+	return	_rvk_emu_rv32_sll(rs1, 25) ^ _rvk_emu_rv32_sll(rs1, 30) ^
+			_rvk_emu_rv32_srl(rs1, 28) ^ _rvk_emu_rv32_srl(rs2, 7) ^
+			_rvk_emu_rv32_srl(rs2, 2) ^ _rvk_emu_rv32_sll(rs2, 4);
 }
 
 static inline int32_t _rv32_sha512sum1r(int32_t rs1, int32_t rs2)
 {
-	return	_rv32_sll(rs1, 23) ^ _rvk_emu_rv32_srl(rs1, 14) ^ _rvk_emu_rv32_srl(rs1, 18) ^
-			_rv32_srl(rs2, 9) ^ _rvk_emu_rv32_sll(rs2, 18) ^ _rvk_emu_rv32_sll(rs2, 14);
+	return	_rvk_emu_rv32_sll(rs1, 23) ^ _rvk_emu_rv32_srl(rs1, 14) ^
+			_rvk_emu_rv32_srl(rs1, 18) ^ _rvk_emu_rv32_srl(rs2, 9) ^
+			_rvk_emu_rv32_sll(rs2, 18) ^ _rvk_emu_rv32_sll(rs2, 14);
 }
 
 static inline int64_t _rv64_sha512sig0(int64_t rs1)
@@ -806,7 +774,6 @@ static inline int64_t _rv64_sha512sum1(int64_t rs1)
 {
 	return _rv64_ror(rs1, 14) ^ _rv64_ror(rs1, 18) ^ _rv64_ror(rs1, 41);
 }
-
 
 //	=== (emulated)	Zksed:	ShangMi Suite: SM4 Block Cipher Instructions
 
@@ -858,6 +825,6 @@ static inline long _rv_sm3p1(long rs1)
 	return (long) x;
 }
 
-#endif	// RVINTRIN_EMULATE
+#endif	//	RVINTRIN_EMULATE
 
-#endif	// _RVKINTRIN_H_
+#endif	//	_RVKINTRIN_H_
