@@ -4,7 +4,8 @@
 
 //	64-bit GHASH bit-reverse and multiplication for GCM
 
-#include "rvintrin.h"
+#include "rvkintrin.h"
+
 #ifdef RVINTRIN_RV64
 
 #include "gcm_gfmul.h"

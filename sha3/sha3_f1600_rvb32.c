@@ -2,9 +2,9 @@
 //	2020-03-02	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 //	Copyright (c) 2020, PQShield Ltd. All rights reserved.
 
-//	FIPS 202 Keccak permutation for a 32-bit target (bit-interleaved)
+//	===	FIPS 202 Keccak permutation for a 32-bit target (bit-interleaved)
 
-#include "rvintrin.h"
+#include "rvkintrin.h"
 
 #ifdef RVINTRIN_RV32
 

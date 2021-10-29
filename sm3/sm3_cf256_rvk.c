@@ -69,22 +69,22 @@ void sm3_cf256_rvk(void *s)
 
 	//	load and reverse bytes
 
-	m0 = _rv_grev(mp[0], 0x18);
-	m1 = _rv_grev(mp[1], 0x18);
-	m2 = _rv_grev(mp[2], 0x18);
-	m3 = _rv_grev(mp[3], 0x18);
-	m4 = _rv_grev(mp[4], 0x18);
-	m5 = _rv_grev(mp[5], 0x18);
-	m6 = _rv_grev(mp[6], 0x18);
-	m7 = _rv_grev(mp[7], 0x18);
-	m8 = _rv_grev(mp[8], 0x18);
-	m9 = _rv_grev(mp[9], 0x18);
-	ma = _rv_grev(mp[10], 0x18);
-	mb = _rv_grev(mp[11], 0x18);
-	mc = _rv_grev(mp[12], 0x18);
-	md = _rv_grev(mp[13], 0x18);
-	me = _rv_grev(mp[14], 0x18);
-	mf = _rv_grev(mp[15], 0x18);
+	m0 = __builtin_bswap32(mp[0]);
+	m1 = __builtin_bswap32(mp[1]);
+	m2 = __builtin_bswap32(mp[2]);
+	m3 = __builtin_bswap32(mp[3]);
+	m4 = __builtin_bswap32(mp[4]);
+	m5 = __builtin_bswap32(mp[5]);
+	m6 = __builtin_bswap32(mp[6]);
+	m7 = __builtin_bswap32(mp[7]);
+	m8 = __builtin_bswap32(mp[8]);
+	m9 = __builtin_bswap32(mp[9]);
+	ma = __builtin_bswap32(mp[10]);
+	mb = __builtin_bswap32(mp[11]);
+	mc = __builtin_bswap32(mp[12]);
+	md = __builtin_bswap32(mp[13]);
+	me = __builtin_bswap32(mp[14]);
+	mf = __builtin_bswap32(mp[15]);
 	
 	tj = 0x79CC4519;
 
