@@ -3,9 +3,8 @@
 Algorithm tests for RISC-V Crypto Extension.
 
 2021-02-14	Markku-Juhani O. Saarinen <mjos@pqshield.com>
-
-**Version 1.0.0beta** 
 2021-09-08	Updated to post-arch review 1.0rc2 (apart from xperm names).
+2021-10-29	Post-public review version. removed `rvintrin.h` dependency.
 
 *Information and recommendations here are unofficial and under discussion in
 the [CETG](https://wiki.riscv.org/display/TECH/Cryptographic+Extensions+TG).*
