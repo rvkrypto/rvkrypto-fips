@@ -2,7 +2,7 @@
 //	2020-11-10	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 //	Copyright (c) 2020, PQShield Ltd. All rights reserved.
 
-//	===	endianess conversions and unaligned load/store
+//	=== endianess conversions and unaligned load/store
 
 #ifndef _RV_ENDIAN_H_
 #define _RV_ENDIAN_H_

@@ -17,7 +17,7 @@ extern "C" {
 #include <stdint.h>
 #include <stddef.h>
 
-//	===	TESTING === used in tests
+//	=== TESTING === used in tests
 
 //	read a hex string of "maxbytes", return byte length
 size_t rvkat_gethex(uint8_t *buf, size_t maxbytes, const char *str);
@@ -34,7 +34,7 @@ int rvkat_chku32(const char *lab, uint32_t want, uint32_t have);
 //	64-bit return value check (print hex)
 int rvkat_chku64(const char *lab, uint64_t want, uint64_t have);
 
-//	===	DEBUG ==  available for information / debug purposes only
+//	=== DEBUG ==  available for information / debug purposes only
 
 //	print information
 void rvkat_info(const char *info);

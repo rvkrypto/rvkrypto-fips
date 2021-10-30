@@ -2,158 +2,83 @@
 //	2021-10-30	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 //	Copyright (c) 2021, PQShield Ltd. All rights reserved.
 
-//	=== Unit tests for Block Cipher Present (CHES 2007 / ISO/IEC 29192-2:2019).
+//	=== Unit tests for PRESENT (CHES 2007 / ISO/IEC 29192-2:2019)
 
-#include <stdio.h>
 #include <string.h>
-
 #include "rvkintrin.h"
 #include "test_rvkat.h"
-#include "sm4/sm4_api.h"
 #include "rv_endian.h"
+#include "present/present_api.h"
 
+//	Test PRESENT-80
 
-const uint8_t present_sbox[16] = {
-	0xC, 0x5, 0x6, 0xB, 0x9, 0x0, 0xA, 0xD,
-	0x3, 0xE, 0xF, 0x8, 0x4, 0x7, 0x1, 0x2
-};
-
-const uint8_t present_pperm[64] = {
-	0,	16,	32,	48,	1,	17,	33,	49,	2,	18,	34,	50,	3,	19,	35,	51,
-	4,	20,	36,	52,	5,	21,	37,	53,	6,	22,	38,	54,	7,	23,	39,	55,
-	8,	24,	40,	56,	9,	25,	41,	57,	10,	26,	42,	58,	11,	27,	43,	59,
-	12,	28,	44,	60,	13,	29,	45,	61,	14,	30,	46,	62,	15,	31,	47,	63
-};
-
-
-//	key expansion
-
-void key80(uint64_t rk[32], const uint8_t key[10])
+int test_present80()
 {
-	int i;
-	uint64_t t, k0, k1;
+	//	test triplets (key, pt, ct)
+	const char *present80_tv[][3] = {
 
-	//	k0 has key bits 79..16, k1 has bits 15..0 in low bits
-	k0 = get64u_be(key);
-	k1 = get16u_be(key + 8);
-	rk[0] = k0;
-	
-	for (i = 1; i < 32; i++) {
+		//	from the Ches 2007 paper
+		{	"00000000000000000000", "0000000000000000", "5579C1387B228445"	},
+		{	"FFFFFFFFFFFFFFFFFFFF", "0000000000000000", "E72C46C0F5945049"	},
+		{	"00000000000000000000", "FFFFFFFFFFFFFFFF", "A112FFC72F68417B"	},
+		{	"FFFFFFFFFFFFFFFFFFFF", "FFFFFFFFFFFFFFFF", "3333DCD3213210D2"	},
 
-		//	1.	key register is rotated by 61 bit positions to the left
-		t  = (k0 << 61) | ( k1 << (61-16) ) | ( k0 >> (80 - 61) );
-		k1 = (k0 >> (64 - 61));
+		//	Additional test vector
+		{	"0F1E2D3C4B5A69788796", "40CCA0AD9FA9043C", "0123456789ABCDEF"	},
+	};
 
-		//	2.	left-most four bits are passed through the PRESENT S-box
-		k0 = (t & ~(0xFllu << 60)) | 
-				(((uint64_t) present_sbox[(t >> 60) & 0xF]) << 60);
-
-		//	3.	round_counter value i is exclusive-ORed with bits k19..k15 
-		k0 ^= i >> 1;
-		k1 ^= i << 15;
-		k1 &= 0xFFFF;
-		
-		rk[i] = k0;
-	}
-}
-
-
-//	Reference sBoxlayer
-
-uint64_t s_layer(uint64_t x)
-{
-	int i;
-	uint64_t y;
-
-	y = 0;
-	for (i = 0; i < 64; i += 4) {	
-		y |= ((uint64_t) present_sbox[(x >> i) & 0xF]) << i;
-	}
-	
-	return y;
-}
-
-//	Reference pLayer
-
-uint64_t p_layer(uint64_t x)
-{
-
-	int i;
-	uint64_t y;
-
-	y = 0;
-	for (i = 0; i < 64; i++) {	
-		y |= ((x >> i) & 1LLU) << present_pperm[i];
-	}
-	
-	return y;
-}
-
-//	handles pt/ct and key schedule as 64-bit words
-
-uint64_t present_u64rk_enc(uint64_t x, const uint64_t rk[32])
-{
+	int fail = 0;
 	int i;
 
-	for (i = 0; i < 31; i++) {
-		x ^= rk[i];
-		x = s_layer(x);
-		x = p_layer(x);
+	rvkat_info("=== PRESENT ===");
+
+	uint8_t pt[8], ct[8], key[10];
+
+	for (i = 0; i < 5; i++) {
+
+		//	PRESENT-80 key
+		rvkat_gethex(key, sizeof(key), present80_tv[i][0]);
+
+		//	Test encrypt
+		rvkat_gethex(pt, sizeof(pt), present80_tv[i][1]);
+		memset(ct, 0x55, sizeof(ct));
+
+		present80_enc(ct, pt, key);
+		fail += rvkat_chkhex("PRESENT-80 Encrypt",
+								ct, 8, present80_tv[i][2]);
+
+		//	Test decrypt
+		rvkat_gethex(ct, sizeof(pt), present80_tv[i][2]);
+		memset(pt, 0x55, sizeof(pt));
+		present80_dec(pt, ct, key);
+
+		fail += rvkat_chkhex("PRESENT-80 Decrypt",
+								pt, 8, present80_tv[i][1]);
 	}
-	x ^= rk[i];
-	
-	return x;
+
+	return fail;
 }
 
-//	byte test interface
+//	Test PRESENT-128
 
-void present80_enc(uint8_t ct[8], const uint8_t pt[8], const uint8_t key[10])
+int test_present128()
 {
-	uint64_t x;
-	uint64_t rk[32];
+	//	test triplets (key, pt, ct)
+	const char *present128_tv[][3] = {
 
-	key80(rk, key);
+		//	The first test vector is in A. Y. Poschmann's PhD Thesis (2009)
+		{	"00000000000000000000000000000000",
+			"0000000000000000", "96DB702A2E6900AF"	},
+		{	"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+			"0000000000000000", "13238C710272A5D8"	},
+		{	"00000000000000000000000000000000",
+			"FFFFFFFFFFFFFFFF", "3C6019E5E5EDD563"	},
+		{	"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+			"FFFFFFFFFFFFFFFF", "628D9FBD4218E5B4"	},
 
-	x = get64u_be(pt);
-	x = present_u64rk_enc(x, rk);
-	put64u_be(ct, x);	
-}
-
-int kek()
-{
-	int i;
-	uint8_t key[10] = { 0 };
-	uint64_t rk[32] = { -1 };
-	uint64_t x = -1;
-	
-//	memset(key, 0xFF, 10);
-	
-	key80(rk, key);
-	
-	for (i = 0; i < 31; i++) {
-	
-		x ^= rk[i];
-		x = s_layer(x);
-		x = p_layer(x);
-	
-		printf("r= %2d  x= %016lX  k= %016lX\n", i, x, rk[i]);
-	}
-	x ^= rk[i];
-	
-	printf("r= %2d  x= %016lX  k= %016lX\n", i, x, rk[1]);
-	
-	return 0;
-}
-
-
-int test_present()
-{
-	//	(key, pt, ct) from the Ches 2007 paper
-	const char *present80_tv[4][3] = {
-		{	"00000000000000000000",	"0000000000000000",	"5579C1387B228445"	},
-		{	"FFFFFFFFFFFFFFFFFFFF",	"0000000000000000",	"E72C46C0F5945049"	},
-		{	"00000000000000000000",	"FFFFFFFFFFFFFFFF",	"A112FFC72F68417B"	},
-		{	"FFFFFFFFFFFFFFFFFFFF",	"FFFFFFFFFFFFFFFF",	"3333DCD3213210D2"	}
+		//	Additional test vector
+		{	"0F1E2D3C4B5A69788796A5B4C3D2E1F0",
+			"DA0E854A1E8D03E0", "0123456789ABCDEF"	},
 	};
 
 	int fail = 0;
@@ -161,16 +86,39 @@ int test_present()
 
 	uint8_t pt[8], ct[8], key[16];
 
-	for (i = 0; i < 4; i++) {
-		rvkat_gethex(key, sizeof(key), present80_tv[i][0]);
-		rvkat_gethex(pt, sizeof(pt), present80_tv[i][1]);
+	for (i = 0; i < 5; i++) {
+
+		//	PRESENT-128 key
+		rvkat_gethex(key, sizeof(key), present128_tv[i][0]);
+
+		//	Test encrypt
+		rvkat_gethex(pt, sizeof(pt), present128_tv[i][1]);
 		memset(ct, 0x55, sizeof(ct));
 
-		present80_enc(ct, pt, key);
-		fail += rvkat_chkhex("PRESENT-80 Encrypt",
-								ct, 8, present80_tv[i][2]);
+		present128_enc(ct, pt, key);
+		fail += rvkat_chkhex("PRESENT-128 Encrypt",
+								ct, 8, present128_tv[i][2]);
+
+		//	Test decrypt
+		rvkat_gethex(ct, sizeof(pt), present128_tv[i][2]);
+		memset(pt, 0x55, sizeof(pt));
+		present128_dec(pt, ct, key);
+
+		fail += rvkat_chkhex("PRESENT-128 Decrypt",
+								pt, 8, present128_tv[i][1]);
 	}
-	
+
 	return fail;
 }
 
+//	main driver
+
+int test_present()
+{
+	int fail = 0;
+
+	fail += test_present80();
+	fail += test_present128();
+
+	return fail;
+}

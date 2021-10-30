@@ -14,15 +14,15 @@
 //	fancy standard library
 #include <stdio.h>
 #define sio_putc(c) fputc(c, stdout)
-#define sio_puts(s)	fputs(s, stdout)
-#define	sio_put_dec(x) fprintf(stdout, "%d", (int) (x))
+#define sio_puts(s) fputs(s, stdout)
+#define sio_put_dec(x) fprintf(stdout, "%d", (int) (x))
 #else
 //	my bare metal code
 #include "sio_generic.h"
 #endif
 #ifdef RVK_ALGTEST_VERBOSE_SIO
 
-//	===	verbose versions
+//	=== verbose versions
 
 //	(internal) fail or pass
 
@@ -31,7 +31,7 @@ static void rvkat_failpass(int fail)
 	if (fail) {
 		sio_puts("[FAIL] ");
 	} else {
-		sio_puts("[PASS] ");	
+		sio_puts("[PASS] ");
 	}
 }
 
@@ -43,7 +43,7 @@ static inline void rvkat_out_hexdigit(unsigned x)
 	if (x < 10) {
 		sio_putc('0' + x);
 	} else {
-		sio_putc('A' - 10 + x);	
+		sio_putc('A' - 10 + x);
 	}
 }
 //	print a space ' ' and hexademical unsigned long without a label
@@ -51,7 +51,7 @@ static inline void rvkat_out_hexdigit(unsigned x)
 void rvkat_hexu32(uint32_t x)
 {
 	int i;
-	
+
 	sio_putc(' ');
 	for (i = 28; i >= 0; i -= 4) {
 		rvkat_out_hexdigit((unsigned) (x >> i));
@@ -61,7 +61,7 @@ void rvkat_hexu32(uint32_t x)
 void rvkat_hexu64(uint64_t x)
 {
 	int i;
-	
+
 	sio_putc(' ');
 	for (i = 60; i >= 0; i -= 4) {
 		rvkat_out_hexdigit((unsigned) (x >> i));
@@ -75,7 +75,7 @@ static void rvkat_hexdata(const void *data, size_t len)
 
 	size_t i;
 	uint8_t x;
-	
+
 	for (i = 0; i < len; i++) {
 		x = ((const uint8_t *) data)[i];
 		rvkat_out_hexdigit(x >> 4);
@@ -93,9 +93,9 @@ int rvkat_chkret(const char *lab, int want, int have)
 	sio_puts(lab);
 	sio_puts(" | WANT= ");
 	sio_put_dec(want);
-	sio_puts("  HAVE= ");
+	sio_puts("	HAVE= ");
 	sio_put_dec(have);
-	sio_putc('\n');	
+	sio_putc('\n');
 	return fail;
 }
 
@@ -109,9 +109,9 @@ int rvkat_chku32(const char *lab, uint32_t want, uint32_t have)
 	sio_puts(lab);
 	sio_puts(" | WANT=");
 	rvkat_hexu32(want);
-	sio_puts("  HAVE=");
+	sio_puts("	HAVE=");
 	rvkat_hexu32(have);
-	sio_putc('\n');	
+	sio_putc('\n');
 
 	return fail;
 }
@@ -124,9 +124,9 @@ int rvkat_chku64(const char *lab, uint64_t want, uint64_t have)
 	sio_puts(lab);
 	sio_puts(" | WANT=");
 	rvkat_hexu64(want);
-	sio_puts("  HAVE=");
+	sio_puts("	HAVE=");
 	rvkat_hexu64(have);
-	sio_putc('\n');	
+	sio_putc('\n');
 
 	return fail;
 }
