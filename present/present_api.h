@@ -35,4 +35,4 @@ void present128_dec(uint8_t pt[8], const uint8_t ct[8], const uint8_t key[16]);
 }
 #endif
 
-#endif	//	_PRESENT_API_H_
+#endif //	_PRESENT_API_H_

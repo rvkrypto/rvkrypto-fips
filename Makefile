@@ -12,7 +12,7 @@ OBJS	=	$(CSRC:.c=.o) $(SSRC:.S=.o)
 XCC		?=	$(XCHAIN)gcc
 XOBJD	?=	$(XCHAIN)objdump
 
-CFLAGS	+=	-Wall -Wextra -O2 -g -I. 
+CFLAGS	+=	-Wall -Wextra -O2 -g -I. -Itest
 
 #	intrinsics emulation
 #CFLAGS	+=	-DRVINTRIN_EMULATE=1

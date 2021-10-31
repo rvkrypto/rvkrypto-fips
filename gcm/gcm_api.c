@@ -9,8 +9,7 @@
 #include "rvkintrin.h"
 #include "test_rvkat.h"
 #include "rv_endian.h"
-
-#include "../aes/aes_api.h"
+#include "aes/aes_api.h"
 #include "gcm_api.h"
 #include "gcm_gfmul.h"
 

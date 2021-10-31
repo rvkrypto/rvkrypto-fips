@@ -5,7 +5,6 @@
 //	=== Unit tests for PRESENT (CHES 2007 / ISO/IEC 29192-2:2019)
 
 #include <string.h>
-#include "rvkintrin.h"
 #include "test_rvkat.h"
 #include "rv_endian.h"
 #include "present/present_api.h"
@@ -111,7 +110,7 @@ int test_present128()
 	return fail;
 }
 
-//	main driver
+//	present driver
 
 int test_present()
 {

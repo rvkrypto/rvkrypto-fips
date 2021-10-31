@@ -15,7 +15,7 @@ This repo currently provides
 [RISC-V Cryptographic Extensions](https://github.com/riscv/riscv-crypto)
 implementations of AES-128/192/256, GCM, SHA2-256/384, SHA3, SM3, SM4 
 algorithms for RV32-K and RV64-K scalar targets. Together with primary 
-test vectors in `test_*.c`, the implementations allow bare metal 
+test vectors in `test/test_*.c`, the implementations allow bare metal 
 architectural self-testing of the scalar crypto extension, which is the
 first part of the Krypto extension reaching "stable" status.
 
@@ -61,54 +61,8 @@ to build the test binary only.
 
 ##	Proposed Krypto Intrinsics
 
-The proposed Krypto intrinsics are in [rvkintrin.h](rvkintrin.h).
-This proposal complements and is compatible with the Bitmanip intrinsics of
-[rvintrin.h](https://github.com/riscv/riscv-bitmanip/blob/master/cproofs/rvintrin.h).
-As with that Bitmanip file, the header provides both inline assembler hooks 
-and "intrinsics emulation" in a consistent way.
-
-The prefixes and data types are:
-
-* `_rv_*(...)`: RV32/64 intrinsics that operate on the `long` data type.
-* `_rv32_*(...)`:  RV32/64 intrinsics that operate on the `int32_t` data type.
-* `_rv64_*(...)`:V64-only intrinsics that operate on the `int64_t` data type.
-
-Note that this currently only supports scalar krypto. Vector krypto
-(which has more dependencies with the vector extension rather than bitmanip)
-will use [vector intrisics](https://github.com/riscv/rvv-intrinsic-doc).
-
-When compiled with `RVINTRIN_EMULATE`, the intrinsics will work on 
-RV32I/RV64I (or arm/aarch64, i386/amd64) as if it had Bitmanip and Krypto
-support -- but much more slowly, and without the constant-time security 
-feature of Krypto. For AES and SM4 support, you'll need to link with 
-[rvk_emu.c](rvk_emu.c) that provides 8-bit S-Boxes. 
-
-Notes about compilers:
-
-*	Compilers must never emit emulation code for machine intrinsics;
-	compilation must fail unless appropriate architecture is specified.
-*	Actual CMVP testing is of course with native instructions only.
-	CAVP tests must fail if emulation is used as they contain table
-	lookups and conditionals (forbidden in constant-time code).
-*	Instructions should be mapped into architectural bultins in "real"
-	compiler implementations (instead of inline assembler as is done here).
-	The inline assembler solution used here should be seen as temporary.
-*	The built-in architecture intrinsics are currently expected to be with 
-	`__builtin_riscv_*` prefix, while these (shorter) `_rv_*`, `_rv32_*`, 
-	`_rv64_*` will remain available via `rvintrin.h` and `rvkintrin.h`
-	header mappings. If you don't want short-form intrinsics cluttering 
-	your namespace, just don't include these headers.
-*	Applications using the `rvintrin.h` and `rvkintrin.h` headers can remain
-	unchanged. These intrinsics serve a similar programming convenience
-	purpose as the Intel "short" intrinsics
-	https://software.intel.com/sites/landingpage/IntrinsicsGuide/# do for that
-	ISA. Otherwise programmers would no doubt shorten the `__builtin_riscv_*`
-	prefix in various ways themselves. As an example, the Intel intrinsic 
-	is `_mm_aesenc_si128()` 
-	while the GCC intrinsic is `__builtin_ia32_aesenc128()`.	
-*	The headers themselves will switch from inline assembler to
-	architectural builtins once those are available. We of course hope that
-	the bult-in naming will match between LLVM and GCC.
+Please see [rvkintrin.md](rvkintrin.md) for information about the proposed
+short-form intrinsics in [rvkintrin.h](rvkintrin.h).
 
 
 ##	Intrinsics emulation on other ISA
