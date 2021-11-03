@@ -10,7 +10,7 @@
 
 #ifdef RVINTRIN_RV64
 
-//	S-Box Constants (note that nybble 0 is t the bottom)
+//	S-Box (sLayer) 
 #define SBOX64_ENC 0x21748FE3DA09B65CLLU
 #define SBOX64_DEC 0xA970364BD21C8FE5LLU
 
