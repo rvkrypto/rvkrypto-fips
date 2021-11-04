@@ -4,17 +4,15 @@ Algorithm tests for RISC-V Crypto Extension.
 
 2021-02-14	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 
-2021-09-08	Updated to post-arch review 1.0rc2 (apart from xperm names).
-
-2021-10-29	Post-public review version. removed `rvintrin.h` dependency.
+2021-11-04	Updated to post-arch review 1.0rc5.
 
 *Information and recommendations here are unofficial and under discussion in
 the [CETG](https://wiki.riscv.org/display/TECH/Cryptographic+Extensions+TG).*
 
 This repo currently provides 
 [RISC-V Cryptographic Extensions](https://github.com/riscv/riscv-crypto)
-implementations of AES-128/192/256, GCM, SHA2-256/384, SHA3, SM3, SM4 
-algorithms for RV32-K and RV64-K scalar targets. Together with primary 
+implementations of AES-128/192/256, GCM, SHA2-256/384, SHA3, SM3, SM4, 
+PRESENT algorithms for RV32-K and RV64-K scalar targets. Together with primary 
 test vectors in `test/test_*.c`, the implementations allow bare metal 
 architectural self-testing of the scalar crypto extension, which is the
 first part of the Krypto extension reaching "stable" status.
@@ -23,12 +21,6 @@ After intrinsics are agreed and initial testing succeeds, we can start
 pushing RV Krypto optimizations into 
 [FIPS 140-3 OpenSSL](https://www.openssl.org/docs/OpenSSL300Design.html)
 and other open source middleware.
-
-Please consider the 
-[RISC-V Crypto repo](https://github.com/riscv/riscv-crypto) as the official
-reference. There are very similar implementations in that repo, as these
-particular instruction extensions were designed to be used in algorithms
-in very specific ways.
 
 **NOTE.** 
 
@@ -45,7 +37,7 @@ without any warranty whatsoever. However, this repo is a freely
 
 ##	(Cross) Compiling 
 
-If you have a RISC-V compiler and spike emulator with 0.9.4 Scalar Crypto
+If you have a RISC-V compiler and spike emulator with 1.0 Scalar Crypto
 Extension, try:
 ```
 make -f rv32.mk
@@ -134,13 +126,12 @@ NIAP for National Security Systems, BSI in Germany, ANSSI in France, etc.
 
 ##	Side-Channels and Entropy Sources for Cryptographic Use
 
-*I'm going to provide random number material here, so this is just a caveat.*
-
 While basic algorithm testing can be largely automated, vendors
 are very likely to need cryptographic security specialists when:
 * Designing entropy sources for the Zkr, which is CSR part of Scalar Crypto or 
 * Designing implementations for side-channel (non-invasive) security.
 
+(This repo does not contain material related to entropy sources yet.)
 
 Entropy sources are easy to get wrong as the product will 
 "work" regardless of the quality of cryptographic keys. 
