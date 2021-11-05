@@ -15,7 +15,7 @@ XOBJD	?=	$(XCHAIN)objdump
 CFLAGS	+=	-Wall -Wextra -O2 -g -I. -Itest
 
 #	intrinsics emulation
-#CFLAGS	+=	-DRVINTRIN_EMULATE=1
+#CFLAGS	+=	-DRVINTRIN_EMULATE=1 -DRVINTRIN_RV32 -DRVINTRIN_RV64
 
 #	note that the final program return value is the output without this
 CFLAGS	+=	-DRVK_ALGTEST_VERBOSE_SIO=1

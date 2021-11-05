@@ -255,10 +255,12 @@ static inline long _rv_sm3p1(long rs1)
 #  error "<rvkintrin.h> emulation mode only supports systems with sizeof(long long) = 8."
 #endif
 
+#if !defined(RVINTRIN_RV32) && !defined(RVINTRIN_RV64)
 #if UINT_MAX == ULONG_MAX
 #  define RVINTRIN_RV32
 #else
 #  define RVINTRIN_RV64
+#endif
 #endif
 
 //	=== (emulated)	Zbkb:	Bitmanipulation instructions for Cryptography
@@ -713,66 +715,69 @@ static inline long _rv_sha256sum1(long rs1)
 #define _rv64_sha256sum1	_rv_sha256sum1
 #endif
 
-static inline int32_t _rv32_sha512sig0h(int32_t rs1, int32_t rs2)
+static inline int32_t  _rv32_sha512sig0h(int32_t rs1, int32_t rs2)
 {
 	return	_rvk_emu_rv32_srl(rs1, 1) ^ _rvk_emu_rv32_srl(rs1, 7) ^
 			_rvk_emu_rv32_srl(rs1, 8) ^ _rvk_emu_rv32_sll(rs2, 31) ^
 			_rvk_emu_rv32_sll(rs2, 24);
 }
 
-static inline int32_t _rv32_sha512sig0l(int32_t rs1, int32_t rs2)
+static inline int32_t  _rv32_sha512sig0l(int32_t rs1, int32_t rs2)
 {
 	return	_rvk_emu_rv32_srl(rs1, 1) ^ _rvk_emu_rv32_srl(rs1, 7) ^
 			_rvk_emu_rv32_srl(rs1, 8) ^ _rvk_emu_rv32_sll(rs2, 31) ^
 			_rvk_emu_rv32_sll(rs2, 25) ^ _rvk_emu_rv32_sll(rs2, 24);
 }
 
-static inline int32_t _rv32_sha512sig1h(int32_t rs1, int32_t rs2)
+static inline int32_t  _rv32_sha512sig1h(int32_t rs1, int32_t rs2)
 {
 	return	_rvk_emu_rv32_sll(rs1, 3) ^ _rvk_emu_rv32_srl(rs1, 6) ^
 			_rvk_emu_rv32_srl(rs1, 19) ^ _rvk_emu_rv32_srl(rs2, 29) ^
 			_rvk_emu_rv32_sll(rs2, 13);
 }
 
-static inline int32_t _rv32_sha512sig1l(int32_t rs1, int32_t rs2)
+static inline int32_t  _rv32_sha512sig1l(int32_t rs1, int32_t rs2)
 {
 	return	_rvk_emu_rv32_sll(rs1, 3) ^ _rvk_emu_rv32_srl(rs1, 6) ^
-			_rvk_emu_rv32_srl(rs1, 19) ^ _rvk_emu_rv32_srl(rs2, 29) ^
+			_rvk_emu_rv32_srl(rs1,19) ^ _rvk_emu_rv32_srl(rs2, 29) ^
 			_rvk_emu_rv32_sll(rs2, 26) ^ _rvk_emu_rv32_sll(rs2, 13);
 }
 
-static inline int32_t _rv32_sha512sum0r(int32_t rs1, int32_t rs2)
+static inline int32_t  _rv32_sha512sum0r(int32_t rs1, int32_t rs2)
 {
 	return	_rvk_emu_rv32_sll(rs1, 25) ^ _rvk_emu_rv32_sll(rs1, 30) ^
 			_rvk_emu_rv32_srl(rs1, 28) ^ _rvk_emu_rv32_srl(rs2, 7) ^
 			_rvk_emu_rv32_srl(rs2, 2) ^ _rvk_emu_rv32_sll(rs2, 4);
 }
 
-static inline int32_t _rv32_sha512sum1r(int32_t rs1, int32_t rs2)
+static inline int32_t  _rv32_sha512sum1r(int32_t rs1, int32_t rs2)
 {
-	return	_rvk_emu_rv32_sll(rs1, 23) ^ _rvk_emu_rv32_srl(rs1, 14) ^
+	return	_rvk_emu_rv32_sll(rs1, 23) ^ _rvk_emu_rv32_srl(rs1,14) ^
 			_rvk_emu_rv32_srl(rs1, 18) ^ _rvk_emu_rv32_srl(rs2, 9) ^
 			_rvk_emu_rv32_sll(rs2, 18) ^ _rvk_emu_rv32_sll(rs2, 14);
 }
 
-static inline int64_t _rv64_sha512sig0(int64_t rs1)
+static inline int64_t  _rv64_sha512sig0(int64_t rs1)
 {
-	return _rv64_ror(rs1, 1) ^ _rv64_ror(rs1, 8) ^ _rvk_emu_rv64_srl(rs1, 7);
+	return	_rv64_ror(rs1, 1) ^ _rv64_ror(rs1, 8) ^
+			_rvk_emu_rv64_srl(rs1,7);
 }
 
-static inline int64_t _rv64_sha512sig1(int64_t rs1)
+static inline int64_t  _rv64_sha512sig1(int64_t rs1)
 {
-	return _rv64_ror(rs1, 19) ^ _rv64_ror(rs1, 61) ^ _rvk_emu_rv64_srl(rs1, 6);
+	return	_rv64_ror(rs1, 19) ^ _rv64_ror(rs1, 61) ^
+			_rvk_emu_rv64_srl(rs1, 6);
 }
 
-static inline int64_t _rv64_sha512sum0(int64_t rs1)
+static inline int64_t  _rv64_sha512sum0(int64_t rs1)
 {
-	return _rv64_ror(rs1, 28) ^ _rv64_ror(rs1, 34) ^ _rv64_ror(rs1, 39);
+	return	_rv64_ror(rs1, 28) ^ _rv64_ror(rs1, 34) ^
+			_rv64_ror(rs1, 39);
 }
 
-static inline int64_t _rv64_sha512sum1(int64_t rs1)
+static inline int64_t  _rv64_sha512sum1(int64_t rs1)
 {
-	return _rv64_ror(rs1, 14) ^ _rv64_ror(rs1, 18) ^ _rv64_ror(rs1, 41);
+	return	_rv64_ror(rs1, 14) ^ _rv64_ror(rs1, 18) ^ _rv64_ror(rs1, 41);
 }
 
 //	=== (emulated)	Zksed:	ShangMi Suite: SM4 Block Cipher Instructions
@@ -809,19 +814,19 @@ static inline long _rv_sm4ks(long rs1, long rs2, uint8_t bs)
 
 //	=== (emulated)	Zksh:	ShangMi Suite: SM3 Hash Function Instructions
 
-static inline long _rv_sm3p0(long rs1)
+static inline int32_t  _rv_sm3p0(long rs1)
 {
 	int32_t x;
 
-	x = rs1 ^ _rv32_ror(rs1, 15) ^ _rv32_ror(rs1, 23);
+	x = rs1 ^ _rv32_rol(rs1, 9) ^ _rv32_rol(rs1, 17);
 	return (long) x;
 }
 
-static inline long _rv_sm3p1(long rs1)
+static inline int32_t  _rv_sm3p1(long rs1)
 {
 	int32_t x;
 
-	x = rs1 ^ _rv32_ror(rs1, 9) ^ _rv32_ror(rs1, 17);
+	x = rs1 ^ _rv32_rol(rs1, 15) ^ _rv32_rol(rs1, 23);
 	return (long) x;
 }
 
