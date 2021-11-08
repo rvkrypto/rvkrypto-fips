@@ -6,7 +6,7 @@
 
 #include "rvkintrin.h"
 
-#ifdef RVINTRIN_RV32
+#ifdef RVKINTRIN_RV32
 
 #include "gcm_gfmul.h"
 
@@ -251,5 +251,5 @@ void ghash_mul_rv32_kar(gf128_t * z, const gf128_t * x, const gf128_t * h)
 	z->w[3] = z3;
 }
 
-#endif	//	RVINTRIN_RV32
+#endif	//	RVKINTRIN_RV32
 

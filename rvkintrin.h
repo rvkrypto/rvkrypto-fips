@@ -2,6 +2,9 @@
 //	2021-11-08	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 //	Copyright (c) 2021, PQShield Ltd. All rights reserved.
 
+//	=== General mapping from short-term intrinsics to builtins,
+//		inline assembler, or an emulation layer.
+
 /*
  *	_rv_*(...)
  *	  RV32/64 intrinsics that operate on the "long" data type
@@ -14,150 +17,250 @@
  *
  */
 
-#ifndef _RVKINTRIN
-#define _RVKINTRIN
+#ifndef _RVKINTRIN_H
+#define _RVKINTRIN_H
 
-#if !defined(__riscv_xlen) && !defined(RVINTRIN_EMULATE)
-#warning "Target is not RISC-V. Enabling <rvk_emu.h> insecure emulation."
-#define RVINTRIN_EMULATE 1
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-#if defined(RVINTRIN_EMULATE)
-//	intrinsics via emulation (insecure)
-#include "rvk_emu.h"
+#if !defined(__riscv_xlen) && !defined(RVKINTRIN_EMULATE)
+#warning "Target is not RISC-V. Enabling insecure emulation."
+#define RVKINTRIN_EMULATE 1
+#endif
 
-#elif defined(RVKINTRIN_INLINE)
-//	intrinsics via inline assembler
-#include "rvk_inline.h"
+#if defined(RVKINTRIN_EMULATE)
+
+//	intrinsics via emulation (insecure -- porting / debug option)
+#  include "rvk_emu_intrin.h"
+#  define _RVK_INTRIN_IMPL(s)	_rvk_emu_##s
+
+#elif defined(RVKINTRIN_ASSEMBLER)
+
+//	intrinsics via inline assembler (builtins not available)
+#include "rvk_asm_intrin.h"
+#define _RVK_INTRIN_IMPL(s) _rvk_asm_##s
 #else
 
-//	Mappings to builtins
+//	intrinsics via compiler builtins
+#define _RVK_INTRIN_IMPL(s) __builtin_riscv_##s
 
-//	Zbkb (Zk, Zkn, Zks): Bitmanipulation instructions for Cryptography
+#endif
 
-//  Zk, Zkn, Zks, Zbkb on RV32
-int32_t __builtin_riscv_ror_32(int32_t rs1, int32_t rs2);       //  ROR or RORI
-int32_t __builtin_riscv_rol_32(int32_t rs1, int32_t rs2);       //  ROL or RORI
+//	Mappings to implementation
 
-//  Zk, Zkn, Zks, Zbkb on RV64
-int32_t __builtin_riscv_ror_32(int32_t rs1, int32_t rs2);       //  RORW or RORIW
-int32_t __builtin_riscv_rol_32(int32_t rs1, int32_t rs2);       //  ROLW or RORIW
-int64_t __builtin_riscv_ror_64(int64_t rs1, int64_t rs2);       //  ROR or RORI
-int64_t __builtin_riscv_rol_64(int64_t rs1, int64_t rs2);       //  ROL or RORI
+//	=== (mapping)	Zbkb:	Bitmanipulation instructions for Cryptography
 
-//  Zk, Zkn, Zks, Zbkb on RV32,RV64
-long __builtin_riscv_andn(long rs1, long rs2);                  //  ANDN
-long __builtin_riscv_orn(long rs1, long rs2);                   //  ORN
-long __builtin_riscv_xnor(long rs1, long rs2);                  //  XNOR
+static inline int32_t _rv32_ror(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(ror_32)(rs1, rs2); }			//	ROR[W] ROR[W]I
 
-//  Zk, Zkn, Zks, Zbkb on RV32
-int32_t __builtin_riscv_pack_32(int32_t rs1, int32_t rs2);      //  PACK
-int32_t __builtin_riscv_packh_32(int32_t rs1, int32_t rs2);     //  PACKH
+static inline int32_t _rv32_rol(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(rol_32)(rs1, rs2); }			//	ROL[W] ROR[W]I
 
-//  Zk, Zkn, Zks, Zbkb on RV64
-int64_t __builtin_riscv_pack_64(int64_t rs1, int64_t rs2);      //  PACK
-int64_t __builtin_riscv_packh_64(int64_t rs1, int64_t rs2);     //  PACKH
-int32_t __builtin_riscv_pack_32(int32_t rs1, int32_t rs2);      //  PACKW
+#ifdef RVKINTRIN_RV64
+static inline int64_t _rv64_ror(int64_t rs1, int64_t rs2)
+	{ return _RVK_INTRIN_IMPL(ror_64)(rs1, rs2); }			//	ROR or RORI
 
-//  Zk, Zkn, Zks, Zbkb on RV32
-int32_t __builtin_riscv_brev8_32(int32_t rs1);                  //  BREV8 (GREVI)
-int32_t __builtin_riscv_rev8_32(int32_t rs1);                   //  REV8 (GREVI)
+static inline int64_t _rv64_rol(int64_t rs1, int64_t rs2)
+	{ return _RVK_INTRIN_IMPL(rol_64)(rs1, rs2); }			//	ROL or RORI
+#endif
 
-//  Zk, Zkn, Zks, Zbkb on RV64
-int64_t __builtin_riscv_brev8_64(int64_t rs1);                  //  BREV8 (GREVI)
-int64_t __builtin_riscv_rev8_64(int64_t rs1);                   //  REV8 (GREVI)
+static inline long _rv_andn(long rs1, long rs2)
+	{ return _RVK_INTRIN_IMPL(andn)(rs1, rs2); }			//	ANDN
 
-//  Zk, Zkn, Zks, Zbkb on RV32
-int32_t __builtin_riscv_zip_32(int32_t rs1);                    //  ZIP (SHFLI)
-int32_t __builtin_riscv_unzip_32(int32_t rs1);                  //  UNZIP (UNSHFLI)
+static inline long _rv_orn(long rs1, long rs2)
+	{ return _RVK_INTRIN_IMPL(orn)(rs1, rs2); }				//	ORN
 
-//  Zk, Zkn, Zks, Zbkb implementation of a generic builtin on RV32 
-uint32_t __builtin_bswap32(uint32_t x);                         //  REV8 (GREVI)
+static inline long _rv_xnor(long rs1, long rs2)
+	{ return _RVK_INTRIN_IMPL(xnor)(rs1, rs2); }			//	XNOR
 
-//  Zk, Zkn, Zks, Zbkb implementation of generic builtins on RV64
-uint64_t __builtin_bswap64(uint64_t x);                         //  REV8 (GREVI)
-uint32_t __builtin_bswap32(uint32_t x);                         //  REV8 + SRAI
+static inline int32_t _rv32_pack(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(pack_32)(rs1, rs2); }			//	PACK or PACKW
 
-Zbkc (Zk, Zkn, Zks): Carry-less multiply instructions
+#ifdef RVKINTRIN_RV32
+static inline int32_t _rv32_packh(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(packh_32)(rs1, rs2); }		//	PACKH
+#endif
 
-//  Zk, Zkn, Zks, Zbkc on RV32
-int32_t __builtin_riscv_clmul_32(int32_t rs1, int32_t rs2);     //  CLMUL
-int32_t __builtin_riscv_clmulh_32(int32_t rs1, int32_t rs2);    //  CLMULH
+#ifdef RVKINTRIN_RV64
+static inline int64_t _rv64_pack(int64_t rs1, int64_t rs2)
+	{ return _RVK_INTRIN_IMPL(pack_64)(rs1, rs2); }			//	PACK
 
-//  Zk, Zkn, Zks, Zbkc on RV64
-int64_t __builtin_riscv_clmul_64(int64_t rs1, int64_t rs2);     //  CLMUL
-int64_t __builtin_riscv_clmulh_64(int64_t rs1, int64_t rs2);    //  CLMULH
+static inline int64_t _rv64_packh(int64_t rs1, int64_t rs2)
+	{ return _RVK_INTRIN_IMPL(packh_64)(rs1, rs2); }		//	PACKH
+#endif
 
-Zbkx (Zk, Zkn, Zks): Crossbar permutation instructions
+#ifdef RVKINTRIN_RV32
+static inline int32_t _rv32_brev8(int32_t rs1)
+	{ return _RVK_INTRIN_IMPL(brev8_32)(rs1); }				//	BREV8 (GREVI)
 
-//  Zk, Zkn, Zks, Zbkx on RV32
-int32_t __builtin_riscv_xperm4_32(int32_t rs1, int32_t rs2);    //  XPERM4
-int32_t __builtin_riscv_xperm8_32(int32_t rs1, int32_t rs2);    //  XPERM8
+static inline int32_t _rv32_rev8(int32_t rs1)
+	{ return _RVK_INTRIN_IMPL(rev8_32)(rs1); }				//	REV8 (GREVI)
+#endif
 
-//  Zk, Zkn, Zks, Zbkx on RV64
-int64_t __builtin_riscv_xperm4_64(int64_t rs1, int64_t rs2);    //  XPERM4
-int64_t __builtin_riscv_xperm8_64(int64_t rs1, int64_t rs2);    //  XPERM8
+#ifdef RVKINTRIN_RV64
+static inline int64_t _rv64_brev8(int64_t rs1)
+	{ return _RVK_INTRIN_IMPL(brev8_64)(rs1); }				//	BREV8 (GREVI)
 
-Zknd (Zk, Zkn): NIST Suite: AES Decryption
+static inline int64_t _rv64_rev8(int64_t rs1)
+	{ return _RVK_INTRIN_IMPL(rev8_64)(rs1); }				//	REV8 (GREVI)
+#endif
 
-//  Zk, Zkn, Zknd on RV32
-int32_t __builtin_riscv_aes32dsi(int32_t rs1, int32_t rs2, int bs);     //  AES32DSI
-int32_t __builtin_riscv_aes32dsmi(int32_t rs1, int32_t rs2, int bs);    //  AES32DSMI
+#ifdef RVKINTRIN_RV32
+static inline int32_t _rv32_zip(int32_t rs1)
+	{ return _RVK_INTRIN_IMPL(zip_32)(rs1); }				//	ZIP (SHFLI)
 
-//  Zk, Zkn, Zknd on RV64
-int64_t __builtin_riscv_aes64ds(int64_t rs1, int64_t rs2);      //  AES64DS
-int64_t __builtin_riscv_aes64dsm(int64_t rs1, int64_t rs2);     //  AES64DSM
-int64_t __builtin_riscv_aes64im(int64_t rs1);                   //  AES64IM
+static inline int32_t _rv32_unzip(int32_t rs1)
+	{ return _RVK_INTRIN_IMPL(unzip_32)(rs1); }				//	UNZIP (UNSHFLI)
+#endif
 
-Zkne (Zk, Zkn): NIST Suite: AES Encryption
+//	=== (mapping)	Zbkc:	Carry-less multiply instructions
 
-//  Zk, Zkn, Zkne on RV32
-int32_t __builtin_riscv_aes32esi(int32_t rs1, int32_t rs2, int bs);     //  AES32ESI
-int32_t __builtin_riscv_aes32esmi(int32_t rs1, int32_t rs2, int bs);    //  AES32ESMI
+#ifdef RVKINTRIN_RV32
+static inline int32_t _rv32_clmul(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(clmul_32)(rs1, rs2); }		//	CLMUL
 
-//  Zk, Zkn, Zkne or RV64
-int64_t __builtin_riscv_aes64es(int64_t rs1, int64_t rs2);      //  AES64ES
-int64_t __builtin_riscv_aes64esm(int64_t rs1, int64_t rs2);     //  AES64ESM
+static inline int32_t _rv32_clmulh(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(clmulh_32)(rs1, rs2); }		//	CLMULH
+#endif
 
-Zknd and Zkne (Zk, Zkn): NIST Suite: AES Key Schedule (Encrypt & Decrypt)
+#ifdef RVKINTRIN_RV64
+static inline int64_t _rv64_clmul(int64_t rs1, int64_t rs2)
+	{ return _RVK_INTRIN_IMPL(clmul_64)(rs1, rs2); }		//	CLMUL
 
-//  Zk, Zkn, Zkne, Zknd on RV64
-int64_t __builtin_riscv_aes64ks1i(int64_t rs1, int rnum);       //  AES64KS1I
-int64_t __builtin_riscv_aes64ks2(int64_t rs1, int64_t rs2);     //  AES64KS2
+static inline int64_t _rv64_clmulh(int64_t rs1, int64_t rs2)
+	{ return _RVK_INTRIN_IMPL(clmulh_64)(rs1, rs2); }		//	CLMULH
+#endif
 
-Zknh (Zk, Zkn): NIST Suite: Hash Function Instructions
+//	=== (mapping)	Zbkx:	Crossbar permutation instructions
 
-//  Zk, Zkn, Zknh on RV32, RV64
-long __builtin_riscv_sha256sig0(long rs1);                      //  SHA256SIG0
-long __builtin_riscv_sha256sig1(long rs1);                      //  SHA256SIG1
-long __builtin_riscv_sha256sum0(long rs1);                      //  SHA256SUM0
-long __builtin_riscv_sha256sum1(long rs1);                      //  SHA256SUM1
+#ifdef RVKINTRIN_RV32
+static inline int32_t _rv32_xperm8(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(xperm8_32)(rs1, rs2); }		//	XPERM8
 
-//  Zk, Zkn, Zknh on RV32
-int32_t __builtin_riscv_sha512sig0h(int32_t rs1, int32_t rs2);  //  SHA512SIG0H
-int32_t __builtin_riscv_sha512sig0l(int32_t rs1, int32_t rs2);  //  SHA512SIG0L
-int32_t __builtin_riscv_sha512sig1h(int32_t rs1, int32_t rs2);  //  SHA512SIG1H
-int32_t __builtin_riscv_sha512sig1l(int32_t rs1, int32_t rs2);  //  SHA512SIG1L
-int32_t __builtin_riscv_sha512sum0r(int32_t rs1, int32_t rs2);  //  SHA512SUM0R
-int32_t __builtin_riscv_sha512sum1r(int32_t rs1, int32_t rs2);  //  SHA512SUM1R
+static inline int32_t _rv32_xperm4(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(xperm4_32)(rs1, rs2); }		//	XPERM4
+#endif
 
-//  Zk, Zkn, Zknh on RV64
-int64_t __builtin_riscv_sha512sig0(int64_t rs1);                //  SHA512SIG0
-int64_t __builtin_riscv_sha512sig1(int64_t rs1);                //  SHA512SIG1
-int64_t __builtin_riscv_sha512sum0(int64_t rs1);                //  SHA512SUM0
-int64_t __builtin_riscv_sha512sum1(int64_t rs1);                //  SHA512SUM1
+#ifdef RVKINTRIN_RV64
+static inline int64_t _rv64_xperm8(int64_t rs1, int64_t rs2)
+	{ return _RVK_INTRIN_IMPL(xperm8_64)(rs1, rs2); }		//	XPERM8
 
-Zksed (Zks): ShangMi Suite: SM4 Block Cipher Instructions
+static inline int64_t _rv64_xperm4(int64_t rs1, int64_t rs2)
+	{ return _RVK_INTRIN_IMPL(xperm4_64)(rs1, rs2); }		//	XPERM4
+#endif
 
-//  Zks, Zksed on RV32, RV64
-long __builtin_riscv_sm4ks(int32_t rs1, int32_t rs2, int bs);   //  SM4KS
-long __builtin_riscv_sm4ed(int32_t rs1, int32_t rs2, int bs);   //  SM4ED
+//	=== (mapping)	Zknd:	NIST Suite: AES Decryption
 
-Zksh (Zks): ShangMi Suite: SM3 Hash Function Instructions
+#ifdef RVKINTRIN_RV32
+static inline int32_t _rv32_aes32dsi(int32_t rs1, int32_t rs2, int bs)
+	{ return _RVK_INTRIN_IMPL(aes32dsi)(rs1, rs2, bs); }	//	AES32DSI
 
-//  Zks, Zksh on RV32, RV64
-long __builtin_riscv_sm3p0(long rs1);                           //  SM3P0
-long __builtin_riscv_sm3p1(long rs1);                           //  SM3P1
+static inline int32_t _rv32_aes32dsmi(int32_t rs1, int32_t rs2, int bs)
+	{ return _RVK_INTRIN_IMPL(aes32dsmi)(rs1, rs2, bs); }	//	AES32DSMI
+#endif
 
+#ifdef RVKINTRIN_RV64
+static inline int64_t _rv64_aes64ds(int64_t rs1, int64_t rs2)
+	{ return _RVK_INTRIN_IMPL(aes64ds)(rs1, rs2); }			//	AES64DS
 
-/endif
+static inline int64_t _rv64_aes64dsm(int64_t rs1, int64_t rs2)
+	{ return _RVK_INTRIN_IMPL(aes64dsm)(rs1, rs2); }		//	AES64DSM
+
+static inline int64_t _rv64_aes64im(int64_t rs1)
+	{ return _RVK_INTRIN_IMPL(aes64im)(rs1); }				//	AES64IM
+
+static inline int64_t _rv64_aes64ks1i(int64_t rs1, int rnum)
+	{ return _RVK_INTRIN_IMPL(aes64ks1i)(rs1, rnum); }		//	AES64KS1I
+
+static inline int64_t _rv64_aes64ks2(int64_t rs1, int64_t rs2)
+	{ return _RVK_INTRIN_IMPL(aes64ks2)(rs1, rs2); }		//	AES64KS2
+#endif
+
+//	=== (mapping)	Zkne:	NIST Suite: AES Encryption
+
+#ifdef RVKINTRIN_RV32
+static inline int32_t _rv32_aes32esi(int32_t rs1, int32_t rs2, int bs)
+	{ return _RVK_INTRIN_IMPL(aes32esi)(rs1, rs2, bs); }	//	AES32ESI
+
+static inline int32_t _rv32_aes32esmi(int32_t rs1, int32_t rs2, int bs)
+	{ return _RVK_INTRIN_IMPL(aes32esmi)(rs1, rs2, bs); }	//	AES32ESMI
+#endif
+
+#ifdef RVKINTRIN_RV64
+static inline int64_t _rv64_aes64es(int64_t rs1, int64_t rs2)
+	{ return _RVK_INTRIN_IMPL(aes64es)(rs1, rs2); }			//	AES64ES
+
+static inline int64_t _rv64_aes64esm(int64_t rs1, int64_t rs2)
+	{ return _RVK_INTRIN_IMPL(aes64esm)(rs1, rs2); }		//	AES64ESM
+#endif
+
+//	=== (mapping)	Zknh:	NIST Suite: Hash Function Instructions
+
+static inline long _rv_sha256sig0(long rs1)
+	{ return _RVK_INTRIN_IMPL(sha256sig0)(rs1); }			//	SHA256SIG0
+
+static inline long _rv_sha256sig1(long rs1)
+	{ return _RVK_INTRIN_IMPL(sha256sig1)(rs1); }			//	SHA256SIG1
+
+static inline long _rv_sha256sum0(long rs1)
+	{ return _RVK_INTRIN_IMPL(sha256sum0)(rs1); }			//	SHA256SUM0
+
+static inline long _rv_sha256sum1(long rs1)
+	{ return _RVK_INTRIN_IMPL(sha256sum1)(rs1); }			//	SHA256SUM1
+
+#ifdef RVKINTRIN_RV32
+static inline int32_t _rv32_sha512sig0h(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(sha512sig0h)(rs1, rs2); }		//	SHA512SIG0H
+
+static inline int32_t _rv32_sha512sig0l(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(sha512sig0l)(rs1, rs2); }		//	SHA512SIG0L
+
+static inline int32_t _rv32_sha512sig1h(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(sha512sig1h)(rs1, rs2); }		//	SHA512SIG1H
+
+static inline int32_t _rv32_sha512sig1l(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(sha512sig1l)(rs1, rs2); }		//	SHA512SIG1L
+
+static inline int32_t _rv32_sha512sum0r(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(sha512sum0r)(rs1, rs2); }		//	SHA512SUM0R
+
+static inline int32_t _rv32_sha512sum1r(int32_t rs1, int32_t rs2)
+	{ return _RVK_INTRIN_IMPL(sha512sum1r)(rs1, rs2); }		//	SHA512SUM1R
+#endif
+
+#ifdef RVKINTRIN_RV64
+static inline int64_t _rv64_sha512sig0(int64_t rs1)
+	{ return _RVK_INTRIN_IMPL(sha512sig0)(rs1); }			//	SHA512SIG0
+
+static inline int64_t _rv64_sha512sig1(int64_t rs1)
+	{ return _RVK_INTRIN_IMPL(sha512sig1)(rs1); }			//	SHA512SIG1
+
+static inline int64_t _rv64_sha512sum0(int64_t rs1)
+	{ return _RVK_INTRIN_IMPL(sha512sum0)(rs1); }			//	SHA512SUM0
+
+static inline int64_t _rv64_sha512sum1(int64_t rs1)
+	{ return _RVK_INTRIN_IMPL(sha512sum1)(rs1); }			//	SHA512SUM1
+#endif
+
+//	=== (mapping)	Zksed:	ShangMi Suite: SM4 Block Cipher Instructions
+
+static inline long _rv_sm4ks(int32_t rs1, int32_t rs2, int bs)
+	{ return _RVK_INTRIN_IMPL(sm4ks)(rs1, rs2, bs); }		//	SM4KS
+
+static inline long _rv_sm4ed(int32_t rs1, int32_t rs2, int bs)
+	{ return _RVK_INTRIN_IMPL(sm4ed)(rs1, rs2, bs); }		//	SM4ED
+
+//	=== (mapping)	Zksh:	ShangMi Suite: SM3 Hash Function Instructions
+
+static inline long _rv_sm3p0(long rs1)
+	{ return _RVK_INTRIN_IMPL(sm3p0)(rs1); }				//	SM3P0
+
+static inline long _rv_sm3p1(long rs1)
+	{ return _RVK_INTRIN_IMPL(sm3p1)(rs1); }				//	SM3P1
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif	//	_RVKINTRIN_H

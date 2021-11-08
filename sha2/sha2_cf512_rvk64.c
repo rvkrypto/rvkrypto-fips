@@ -6,7 +6,7 @@
 
 #include "rvkintrin.h"
 
-#ifdef RVINTRIN_RV64
+#ifdef RVKINTRIN_RV64
 
 #include "sha2_api.h"
 
@@ -149,5 +149,5 @@ void sha2_cf512_rvk64(void *s)
 	sp[7] = sp[7] + h;
 }
 
-#endif	//	RVINTRIN_RV64
+#endif	//	RVKINTRIN_RV64
 

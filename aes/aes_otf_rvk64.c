@@ -5,7 +5,7 @@
 //	AES Encryption with on-the-fly key expansion
 
 #include "rvkintrin.h"
-#ifdef RVINTRIN_RV64
+#ifdef RVKINTRIN_RV64
 
 #include "aes_api.h"
 #include <stddef.h>
@@ -197,4 +197,4 @@ void aes256_enc_otf_rvk64(uint8_t ct[16], const uint8_t pt[16],
 	((uint64_t *) ct)[1] = t1;
 }
 
-#endif	//	RVINTRIN_RV64
+#endif	//	RVKINTRIN_RV64

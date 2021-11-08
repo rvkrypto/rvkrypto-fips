@@ -6,7 +6,7 @@
 
 #include "rvkintrin.h"
 
-#ifdef RVINTRIN_RV32
+#ifdef RVKINTRIN_RV32
 
 #include "aes_api.h"
 #include "rv_endian.h"
@@ -461,4 +461,4 @@ void aes256_dec_key_rvk32(uint32_t rk[60], const uint8_t key[32])
 	rvk32_dec_invmc(rk + 4, AES256_RK_WORDS - 8);
 }
 
-#endif	//	RVINTRIN_RV32
+#endif	//	RVKINTRIN_RV32

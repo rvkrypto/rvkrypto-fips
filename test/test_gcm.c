@@ -118,21 +118,21 @@ int test_gcm()
 {
 	int fail = 0;
 
-#ifdef RVINTRIN_RV64
+#ifdef RVKINTRIN_RV64
 	rvkat_info("=== GCM using ghash_mul_rv64() ===");
 	ghash_rev = ghash_rev_rv64;			//	set UUT = ghash_mul_rv64
 	ghash_mul = ghash_mul_rv64;
 	fail += test_gcm_tv();
 #endif
 
-#ifdef RVINTRIN_RV32
+#ifdef RVKINTRIN_RV32
 	rvkat_info("=== GCM using ghash_mul_rv32() ===");
 	ghash_rev = ghash_rev_rv32;			//	set UUT = ghash_mul_rv32
 	ghash_mul = ghash_mul_rv32;
 	fail += test_gcm_tv();
 #endif
 
-#ifdef RVINTRIN_RV32
+#ifdef RVKINTRIN_RV32
 	rvkat_info("=== GCM using ghash_mul_rv32_kar() ===");
 	ghash_rev = ghash_rev_rv32;			//	set UUT = ghash_mul_rv32_kar
 	ghash_mul = ghash_mul_rv32_kar;

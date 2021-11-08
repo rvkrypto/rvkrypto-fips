@@ -10,7 +10,7 @@
 
 #define SBOX64_ENC 0x21748FE3DA09B65CLLU
 
-#ifdef RVINTRIN_RV32
+#ifdef RVKINTRIN_RV32
 uint64_t (*present_rk_enc)(uint64_t x,
 						   const uint64_t rk[32]) = present_enc_rv32;
 uint64_t (*present_rk_dec)(uint64_t x,

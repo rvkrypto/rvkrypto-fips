@@ -6,13 +6,13 @@
 
 #include "rvkintrin.h"
 
-#ifdef RVINTRIN_RV32
+#ifdef RVKINTRIN_RV32
 
 #include "sha2_api.h"
 
 //	RV32I instruction SLTU is used for 64-bit additions here
 
-#if defined(RVINTRIN_EMULATE) || !defined(RVINTRIN_RV32)
+#if defined(RVKINTRIN_EMULATE) || !defined(RVKINTRIN_RV32)
 
 static inline int32_t _rv32_sltu(int32_t rs1, int32_t rs2)
 {
@@ -217,5 +217,5 @@ void sha2_cf512_rvk32(void *s)
 
 }
 
-#endif	//	RVINTRIN_RV32
+#endif	//	RVKINTRIN_RV32
 

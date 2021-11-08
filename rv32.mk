@@ -5,7 +5,7 @@
 #	===	Cross-compile for RV32 target, run with spike emulator.
 
 #	(lacking K flag here)
-CFLAGS	+=	-march=rv32imac -mabi=ilp32
+CFLAGS	+=	-march=rv32imac -mabi=ilp32 -DRVKINTRIN_ASSEMBLER
 
 #	toolchain
 XCHAIN	=	$(RISCV)/bin/riscv64-unknown-elf-

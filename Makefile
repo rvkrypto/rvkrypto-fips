@@ -14,12 +14,11 @@ XOBJD	?=	$(XCHAIN)objdump
 
 CFLAGS	+=	-Wall -Wextra -O2 -g -I. -Itest
 
-#	intrinsics emulation
-#CFLAGS	+=	-DRVINTRIN_EMULATE=1 -DRVINTRIN_RV32 -DRVINTRIN_RV64
+#	intrinsics emulation (you can enable both at the same time)
+#CFLAGS	+=	-DRVKINTRIN_EMULATE=1 -DRVKINTRIN_RV32 -DRVKINTRIN_RV64
 
 #	note that the final program return value is the output without this
 CFLAGS	+=	-DRVK_ALGTEST_VERBOSE_SIO=1
-#LDFLAGS	+=	-static		#	easier for cross compilers
 
 $(XBIN): $(OBJS)
 	$(XCC) $(LDFLAGS) $(CFLAGS) -o $(XBIN) $(OBJS) $(LDLIBS)
