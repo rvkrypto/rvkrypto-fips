@@ -2,8 +2,8 @@
 //	2021-11-08	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 //	Copyright (c) 2021, PQShield Ltd. All rights reserved.
 
-//	=== General mapping from short-term intrinsics to builtins,
-//		inline assembler, or an emulation layer.
+//	=== General mapping from short-form intrinsics to compiler builtins,
+//		inline assembler, or to an (insecure) porting / emulation layer.
 
 /*
  *	_rv_*(...)
@@ -33,7 +33,7 @@ extern "C" {
 
 //	intrinsics via emulation (insecure -- porting / debug option)
 #include "rvk_emu_intrin.h"
-#define _RVK_INTRIN_IMPL(s)	_rvk_emu_##s
+#define _RVK_INTRIN_IMPL(s) _rvk_emu_##s
 
 #elif defined(RVKINTRIN_ASSEMBLER)
 

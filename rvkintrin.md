@@ -37,15 +37,17 @@ For post-ratification Scalar Cryptography v1.0, the Arch Version is `1000000`
 | __riscv_zkne  | Arch Version | `Zkne` extension is available.                               |
 | __riscv_zknh  | Arch Version | `Zknh` extension is available.                               |
 | __riscv_zksed | Arch Version | `Zksed` extension is available.                              |
-| __riscv_zksh  | Arch Version | `Zbsh` extension is available.                               |
+| __riscv_zksh  | Arch Version | `Zksh` extension is available.                               |
+| __riscv_zksh  | Arch Version | `Zksh` extension is available.                               |
+| __riscv_zkt   | Arch Version | Target asserts `Zkt` (data-independent latency extension).   |
 
-The extensions `Zkt` or `Zkr` do not introduce builtins and do not have
-architecture extension test macros.
+The `Zkr` (entropy source) extension is a CSR only and does not have an architecture
+test macro.
 
-However, **all** of the scalar cryptography intrinsics below must offer the
-same data-independent latency guarantees as the `Zkt` extension. The user
-must be able to trust that the compiler can't use table lookups, conditional
-branching, etc when transforming these crypto builtins into code.
+Due to the data-independent latency ("constant time") assertions of the `Zkt`
+extension, the compiler can't use table lookups, conditional branching, etc
+when transforming these crypto intrinsics or builtins into code. Execution
+latency for them must be independent of input values.
 
 
 ### Zbkb (Zk, Zkn, Zks):    Bitmanipulation instructions for Cryptography
