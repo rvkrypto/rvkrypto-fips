@@ -4,7 +4,7 @@
 
 //	=== data used in risc-v krypto emulation -- not for live chip applications
 
-#include "rvkintrin.h"
+#include "rvk_emu.h"
 
 #ifdef RVINTRIN_EMULATE
 
