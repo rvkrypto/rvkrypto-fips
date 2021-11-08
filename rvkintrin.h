@@ -32,8 +32,8 @@ extern "C" {
 #if defined(RVKINTRIN_EMULATE)
 
 //	intrinsics via emulation (insecure -- porting / debug option)
-#  include "rvk_emu_intrin.h"
-#  define _RVK_INTRIN_IMPL(s)	_rvk_emu_##s
+#include "rvk_emu_intrin.h"
+#define _RVK_INTRIN_IMPL(s)	_rvk_emu_##s
 
 #elif defined(RVKINTRIN_ASSEMBLER)
 
@@ -43,8 +43,20 @@ extern "C" {
 #else
 
 //	intrinsics via compiler builtins
+#include <stdint.h>
 #define _RVK_INTRIN_IMPL(s) __builtin_riscv_##s
 
+#endif
+
+//	set type if not already set
+#if !defined(RVKINTRIN_RV32) && !defined(RVKINTRIN_RV64)
+#if __riscv_xlen == 32
+#define RVKINTRIN_RV32
+#elif __riscv_xlen == 64
+#define RVKINTRIN_RV64
+#else
+#error "__riscv_xlen not valid."
+#endif
 #endif
 
 //	Mappings to implementation

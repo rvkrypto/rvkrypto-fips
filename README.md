@@ -50,33 +50,35 @@ for 32-bit and 64-bit RISC-V ISAs, respectively. This will create the
 `xtest` test binary and execute it on spike. Add `xtest` as the target
 to build the test binary only.
 
+Currently the makefile uses inline assembler mappings.
+
 
 ##	Proposed Krypto Intrinsics
 
 Please see [rvkintrin.md](rvkintrin.md) for information about the proposed
-short-form intrinsics in [rvkintrin.h](rvkintrin.h).
+compiler builtins and short-form intrinsics in [rvkintrin.h](rvkintrin.h).
 
+You may enable inline assembler with flag `RVKINTRIN_ASSEMBLER` --
+then the short-form intrinsics are defined using
+[rvk_asm_intrin.h](rvk_asm_intrin.h).
 
 ##	Intrinsics emulation on other ISA
 
-You can also compile the tests natively on a non-RV host with simple `make`:
+You can also compile the tests natively on a non-RV host with simple `make`
+if you uncomment the line in Makefile:
 ```
-$ make
-gcc -Wall -O2 -I.  -DRVKINTRIN_EMULATE=1 -DRVK_ALGTEST_VERBOSE_SIO=1 -c rvk_emu.c -o rvk_emu.o
-gcc -Wall -O2 -I.  -DRVKINTRIN_EMULATE=1 -DRVK_ALGTEST_VERBOSE_SIO=1 -c test_aes.c -o test_aes.o
-(..)
+CFLAGS	+=	-DRVKINTRIN_EMULATE=1 -DRVKINTRIN_RV32 -DRVKINTRIN_RV64
 ```
-Note that even in this case the implementations depend on the `xlen` of the
-compiler (aarch64 will emulate RV64K while 32-bit arm will emulate RV32K !). 
+This uses emulation header in [rvk_emu_intrin.h](rvk_emu_intrin.h), which
+in turn requires helper tables in [rvk_emu_intrin.c](rvk_emu_intrin.c).
+
 To execute, just run `xtest`:
 ```
 $ ./xtest 
-[INFO] === AES64 ===
+[INFO] === AES32 ===
 [PASS] AES-128 Enc 69C4E0D86A7B0430D8CDB78070B4C55A
 [PASS] AES-128 Dec 00112233445566778899AABBCCDDEEFF
 (...)
-[PASS] SM4 Encrypt 94CFE3F59E8507FEC41DBE738CCD53E1
-[PASS] SM4 Decrypt A27EE076E48E6F389710EC7B5E8A3BE5
 [INFO] RVKAT self-test finished: PASS (no errors)
 ```
 
