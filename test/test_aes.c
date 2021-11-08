@@ -108,7 +108,7 @@ int test_aes()
 {
 	int fail = 0;
 
-#ifdef RVINTRIN_RV32
+#ifdef RVKINTRIN_RV32
 	rvkat_info("=== AES32 ===");
 
 	aes128_enc_key = aes128_enc_key_rvk32;	//	set UUT = AES32
@@ -130,7 +130,7 @@ int test_aes()
 	fail += test_aes_ecb_tv();
 #endif
 
-#ifdef RVINTRIN_RV64
+#ifdef RVKINTRIN_RV64
 	rvkat_info("=== AES64 ===");
 
 	aes128_enc_key = aes128_enc_key_rvk64;	//	set UUT = AES64
@@ -152,7 +152,7 @@ int test_aes()
 	fail += test_aes_ecb_tv();
 #endif
 
-#ifdef RVINTRIN_RV64
+#ifdef RVKINTRIN_RV64
 	rvkat_info("=== AES64 / On-the-fly keying ===");
 
 	aes128_enc_ecb = aes128_enc_otf_rvk64;	//	set UUT = OTF/64

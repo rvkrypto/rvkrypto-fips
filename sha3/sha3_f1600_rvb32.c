@@ -6,7 +6,7 @@
 
 #include "rvkintrin.h"
 
-#ifdef RVINTRIN_RV32
+#ifdef RVKINTRIN_RV32
 
 //	even/odd bit split the state words (for input)
 
@@ -265,5 +265,5 @@ void sha3_f1600_rvb32(void *s)
 	sha3_f1600_rvb32_join(v);
 }
 
-#endif	//	RVINTRIN_RV32
+#endif	//	RVKINTRIN_RV32
 

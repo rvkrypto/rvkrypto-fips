@@ -6,7 +6,7 @@
 
 #include "rvkintrin.h"
 
-#ifdef RVINTRIN_RV64
+#ifdef RVKINTRIN_RV64
 
 #include "gcm_gfmul.h"
 
@@ -107,5 +107,5 @@ void ghash_mul_rv64(gf128_t * z, const gf128_t * x, const gf128_t * h)
 	z->d[1] = z1;
 }
 
-#endif	//	RVINTRIN_RV64
+#endif	//	RVKINTRIN_RV64
 

@@ -1,4 +1,4 @@
-//	rvk_emu.c
+//	rvk_emu_intrin.c
 //	2021-02-02	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 //	Copyright (c) 2021, PQShield Ltd. All rights reserved.
 
@@ -6,7 +6,7 @@
 
 #include "rvkintrin.h"
 
-#ifdef RVINTRIN_EMULATE
+#ifdef RVKINTRIN_EMULATE
 
 //	AES Forward S-Box
 
@@ -89,4 +89,5 @@ const uint8_t _rvk_emu_sm4_sbox[256] = {
 	0xD7, 0xCB, 0x39, 0x48
 };
 
-#endif	//	RVINTRIN_EMULATE
+#endif
+//	RVKINTRIN_EMULATE

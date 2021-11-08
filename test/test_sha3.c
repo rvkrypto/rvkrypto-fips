@@ -158,7 +158,7 @@ int test_sha3()
 {
 	int fail = 0;
 
-#ifdef RVINTRIN_RV32
+#ifdef RVKINTRIN_RV32
 	rvkat_info("=== SHA3 using sha3_f1600_rvb32() ===");
 	sha3_keccakp = sha3_f1600_rvb32;
 	fail += test_keccakp_tv();
@@ -166,7 +166,7 @@ int test_sha3()
 	fail += test_shake_tv();
 #endif
 
-#ifdef RVINTRIN_RV64
+#ifdef RVKINTRIN_RV64
 	rvkat_info("=== SHA3 using sha3_f1600_rvb64() ===");
 	sha3_keccakp = sha3_f1600_rvb64;
 	fail += test_keccakp_tv();

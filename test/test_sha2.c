@@ -120,13 +120,13 @@ int test_sha2()
 	sha256_compress = sha2_cf256_rvk;
 	fail += test_sha2_256_tv();
 
-#ifdef RVINTRIN_RV64
+#ifdef RVKINTRIN_RV64
 	rvkat_info("=== SHA2-512 using sha2_cf512_rvk64() ===");
 	sha512_compress = sha2_cf512_rvk64;
 	fail += test_sha2_512_tv();
 #endif
 
-#ifdef RVINTRIN_RV32
+#ifdef RVKINTRIN_RV32
 	rvkat_info("=== SHA2-512 using sha2_cf512_rvk32() ===");
 	sha512_compress = sha2_cf512_rvk32;
 	fail += test_sha2_512_tv();

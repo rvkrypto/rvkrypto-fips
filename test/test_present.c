@@ -115,7 +115,7 @@ int test_present()
 {
 	int fail = 0;
 
-#ifdef RVINTRIN_RV32
+#ifdef RVKINTRIN_RV32
 	rvkat_info("=== PRESENT using present_rv32.c ===");
 	present_rk_enc = present_enc_rv32;
 	present_rk_dec = present_dec_rv32;
@@ -124,7 +124,7 @@ int test_present()
 	fail += test_present128();
 #endif
 
-#ifdef RVINTRIN_RV64
+#ifdef RVKINTRIN_RV64
 	rvkat_info("=== PRESENT using present_rv64.c ===");
 	present_rk_enc = present_enc_rv64;
 	present_rk_dec = present_dec_rv64;

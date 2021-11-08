@@ -8,7 +8,7 @@
 #include "rv_endian.h"
 #include "rvkintrin.h"
 
-#ifdef RVINTRIN_RV32
+#ifdef RVKINTRIN_RV32
 
 //	S-Box (sLayer) 
 #define SBOX64_ENC 0x21748FE3DA09B65CLLU

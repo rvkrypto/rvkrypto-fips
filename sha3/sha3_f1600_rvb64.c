@@ -6,7 +6,7 @@
 
 #include "rvkintrin.h"
 
-#ifdef RVINTRIN_RV64
+#ifdef RVKINTRIN_RV64
 
 //	Keccak-p[1600,24](S) = Keccak-f1600(S)
 

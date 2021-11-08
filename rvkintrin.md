@@ -244,7 +244,7 @@ Note that this currently only supports scalar krypto. Vector krypto
 (which has more dependencies with the vector extension rather than bitmanip)
 will use [vector intrisics](https://github.com/riscv/rvv-intrinsic-doc).
 
-When compiled with `RVINTRIN_EMULATE`, the shoft-form intrinsics will work on
+When compiled with `RVKINTRIN_EMULATE`, the shoft-form intrinsics will work on
 RV32I/RV64I (or arm/aarch64, i386/amd64) as if it had Bitmanip and Krypto
 support -- but much more slowly, and without the constant-time security
 feature of Krypto. For AES and SM4 support, you'll need to link with
