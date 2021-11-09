@@ -31,7 +31,9 @@ int main()
 	fail += test_sm3();
 	fail += test_sm4();
 	fail += test_present();
-//	fail += test_zkr();
+#ifdef RVKINTRIN_ZKR
+	fail += test_zkr();
+#endif
 
 	if (fail) {
 		rvkat_info("RVKAT self-test finished: FAIL (there were errors)");

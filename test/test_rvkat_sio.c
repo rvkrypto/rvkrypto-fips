@@ -7,19 +7,6 @@
 #include "rvkintrin.h"
 #include "test_rvkat.h"
 
-//	RVK_ALGTEST_VERBOSE_SIO will use generic sio for output, replace
-//	with what is suitable for your target.
-
-#if 1
-//	fancy standard library
-#include <stdio.h>
-#define sio_putc(c) fputc(c, stdout)
-#define sio_puts(s) fputs(s, stdout)
-#define sio_put_dec(x) fprintf(stdout, "%d", (int) (x))
-#else
-//	my bare metal code
-#include "sio_generic.h"
-#endif
 #ifdef RVK_ALGTEST_VERBOSE_SIO
 
 //	=== verbose versions
