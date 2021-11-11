@@ -236,10 +236,10 @@ and "intrinsics emulation" in a consistent way.
 
 The prefixes and data types are:
 
-* `_rv_*(...)`: RV32/64 intrinsics that operate on the `long` data type.
-* `_rv32_*(...)`: RV32-only intrinsics that operate on the `int32_t` data type.
+* `_rv_*(...)`: intrinsics that operate on the `long` data type.
+* `_rv32_*(...)`: intrinsics that operate on the `int32_t` data type.
 * `_rv64_*(...)`: RV64-only intrinsics that operate on the `int64_t` data type.
-* `__builtin_riscv_*(...)`:  the RV32/64 builtin intrinsics (above).
+* `__builtin_riscv_*(...)`:  the builtin intrinsics (above).
 
 For testing purposes, the header emits inline assembly or emulation code.
 Note that this currently only supports scalar krypto. Vector krypto
