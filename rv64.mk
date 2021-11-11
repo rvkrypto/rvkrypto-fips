@@ -22,5 +22,5 @@ include	Makefile
 
 #	execution target
 spike64:	$(XBIN)
-	$(SPIKE) --isa=rv64imac_zkn_zks $(PK64) ./$(XBIN)
+	$(SPIKE) --isa=rv64imac_zkn_zks_zkr $(PK64) ./$(XBIN)
 

@@ -17,6 +17,20 @@ extern "C" {
 #include <stdint.h>
 #include <stddef.h>
 
+//	RVK_ALGTEST_VERBOSE_SIO will use generic sio for output, replace
+//	with what is suitable for your target.
+
+#if 1
+//	fancy standard library
+#include <stdio.h>
+#define sio_putc(c) fputc(c, stdout)
+#define sio_puts(s) fputs(s, stdout)
+#define sio_put_dec(x) fprintf(stdout, "%d", (int) (x))
+#else
+//	my bare metal code
+#include "sio_generic.h"
+#endif
+
 //	=== TESTING === used in tests
 
 //	read a hex string of "maxbytes", return byte length
@@ -45,6 +59,7 @@ void rvkat_hexout(const char *lab, const void *data, size_t len);
 //	print a space ' ' and hexademical unsigned without a label
 void rvkat_hexu32(uint32_t x);
 void rvkat_hexu64(uint64_t x);
+
 
 #ifdef __cplusplus
 }
