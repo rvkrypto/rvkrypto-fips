@@ -98,7 +98,7 @@ feature of Krypto. For AES and SM4 support, you'll need to link with
 | int32_t _rv32_xperm8(int32_t rs1, int32_t rs2);               | xperm8        | Nibble-wise lookup of indicies.           | Zbkx (RV32)                   |
 | int64_t _rv64_xperm8(int64_t rs1, int64_t rs2);               | xperm8        | Nibble-wise lookup of indicies.           | Zbkx (RV64)                   |
 | int32_t _rv32_zip(int32_t rs1);                               | zip           | Upper/lower halves into odd/even bits.    | Zbkb (RV32)                   |
-| ------------------------------------------------------------- | ------------- | ----------------------------------------- | ----------------------------- |
+
 
 ### Architecture extension test macros
 
