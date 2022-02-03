@@ -49,7 +49,7 @@ feature of Krypto. For AES and SM4 support, you'll need to link with
     The inline assembler solution used here should be seen as temporary.
 
 
-### Short Form Intrinsics
+### Crypto Extension short form intrinsics (alphabetically)
 
 | Prototype                                                     | Mnemonic      | Short Description                         | Supported in                  |
 | ------------------------------------------------------------- | ------------- | ----------------------------------------- | ----------------------------- |
