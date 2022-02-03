@@ -39,7 +39,7 @@
 	u = _rv32_ror(u, 25);							\
 	d = d + (t ^ u) + (((a | c) & b) | (a & c));	\
 	b = _rv32_ror(b, 23);							\
-	h = h + u + ((e & f) ^ _rv_andn(g, e));			\
+	h = h + u + ((e & f) ^ (g &~ e));				\
 	h = _rv_sm3p0(h);								\
 	f = _rv32_ror(f, 13);							\
 	d = d + (w0 ^ w4);								\

@@ -41,41 +41,14 @@ static inline int64_t _rvk_asm_rol_64(int64_t rs1, int64_t rs2)
 	{ int64_t rd; if (__builtin_constant_p(rs2)) __asm__ ("rori	 %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(63 & -rs2)); else __asm__ ("rol	 %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
 #endif
 
-static inline long _rvk_asm_andn(long rs1, long rs2)
-	{ long rd; __asm__ ("andn %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
-static inline long _rvk_asm_orn (long rs1, long rs2)
-	{ long rd; __asm__ ("orn  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
-static inline long _rvk_asm_xnor(long rs1, long rs2)
-	{ long rd; __asm__ ("xnor %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
-
-#ifdef RVKINTRIN_RV32
-static inline int32_t _rvk_asm_pack_32(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("pack  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
-static inline int32_t _rvk_asm_packh_32(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("packh  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
-#endif
-
-#ifdef RVKINTRIN_RV64
-static inline int64_t _rvk_asm_pack_64(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__ ("pack  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
-static inline int64_t _rvk_asm_packh_64(int64_t rs1, int64_t rs2)
-	{ int64_t rd; __asm__ ("packh  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
-static inline int32_t _rvk_asm_pack_32(int32_t rs1, int32_t rs2)
-	{ int32_t rd; __asm__ ("packw  %0, %1, %2" : "=r"(rd) : "r"(rs1), "r"(rs2)); return rd; }
-#endif
-
 #ifdef RVKINTRIN_RV32
 static inline int32_t _rvk_asm_brev8_32(int32_t rs1)
 	{ int32_t rd; __asm__ ("grevi  %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(7)); return rd; }
-static inline int32_t _rvk_asm_rev8_32(int32_t rs1)
-	{ int32_t rd; __asm__ ("grevi  %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(24)); return rd; }
 #endif
 
 #ifdef RVKINTRIN_RV64
 static inline int64_t _rvk_asm_brev8_64(int64_t rs1)
 	{ int64_t rd; __asm__ ("grevi  %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(7)); return rd; }
-static inline int64_t _rvk_asm_rev8_64(int64_t rs1)
-	{ int64_t rd; __asm__ ("grevi  %0, %1, %2" : "=r"(rd) : "r"(rs1), "i"(56)); return rd; }
 #endif
 
 #ifdef RVKINTRIN_RV32

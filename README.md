@@ -6,6 +6,8 @@ Algorithm tests for RISC-V Crypto Extension.
 
 2021-11-04	Updated to post-arch review 1.0rc5.
 
+2022-02-03  Removed most intrinsics for Zbkb.
+
 *Information and recommendations here are unofficial and under discussion in
 the [CETG](https://wiki.riscv.org/display/TECH/Cryptographic+Extensions+TG).*
 

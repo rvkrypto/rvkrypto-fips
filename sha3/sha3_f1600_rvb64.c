@@ -135,39 +135,39 @@ void sha3_f1600_rvb64(void *s)
 
 		//	Chi
 
-		t = _rv_andn(se, sd);
-		se = se ^ _rv_andn(sb, sa);
-		sb = sb ^ _rv_andn(sd, sc);
-		sd = sd ^ _rv_andn(sa, se);
-		sa = sa ^ _rv_andn(sc, sb);
+		t = (se &~ sd);
+		se = se ^ (sb &~ sa);
+		sb = sb ^ (sd &~ sc);
+		sd = sd ^ (sa &~ se);
+		sa = sa ^ (sc &~ sb);
 		sc = sc ^ t;
 
-		t = _rv_andn(sj, si);
-		sj = sj ^ _rv_andn(sg, sf);
-		sg = sg ^ _rv_andn(si, sh);
-		si = si ^ _rv_andn(sf, sj);
-		sf = sf ^ _rv_andn(sh, sg);
+		t = (sj &~ si);
+		sj = sj ^ (sg &~ sf);
+		sg = sg ^ (si &~ sh);
+		si = si ^ (sf &~ sj);
+		sf = sf ^ (sh &~ sg);
 		sh = sh ^ t;
 
-		t = _rv_andn(so, sn);
-		so = so ^ _rv_andn(sl, sk);
-		sl = sl ^ _rv_andn(sn, sm);
-		sn = sn ^ _rv_andn(sk, so);
-		sk = sk ^ _rv_andn(sm, sl);
+		t = (so &~ sn);
+		so = so ^ (sl &~ sk);
+		sl = sl ^ (sn &~ sm);
+		sn = sn ^ (sk &~ so);
+		sk = sk ^ (sm &~ sl);
 		sm = sm ^ t;
 
-		t = _rv_andn(st, ss);
-		st = st ^ _rv_andn(sq, sp);
-		sq = sq ^ _rv_andn(ss, sr);
-		ss = ss ^ _rv_andn(sp, st);
-		sp = sp ^ _rv_andn(sr, sq);
+		t = (st &~ ss);
+		st = st ^ (sq &~ sp);
+		sq = sq ^ (ss &~ sr);
+		ss = ss ^ (sp &~ st);
+		sp = sp ^ (sr &~ sq);
 		sr = sr ^ t;
 
-		t = _rv_andn(sy, sx);
-		sy = sy ^ _rv_andn(sv, su);
-		sv = sv ^ _rv_andn(sx, sw);
-		sx = sx ^ _rv_andn(su, sy);
-		su = su ^ _rv_andn(sw, sv);
+		t = (sy &~ sx);
+		sy = sy ^ (sv &~ su);
+		sv = sv ^ (sx &~ sw);
+		sx = sx ^ (su &~ sy);
+		su = su ^ (sw &~ sv);
 		sw = sw ^ t;
 
 		//	Iota
