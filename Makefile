@@ -12,13 +12,13 @@ OBJS	=	$(CSRC:.c=.o) $(SSRC:.S=.o)
 XCC		?=	$(XCHAIN)gcc
 XOBJD	?=	$(XCHAIN)objdump
 
-CFLAGS	+=	-Wall -Wextra -O2 -g -I. -Itest
+CFLAGS	+=	-Wall -Wextra -O2 -g
 
 #	intrinsics emulation (you can enable both at the same time)
 #CFLAGS	+=	-DRVKINTRIN_EMULATE=1 -DRVKINTRIN_RV32 -DRVKINTRIN_RV64
 
 #	note that the final program return value is the output without this
-CFLAGS	+=	-DRVK_ALGTEST_VERBOSE_SIO=1
+CFLAGS	+=	-I. -Itest -DRVK_ALGTEST_VERBOSE_SIO=1
 
 $(XBIN): $(OBJS)
 	$(XCC) $(LDFLAGS) $(CFLAGS) -o $(XBIN) $(OBJS) $(LDLIBS)

@@ -77,45 +77,14 @@ static inline int64_t _rv64_rol(int64_t rs1, int64_t rs2)
 	{ return _RVK_INTRIN_IMPL(rol_64)(rs1, rs2); }			//	ROL or RORI
 #endif
 
-static inline long _rv_andn(long rs1, long rs2)
-	{ return _RVK_INTRIN_IMPL(andn)(rs1, rs2); }			//	ANDN
-
-static inline long _rv_orn(long rs1, long rs2)
-	{ return _RVK_INTRIN_IMPL(orn)(rs1, rs2); }				//	ORN
-
-static inline long _rv_xnor(long rs1, long rs2)
-	{ return _RVK_INTRIN_IMPL(xnor)(rs1, rs2); }			//	XNOR
-
-static inline int32_t _rv32_pack(int32_t rs1, int32_t rs2)
-	{ return _RVK_INTRIN_IMPL(pack_32)(rs1, rs2); }			//	PACK or PACKW
-
-#ifdef RVKINTRIN_RV32
-static inline int32_t _rv32_packh(int32_t rs1, int32_t rs2)
-	{ return _RVK_INTRIN_IMPL(packh_32)(rs1, rs2); }		//	PACKH
-#endif
-
-#ifdef RVKINTRIN_RV64
-static inline int64_t _rv64_pack(int64_t rs1, int64_t rs2)
-	{ return _RVK_INTRIN_IMPL(pack_64)(rs1, rs2); }			//	PACK
-
-static inline int64_t _rv64_packh(int64_t rs1, int64_t rs2)
-	{ return _RVK_INTRIN_IMPL(packh_64)(rs1, rs2); }		//	PACKH
-#endif
-
 #ifdef RVKINTRIN_RV32
 static inline int32_t _rv32_brev8(int32_t rs1)
 	{ return _RVK_INTRIN_IMPL(brev8_32)(rs1); }				//	BREV8 (GREVI)
-
-static inline int32_t _rv32_rev8(int32_t rs1)
-	{ return _RVK_INTRIN_IMPL(rev8_32)(rs1); }				//	REV8 (GREVI)
 #endif
 
 #ifdef RVKINTRIN_RV64
 static inline int64_t _rv64_brev8(int64_t rs1)
 	{ return _RVK_INTRIN_IMPL(brev8_64)(rs1); }				//	BREV8 (GREVI)
-
-static inline int64_t _rv64_rev8(int64_t rs1)
-	{ return _RVK_INTRIN_IMPL(rev8_64)(rs1); }				//	REV8 (GREVI)
 #endif
 
 #ifdef RVKINTRIN_RV32

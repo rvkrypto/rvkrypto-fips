@@ -60,27 +60,6 @@ static inline int64_t _rvk_emu_rol_64(int64_t rs1, int64_t rs2)
 static inline int64_t _rvk_emu_ror_64(int64_t rs1, int64_t rs2)
 	{ return _rvk_emu_srl_64(rs1, rs2) | _rvk_emu_sll_64(rs1, -rs2); }
 
-//	additional logic
-
-static inline long _rvk_emu_andn(long rs1, long rs2)
-	{ return rs1 & ~rs2; }
-static inline long _rvk_emu_orn(long rs1, long rs2)
-	{ return rs1 | ~rs2; }
-static inline long _rvk_emu_xnor(long rs1, long rs2)
-	{ return rs1 ^ ~rs2; }
-
-//	pack, packh
-
-static inline int32_t _rvk_emu_pack_32(int32_t rs1, int32_t rs2)
-	{ return (rs1 & 0x0000ffff) | (rs2 << 16); }
-static inline int64_t _rvk_emu_pack_64(int64_t rs1, int64_t rs2)
-	{ return (rs1 & 0xffffffffLL) | (rs2 << 32); }
-
-static inline int32_t _rvk_emu_packh_32(int32_t rs1, int32_t rs2)
-	{ return (rs1 & 0xff) | ((rs2 & 0xff) << 8); }
-static inline int64_t _rvk_emu_packh_64(int64_t rs1, int64_t rs2)
-	{ return (rs1 & 0xff) | ((rs2 & 0xff) << 8); }
-
 //	brev8, rev8
 
 static inline int32_t _rvk_emu_grev_32(int32_t rs1, int32_t rs2)
@@ -122,13 +101,9 @@ static inline int64_t _rvk_emu_grev_64(int64_t rs1, int64_t rs2)
 
 static inline int32_t _rvk_emu_brev8_32(int32_t rs1)
 	{ return _rvk_emu_grev_32(rs1, 7); }
-static inline int32_t _rvk_emu_rev8_32(int32_t rs1)
-	{ return _rvk_emu_grev_32(rs1, 24); }
 
 static inline int64_t _rvk_emu_brev8_64(int64_t rs1)
 	{ return _rvk_emu_grev_64(rs1, 7); }
-static inline int64_t _rvk_emu_rev8_64(int64_t rs1)
-	{ return _rvk_emu_grev_64(rs1, 56); }
 
 //	shuffle (zip and unzip, RV32 only)
 
