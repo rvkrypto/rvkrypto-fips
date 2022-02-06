@@ -4,7 +4,7 @@
 
 //	===	FIPS 202 Keccak permutation for a 32-bit target (bit-interleaved)
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 
 #ifdef RVKINTRIN_RV32
 

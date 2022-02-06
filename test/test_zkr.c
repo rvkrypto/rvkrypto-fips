@@ -4,7 +4,7 @@
 
 //	=== Simple test for Zkr
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 
 #ifdef RVKINTRIN_ZKR
 

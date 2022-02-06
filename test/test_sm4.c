@@ -4,7 +4,7 @@
 
 //	=== Unit tests for SM4 (GM/T 0002-2012).
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 #include "test_rvkat.h"
 #include "sm4/sm4_api.h"
 

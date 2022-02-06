@@ -57,12 +57,11 @@ Currently the makefile uses inline assembler mappings.
 
 ##	Proposed Krypto Intrinsics
 
-Please see [rvkintrin.md](rvkintrin.md) for information about the proposed
-compiler builtins and short-form intrinsics in [rvkintrin.h](rvkintrin.h).
+Please see [riscv_crypto.md](riscv_crypto.md) for information about the proposed
+compiler builtins and intrinsics in [riscv_crypto.h](riscv_crypto.h).
 
 You may enable inline assembler with flag `RVKINTRIN_ASSEMBLER` --
-then the short-form intrinsics are defined using
-[rvk_asm_intrin.h](rvk_asm_intrin.h).
+then the intrinsics are defined using [rvk_asm_intrin.h](rvk_asm_intrin.h).
 
 ##	Intrinsics emulation on other ISA
 

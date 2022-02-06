@@ -4,7 +4,7 @@
 
 //	===	FIPS 197 Algorithm Implementation for RV32 Krypto / AES32 
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 
 #ifdef RVKINTRIN_RV32
 

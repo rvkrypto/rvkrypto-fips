@@ -4,7 +4,7 @@
 
 //	64-bit GHASH bit-reverse and multiplication for GCM
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 
 #ifdef RVKINTRIN_RV64
 

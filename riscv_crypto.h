@@ -1,8 +1,8 @@
-//	rvkintrin.h
+//	riscv_crypto.h
 //	2021-11-08	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 //	Copyright (c) 2021, PQShield Ltd. All rights reserved.
 
-//	=== General mapping from short-form intrinsics to compiler builtins,
+//	=== General mapping from  intrinsics to compiler builtins,
 //		inline assembler, or to an (insecure) porting / emulation layer.
 
 /*
@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef _RVKINTRIN_H
-#define _RVKINTRIN_H
+#ifndef _RISCV_CRYPTO_H
+#define _RISCV_CRYPTO_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -244,4 +244,4 @@ static inline long _rv_sm3p1(long rs1)
 }
 #endif
 
-#endif	//	_RVKINTRIN_H
+#endif	//	_RISCV_CRYPTO_H_

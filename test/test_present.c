@@ -5,7 +5,7 @@
 //	=== Unit tests for PRESENT (CHES 2007 / ISO/IEC 29192-2:2019)
 
 #include <string.h>
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 #include "test_rvkat.h"
 #include "rv_endian.h"
 #include "present/present_api.h"

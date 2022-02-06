@@ -4,7 +4,7 @@
 
 //	===	FIPS 202 Keccak permutation implementation for a 64-bit target.
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 
 #ifdef RVKINTRIN_RV64
 

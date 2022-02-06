@@ -4,7 +4,7 @@
 
 //	=== functions to facilitate simple startup tests
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 #include "test_rvkat.h"
 
 #ifdef RVK_ALGTEST_VERBOSE_SIO

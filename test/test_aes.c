@@ -4,7 +4,7 @@
 
 //	Unit tests for AES-128/192/256 (FIPS 197)
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 
 #include "aes/aes_api.h"
 #include "aes/aes_rvk32.h"
