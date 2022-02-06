@@ -6,7 +6,7 @@
 
 #include "sm4_api.h"
 #include "rv_endian.h"
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 
 //	SSM4_ED_X4	is a block of four ssm4.ed instructions:
 

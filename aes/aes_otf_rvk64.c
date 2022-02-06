@@ -4,7 +4,7 @@
 
 //	AES Encryption with on-the-fly key expansion
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 #ifdef RVKINTRIN_RV64
 
 #include "aes_api.h"

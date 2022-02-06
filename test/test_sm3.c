@@ -5,7 +5,7 @@
 //	The Chinese Standard SM3 Hash Function
 //	GB/T 32905-2016, GM/T 0004-2012, ISO/IEC 10118-3:2018
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 #include "test_rvkat.h"
 #include "sm3/sm3_api.h"
 

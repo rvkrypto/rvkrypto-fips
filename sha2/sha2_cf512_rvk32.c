@@ -4,7 +4,7 @@
 
 //	FIPS 180-4 SHA2-384/512 compression function for RV32
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 
 #ifdef RVKINTRIN_RV32
 

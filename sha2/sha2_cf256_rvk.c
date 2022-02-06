@@ -4,7 +4,7 @@
 
 //	FIPS 180-4 SHA2-224/256 compression function for RV32 & RV64
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 #include "sha2_api.h"
 
 //	processing step, sets "d" and "h" as a function of all 8 inputs

@@ -6,7 +6,7 @@
 
 #include "present_api.h"
 #include "rv_endian.h"
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 
 #ifdef RVKINTRIN_RV32
 

@@ -6,7 +6,7 @@
 
 #include "present_api.h"
 #include "rv_endian.h"
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 
 #define SBOX64_ENC 0x21748FE3DA09B65CLLU
 

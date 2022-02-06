@@ -6,7 +6,7 @@
 //	https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Algorithm-Validation-Program/documents/mac/gcmtestvectors.zip
 
 #include <string.h>
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 #include "test_rvkat.h"
 
 #include "gcm/gcm_api.h"

@@ -6,7 +6,7 @@
 
 #include <string.h>
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 #include "test_rvkat.h"
 #include "rv_endian.h"
 #include "aes/aes_api.h"

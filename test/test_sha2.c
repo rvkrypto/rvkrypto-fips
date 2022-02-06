@@ -4,7 +4,7 @@
 
 //	Unit tests for FIPS 180-4 SHA-2 and FIPS 198 HMAC.
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 #include "test_rvkat.h"
 #include "sha2/sha2_api.h"
 

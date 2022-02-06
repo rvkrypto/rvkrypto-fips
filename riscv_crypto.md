@@ -4,21 +4,16 @@
 
 _( Released under BSD 2-Clause and FSF copyright transfer. )_
 
-The [rvkintrin.h](rvkintrin.h) header (discussed below) serves a similar
-programming convenience purpose as the Intel "short" intrinsics
-https://software.intel.com/sites/landingpage/IntrinsicsGuide/# do for that
-ISA. ( Otherwise programmers would no doubt shorten the `__builtin_riscv*`
-prefix in various ways themselves. )
+The [riscv_crypto.h](riscv_crypto.h) header (discussed below) serves a similar
+programming convenience purpose as the Intel intrinsics
+https://software.intel.com/sites/landingpage/IntrinsicsGuide/# do for that ISA.
 
 
-##  Notes on `rvkintrin.h`
+##  Notes on `riscv_crypto.h`
 
-The (shorter) `_rv_*`, `_rv32_*`, `_rv64_*` forms will remain available via
-[rvkintrin.h](rvkintrin.h) header mappings. If you don't want short-form
-intrinsics cluttering  your namespace, just don't include this header.
-That header complements and is mostly compatible with the bitmanip intrinsics
-of [rvintrin.h](https://github.com/riscv/riscv-bitmanip/blob/master/cproofs/rvintrin.h).
-As with that Bitmanip file, the header provides both inline assembler hooks
+The `_rv_*`, `_rv32_*`, `_rv64_*` are available via
+[riscv_crypto.h](riscv_crypto.h) header mappings.
+The included header provides both inline assembler hooks
 and "intrinsics emulation" in a consistent way.
 
 The prefixes and data types are:
@@ -49,7 +44,7 @@ feature of Krypto. For AES and SM4 support, you'll need to link with
     The inline assembler solution used here should be seen as temporary.
 
 
-### Crypto Extension short form intrinsics (alphabetically)
+### Scalar Crypto Extension Intrinsics (alphabetically)
 
 
 | Prototype                                                     | Mnemonic      | Short Description                         | Supported in                  |

@@ -4,7 +4,7 @@
 
 //	Unit tests for FIPS 202 -- SHA-3 HASH and SHAKE XOF.
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 #include "test_rvkat.h"
 #include "sha3/sha3_api.h"
 

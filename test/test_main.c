@@ -4,7 +4,7 @@
 
 //	=== Main driver for the algorithm tests.
 
-#include "rvkintrin.h"
+#include "riscv_crypto.h"
 #include "test_rvkat.h"
 
 //	algorithm tests
