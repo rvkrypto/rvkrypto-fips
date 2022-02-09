@@ -17,7 +17,7 @@ static inline uint32_t _rvk_asm_zkr_seed()
 	return rd; 
 }
 
-//	SM4: test vectors and algorithm tests
+//	simple test for the entropy source; just poll and print status print status
 
 int test_zkr()
 {
