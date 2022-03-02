@@ -64,8 +64,8 @@ feature of Krypto. For AES and SM4 support, you'll need to link with
 | `int64_t _rv64_brev8(int64_t rs1);`                           | `brev8`       | Reverse order of bits within each byte.   | Zbkb (RV64)                   |
 | `int32_t _rv32_clmul(int32_t rs1, int32_t rs2);`              | `clmul`       | Carry-less multiply (low 32 bits).        | Zbc, Zbkc (RV32)              |
 | `int64_t _rv64_clmul(int64_t rs1, int64_t rs2);`              | `clmul`       | Carry-less multiply (low 64 bits).        | Zbc, Zbkc (RV64)              |
-| `int64_t _rv64_clmulh(int64_t rs1, int64_t rs2);`             | `clmulh`      | Carry-less multiply (high 32 bits).       | Zbc, Zbkc (RV32)              |
 | `int32_t _rv32_clmulh(int32_t rs1, int32_t rs2);`             | `clmulh`      | Carry-less multiply (high 64 bits).       | Zbc, Zbkc (RV64)              |
+| `int64_t _rv64_clmulh(int64_t rs1, int64_t rs2);`             | `clmulh`      | Carry-less multiply (high 32 bits).       | Zbc, Zbkc (RV32)              |
 | `int32_t _rv32_rol(int32_t rs1, int32_t rs2);`                | `rol[i][w]`   | Circular left rotate of 32 bits.          | Zbb, Zbkb (RV32,RV64)         |
 | `int64_t _rv64_rol(int64_t rs1, int64_t rs2);`                | `rol`/`rori`  | Circular left rotate of 64 bits.          | Zbb, Zbkb (RV64)              |
 | `int32_t _rv32_ror(int32_t rs1, int32_t rs2);`                | `ror[i][w]`   | Circular right rotate of 32 bits.         | Zbb, Zbkb (RV32,RV64)         |
@@ -87,7 +87,7 @@ feature of Krypto. For AES and SM4 support, you'll need to link with
 | `long _rv_sm3p0(long rs1);`                                   | `sm3p0`       | P0 function for SM3 hash.                 | Zksh, Zks (RV32,RV64)         |
 | `long _rv_sm3p1(long rs1);`                                   | `sm3p1`       | P1 function for SM3 hash.                 | Zksh, Zks (RV32,RV64)         |
 | `long _rv_sm4ed(int32_t rs1, int32_t rs2, int bs);`           | `sm4ed`       | Accelerate SM4 cipher encrypt/decrypt.    | Zksed, Zks (RV32,RV64)        |
-| `long _rv_sm4ks(int32_t rs1, int32_t rs2, int bs);`           | `sm4ed`       | Accelerate SM4 cipher key schedule.       | Zksed, Zks (RV32,RV64)        |
+| `long _rv_sm4ks(int32_t rs1, int32_t rs2, int bs);`           | `sm4ks`       | Accelerate SM4 cipher key schedule.       | Zksed, Zks (RV32,RV64)        |
 | `int32_t _rv32_unzip(int32_t rs1);`                           | `unzip`       | Odd/even bits into upper/lower halves.    | Zbkb (RV32)                   |
 | `int32_t _rv32_xperm4(int32_t rs1, int32_t rs2);`             | `xperm4`      | Nibble-wise lookup of indicies.           | Zbkx (RV32)                   |
 | `int64_t _rv64_xperm4(int64_t rs1, int64_t rs2);`             | `xperm4`      | Nibble-wise lookup of indicies.           | Zbkx (RV64)                   |
