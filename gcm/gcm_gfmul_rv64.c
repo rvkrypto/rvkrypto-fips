@@ -39,7 +39,7 @@ void ghash_mul_rv64(gf128_t * z, const gf128_t * x, const gf128_t * h)
 	y0 = h->d[0];							//	h value already reversed
 	y1 = h->d[1];
 
-	//	2 x GREVW, 2 x XOR
+	//	2 x GREV, 2 x XOR
 	x0 = _rv64_brev8(x0);					//	reverse input x only
 	x1 = _rv64_brev8(x1);
 	x0 = x0 ^ z0;							//	z is updated
