@@ -43,9 +43,11 @@ feature of Krypto. For AES and SM4 support, you'll need to link with
     compiler implementations (instead of inline assembler as is done here).
     The inline assembler solution used here should be seen as temporary.
 
+The `_rv64_sha512*` intrinsics are marked with optional [RV32] support.
+This will require the compiler to decompose them into pairs of the
+corresponding `_rv32_sha512*` instructions.
 
-### Scalar Crypto Extension Intrinsics (alphabetically)
-
+### Scalar Cryptography Extension short form intrinsics (alphabetically)
 
 | Prototype                                                     | Mnemonic      | Short Description                         | Supported in                  |
 | ------------------------------------------------------------- | ------------- | ----------------------------------------- | ----------------------------- |
@@ -80,10 +82,10 @@ feature of Krypto. For AES and SM4 support, you'll need to link with
 | `int32_t _rv32_sha512sig1l(int32_t rs1, int32_t rs2);`        | `sha512sig1l` | Sigma1 low half for SHA2-512.             | Zknh, Zkn, Zk (RV32)          |
 | `int32_t _rv32_sha512sum0r(int32_t rs1, int32_t rs2);`        | `sha512sum0r` | Sum0 function for SHA2-512.               | Zknh, Zkn, Zk (RV32)          |
 | `int32_t _rv32_sha512sum1r(int32_t rs1, int32_t rs2);`        | `sha512sum1r` | Sum1 function for SHA2-512.               | Zknh, Zkn, Zk (RV32)          |
-| `int64_t _rv64_sha512sig0(int64_t rs1);`                      | `sha512sig0`  | Sigma0 function for SHA2-512.             | Zknh, Zkn, Zk (RV64)          |
-| `int64_t _rv64_sha512sig1(int64_t rs1);`                      | `sha512sig1`  | Sigma1 function for SHA2-512.             | Zknh, Zkn, Zk (RV64)          |
-| `int64_t _rv64_sha512sum0(int64_t rs1);`                      | `sha512sum0`  | Sum0 function for SHA2-512.               | Zknh, Zkn, Zk (RV64)          |
-| `int64_t _rv64_sha512sum1(int64_t rs1);`                      | `sha512sum1`  | Sum1 function for SHA2-512.               | Zknh, Zkn, Zk (RV64)          |
+| `int64_t _rv64_sha512sig0(int64_t rs1);`                      | `sha512sig0`  | Sigma0 function for SHA2-512.             | Zknh, Zkn, Zk (RV64 [RV32])   |
+| `int64_t _rv64_sha512sig1(int64_t rs1);`                      | `sha512sig1`  | Sigma1 function for SHA2-512.             | Zknh, Zkn, Zk (RV64 [RV32])   |
+| `int64_t _rv64_sha512sum0(int64_t rs1);`                      | `sha512sum0`  | Sum0 function for SHA2-512.               | Zknh, Zkn, Zk (RV64 [RV32])   |
+| `int64_t _rv64_sha512sum1(int64_t rs1);`                      | `sha512sum1`  | Sum1 function for SHA2-512.               | Zknh, Zkn, Zk (RV64 [RV32])   |
 | `long _rv_sm3p0(long rs1);`                                   | `sm3p0`       | P0 function for SM3 hash.                 | Zksh, Zks (RV32,RV64)         |
 | `long _rv_sm3p1(long rs1);`                                   | `sm3p1`       | P1 function for SM3 hash.                 | Zksh, Zks (RV32,RV64)         |
 | `long _rv_sm4ed(int32_t rs1, int32_t rs2, int bs);`           | `sm4ed`       | Accelerate SM4 cipher encrypt/decrypt.    | Zksed, Zks (RV32,RV64)        |
