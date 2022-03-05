@@ -66,8 +66,8 @@ corresponding `_rv32_sha512*` instructions.
 | `int64_t _rv64_brev8(int64_t rs1);`                           | `brev8`       | Reverse order of bits within each byte.   | Zbkb (RV64)                   |
 | `int32_t _rv32_clmul(int32_t rs1, int32_t rs2);`              | `clmul`       | Carry-less multiply (low 32 bits).        | Zbc, Zbkc (RV32)              |
 | `int64_t _rv64_clmul(int64_t rs1, int64_t rs2);`              | `clmul`       | Carry-less multiply (low 64 bits).        | Zbc, Zbkc (RV64)              |
-| `int32_t _rv32_clmulh(int32_t rs1, int32_t rs2);`             | `clmulh`      | Carry-less multiply (high 64 bits).       | Zbc, Zbkc (RV64)              |
-| `int64_t _rv64_clmulh(int64_t rs1, int64_t rs2);`             | `clmulh`      | Carry-less multiply (high 32 bits).       | Zbc, Zbkc (RV32)              |
+| `int32_t _rv32_clmulh(int32_t rs1, int32_t rs2);`             | `clmulh`      | Carry-less multiply (high 32 bits).       | Zbc, Zbkc (RV32)              |
+| `int64_t _rv64_clmulh(int64_t rs1, int64_t rs2);`             | `clmulh`      | Carry-less multiply (high 64 bits).       | Zbc, Zbkc (RV64)              |
 | `int32_t _rv32_rol(int32_t rs1, int32_t rs2);`                | `rol[i][w]`   | Circular left rotate of 32 bits.          | Zbb, Zbkb (RV32,RV64)         |
 | `int64_t _rv64_rol(int64_t rs1, int64_t rs2);`                | `rol`/`rori`  | Circular left rotate of 64 bits.          | Zbb, Zbkb (RV64)              |
 | `int32_t _rv32_ror(int32_t rs1, int32_t rs2);`                | `ror[i][w]`   | Circular right rotate of 32 bits.         | Zbb, Zbkb (RV32,RV64)         |
