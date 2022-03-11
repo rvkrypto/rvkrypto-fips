@@ -4,7 +4,7 @@
 
 /*
  *  When including this contribution, use whichever license you deem approriate.
- *  PQShield has executed FSF assignment/disclaimer process ( #1653644 ).
+ *  PQShield has executed FSF assignment/disclaimer process ( #1653644 )
  *  for GDB, GCC, GNU, BINUTILS.
  *
  *  Best regards: 2022-Mar-11 Markku-Juhani O. Saarinen <mjos@pqshield.com>
