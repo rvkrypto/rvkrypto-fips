@@ -2,7 +2,7 @@
 //	2022-02-12	Markku-Juhani O. Saarinen <mjos@pqshield.com>
 
 /*
- *  When including this contribution, use whichever license you seem approriate.
+ *  When including this contribution, use whichever license you deem approriate.
  *  PQShield has executed FSF assignment/disclaimer process ( #1653644 ).
  *  for GDB, GCC, GNU, BINUTILS.
  *

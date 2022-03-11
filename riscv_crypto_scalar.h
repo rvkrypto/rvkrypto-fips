@@ -3,7 +3,7 @@
 //	Copyright (c) 2021, PQShield Ltd. All rights reserved.
 
 /*
- *  When including this contribution, use whichever license you seem approriate.
+ *  When including this contribution, use whichever license you deem approriate.
  *  PQShield has executed FSF assignment/disclaimer process ( #1653644 ).
  *  for GDB, GCC, GNU, BINUTILS.
  *
