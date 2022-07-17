@@ -17,7 +17,7 @@ extern "C" {
 
 static inline uint16_t get16u_le(const uint8_t* v)
 {
-	return (((uint16_t)v[0]) << 8) | ((uint16_t)v[1]);
+	return (((uint16_t)v[1]) << 8) | ((uint16_t)v[0]);
 }
 
 static inline void put16u_le(uint8_t* v, uint16_t x)
@@ -64,7 +64,7 @@ static inline void put64u_le(uint8_t* v, uint64_t x)
 
 static inline uint16_t get16u_be(const uint8_t* v)
 {
-	return (((uint16_t)v[1]) << 8) | ((uint16_t)v[0]);
+	return (((uint16_t)v[0]) << 8) | ((uint16_t)v[1]);
 }
 
 static inline void put16u_be(uint8_t* v, uint16_t x)
