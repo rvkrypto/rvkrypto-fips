@@ -1,5 +1,7 @@
 #	rvkrypto-fips
 
+**NOTE: THIS REPO IS NOT MAINTAINED -- OLD DEVELOPMENT VERSION OF INTRINSICS**
+
 Algorithm tests for RISC-V Crypto Extension.
 
 2021-02-14	Markku-Juhani O. Saarinen <mjos@pqshield.com>
